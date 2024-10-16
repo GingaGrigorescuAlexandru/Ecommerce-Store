@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+.Python
+
+# Django
+db.sqlite3  # Ignore SQLite database file
+media/      # Ignore media uploads (if any)
+staticfiles/ # Ignore collected static files
+*.log       # Ignore log files
+*.pot       # Ignore translation files
+
+# Environment Variables
+.env        # Ignore the .env file containing sensitive data
+
+# IDE and Editor specific files
+*.swp       # Vim swap files
+.idea/      # PyCharm project files
+.vscode/    # Visual Studio Code settings
+*.DS_Store  # macOS Finder file
+Thumbs.db   # Windows thumbnail cache
+
+# Coverage reports
+.coverage
+htmlcov/
+.coverage.*
+nosetests.xml
+*.cover
+
+# Miscellaneous
+*.zip       # Ignore zip files
+*.tar.gz    # Ignore tarballs
+*.tar       # Ignore tar files
+*.bak       # Ignore backup files
+*.orig      # Ignore original files
