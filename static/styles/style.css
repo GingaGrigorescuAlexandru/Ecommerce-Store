@@ -1,6 +1,8 @@
 body {
     display: flex;
     flex-direction: column;
+    margin: 0px;
+    padding: 0px;
 }
 
 .navbar-container {
@@ -29,18 +31,29 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: grey;
 }
 
 .footer-column {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: column;
     justify-content: left;
     align-items: left;
-    margin-left: 50px;
-    margin-right: 50px;
+    margin-left: 150px;
+    margin-right: 150px;
+    margin-top: 25px;
+    margin-bottom: 25px;
 }
 
-.footer-column a {
-    color: black;
+.footer-column a,
+.footer-column h4 {
+    color: white;
     text-decoration: none;
+    margin: 5px;
+    padding: 5px;
+}
+
+.authentification-form {
+    heigth: 100%;
 }

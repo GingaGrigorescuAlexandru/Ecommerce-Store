@@ -192,7 +192,7 @@ class Clienti(models.Model):
     nume = models.CharField(max_length=50)
     prenume = models.CharField(max_length=50)
     email = models.CharField(max_length=255)
-    parola_crypted = models.CharField(max_length=50)
+    parola = models.CharField(max_length=50)
     numar_telefon = models.CharField(max_length=50)
 
     class Meta:
