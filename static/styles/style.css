@@ -1,7 +1,16 @@
-.navbar {
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.navbar-icon {
+
 }
 
 .navbar-redirections {
@@ -14,4 +23,24 @@
     color: black;
     text-decoration: none;
     margin: 15px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.footer-column a {
+    color: black;
+    text-decoration: none;
 }
