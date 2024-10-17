@@ -27,6 +27,25 @@ html, body {
     margin: 15px;
 }
 
+.catalog-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 16px;
+}
+
+.catalog-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    center-items:left;
+
+    border:1px solid black;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+
 .footer-container {
     display: flex;
     justify-content: space-between;

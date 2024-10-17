@@ -11,7 +11,7 @@
     <div class = "navbar-container">
         <h1 class = "navbar-icon">Stomagia</h1>
         <div class = "navbar-redirections">
-            <a href = "" >Catalog</a>
+            <a href = "{% url 'catalog' %}" >Catalog</a>
             <a href = "" >Cos</a>
 
             {% if request.user.is_authenticated %}
