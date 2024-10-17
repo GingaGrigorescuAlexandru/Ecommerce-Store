@@ -246,8 +246,8 @@ class Plati(models.Model):
 
 class Produse(models.Model):
     produs_id = models.AutoField(primary_key=True)
-    categorie = models.ForeignKey(Categorie, models.CASCADE)
-    furnizor = models.ForeignKey(Furnizori, models.CASCADE)
+    categorie = models.ForeignKey(Categorie, models.CASCADE, default=1)
+    furnizor = models.ForeignKey(Furnizori, models.CASCADE, default=1)
     nume = models.CharField(max_length=255)
     stoc = models.SmallIntegerField()
     pret_unitar = models.FloatField()

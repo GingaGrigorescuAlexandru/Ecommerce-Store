@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, PropertiesProductForm, ProductCreationForm
 from .models import Clienti
 
 def home(request):
@@ -67,3 +67,30 @@ def loginUser(request):
 def logoutUser(request):
     logout(request)
     return redirect('home')
+
+def profilePage(request, pk):
+    user = User.objects.get(id = pk)
+    context = {'user': user}
+    return render(request, 'app/profile.html', context)
+
+def addProduct(request):
+    formProduct = ProductCreationForm()
+    formProperties = PropertiesProductForm()
+
+    if request.method == "POST":
+        formProduct = ProductCreationForm(request.POST)
+        formProperties = PropertiesProductForm(request.POST)
+
+        if all([formProduct.is_valid(), formProperties.is_valid()]):
+            product = formProduct.save()
+
+            properties = formProperties.save(commit = False)
+            properties.produs = product
+            properties.save()
+
+            return redirect('home')
+
+    context = {'formProduct': formProduct,
+               'formProperties': formProperties}
+
+    return render(request, 'app/add_product_page.html', context)
