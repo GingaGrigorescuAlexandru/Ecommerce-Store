@@ -33,14 +33,14 @@ class AuthPermission(models.Model):
 class AuthUser(models.Model):
     password = models.CharField(max_length=128)
     last_login = models.DateTimeField(blank=True, null=True)
-    is_superuser = models.IntegerField()
+    is_superuser = models.IntegerField(default=0)
     username = models.CharField(unique=True, max_length=150)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     email = models.CharField(max_length=254)
-    is_staff = models.IntegerField()
-    is_active = models.IntegerField()
-    date_joined = models.DateTimeField()
+    is_staff = models.IntegerField(default=0)
+    is_active = models.IntegerField(default=1)
+    date_joined = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False
@@ -192,7 +192,6 @@ class Clienti(models.Model):
     nume = models.CharField(max_length=50)
     prenume = models.CharField(max_length=50)
     email = models.CharField(max_length=255)
-    parola = models.CharField(max_length=50)
     numar_telefon = models.CharField(max_length=50)
 
     class Meta:

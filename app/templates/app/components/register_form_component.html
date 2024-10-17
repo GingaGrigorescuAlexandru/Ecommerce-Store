@@ -13,6 +13,9 @@
     <form method="POST" action="" class="authentification-form">
         {% csrf_token %}
         {{ form.as_p }}
+        <label>Parola</label>
+        <input type="password" name="password"/>
+
         <input type = "submit" name = "submit_registration_form" />
 
         <p>Already have an account?</p>

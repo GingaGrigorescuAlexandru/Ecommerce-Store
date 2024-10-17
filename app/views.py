@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from .forms import CustomUserCreationForm
+from .models import Clienti
 
 def home(request):
     context = {}
@@ -21,6 +22,14 @@ def register(request):
             user = form.save(commit = False)
             user.username = user.username.lower()
             user.save()
+
+            new_client = Clienti(
+                nume=form.cleaned_data['first_name'],
+                prenume=form.cleaned_data['last_name'],
+                email=form.cleaned_data['email'],
+            )
+            new_client.save()
+
             login(request, user)
             return redirect('home')
         else:
