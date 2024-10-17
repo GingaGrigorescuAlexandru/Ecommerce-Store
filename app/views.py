@@ -31,26 +31,26 @@ def register(request):
     return render(request, 'app/register.html', context)
 
 def loginUser(request):
-    form = AuthenticationForm
+    page = "login"
+    form = AuthenticationForm()
 
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect("home")
 
     if request.method == "POST":
         username = request.POST.get( "username" ).lower()
         password = request.POST.get( "password" )
 
-    try:
-        user = User.objects.get(username=username)
-    except:
-        messages.error(request, "User doesn't exist!")
+        try:
+            user = User.objects.get( username = username )
+        except:
+            messages.error( request, "User doesn't exist!" )
 
-    user = authenticate(request, username = username, password = password)
-    if user is not None:
-        login(request, user)
-        return redirect('home')
-    else:
-        messages.error(request, "Username OR password does no exist!")
-
-    context = {}
-    return render(request, 'app/login.html', context)
+        user = authenticate( request, username = username, password = password )
+        if user is not None:
+            login( request, user )
+            return redirect( "home" )
+        else:
+            messages.error( request, "Username OR password does no exist!" )
+    context = {"page": page}
+    return render( request, "app/login.html", context )
