@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from .forms import CustomUserCreationForm, PropertiesProductForm, ProductCreationForm
-from .models import Clienti, Produse
+from .models import Clienti, Produse, ProduseImagini
 
 def home(request):
     context = {}
@@ -86,7 +86,19 @@ def addProduct(request):
             properties.produs = product
             properties.save()
 
-            return redirect('home')
+            print("All good til here")
+            image_file = request.FILES.get('catalog-image-input')
+            print("Got the image file")
+            print(image_file)
+            if image_file:
+                image_data = image_file.read()
+                print("Got the image data")
+                product_image = ProduseImagini(produs = product,
+                                               imagine_catalog = image_data)
+                print("Instantiated the product image")
+                product_image.save()
+                print("FINALLY, saved the product image")
+            return redirect('catalog')
 
     context = {'formProduct': formProduct,
                'formProperties': formProperties}
@@ -96,5 +108,14 @@ def addProduct(request):
 
 def productCatalog(request):
     products = Produse.objects.all()
-    context = {'products': products}
+    images = ProduseImagini.objects.all()
+    products_with_images = []
+
+    for product in products:
+        try:
+            image = images.get(produs = product)
+            products_with_images.append((product, image.imagine_catalog))
+        except ProduseImagini.DoesNotExist:
+            products_with_images.append((product, None))
+    context = {'products_with_images': products_with_images}
     return render(request, 'app/catalog.html', context)

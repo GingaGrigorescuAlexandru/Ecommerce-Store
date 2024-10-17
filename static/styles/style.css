@@ -9,6 +9,9 @@ html, body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    padding: 16px;
+    background-color: #D484E2;
 }
 
 .navbar-icon {
@@ -19,12 +22,24 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    color: white;
 }
 
 .navbar-redirections a {
     color: black;
     text-decoration: none;
     margin: 15px;
+
+    color: white;
+
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.home-link {
+    text-decoration: none;
+    color: white;
 }
 
 .catalog-container {
@@ -43,6 +58,13 @@ html, body {
     border:1px solid black;
     padding: 10px;
     box-sizing: border-box;
+}
+
+.catalog-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    max-height: 150px;
 }
 
 
@@ -79,4 +101,5 @@ html, body {
 .authentication-form {
     flex-grow: 1;
     height: 100%;
+    padding: 16px;
 }

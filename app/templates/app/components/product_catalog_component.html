@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load custom_filters %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,13 +9,26 @@
     <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
 </head>
 <body>
+
+    {% if request.user.is_superuser %}
+        <a href="{% url 'add_product' %}">Add a New Product</a>
+    {% endif %}
+
     <div class="catalog-container">
-        {% for product in products %}
+        {% for product, image_data in products_with_images %}
+
         <div class="catalog-item">
+        {% if image_data %}
+            <img class="catalog-image" src="data:image/jpeg;base64,{{ image_data|b64encode }}" alt="{{ product.nume }}" />
+        {% else %}
+            <p>No image available</p>
+        {% endif %}
             <h5>{{ product.nume }}</h5>
             <h5>{{ product.pret_unitar }} RON</h5>
         </div>
+
         {% endfor %}
     </div>
+
 </body>
 </html>

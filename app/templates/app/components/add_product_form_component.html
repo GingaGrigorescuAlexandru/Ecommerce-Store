@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
 </head>
 <body>
-    <form method="POST" action="">
+    <form method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
         {{ formProduct.as_p }}
+        <label>Image</label>
+        <input type="file" accept=".jpeg, .jpg" name="catalog-image-input" />
 
         <h4>Tags</h4>
         {{ formProperties.as_p }}

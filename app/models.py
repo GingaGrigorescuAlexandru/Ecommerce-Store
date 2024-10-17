@@ -277,4 +277,12 @@ class ProprietatiProduse(models.Model):
         managed = False
         db_table = 'proprietati_produse'
 
+class ProduseImagini(models.Model):
+    produs = models.OneToOneField(Produse, models.CASCADE, primary_key=True)
+    imagine_catalog = models.BinaryField()
+
+    class Meta:
+        managed = False
+        db_table = 'produse_imagini'
+
 
