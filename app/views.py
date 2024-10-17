@@ -119,3 +119,8 @@ def productCatalog(request):
             products_with_images.append((product, None))
     context = {'products_with_images': products_with_images}
     return render(request, 'app/catalog.html', context)
+
+def productPage(request, pk):
+    product = Produse.objects.get(produs_id=pk)
+    context = {'product': product}
+    return render(request, 'app/product.html', context)

@@ -17,16 +17,17 @@
     <div class="catalog-container">
         {% for product, image_data in products_with_images %}
 
-        <div class="catalog-item">
-        {% if image_data %}
-            <img class="catalog-image" src="data:image/jpeg;base64,{{ image_data|b64encode }}" alt="{{ product.nume }}" />
-        {% else %}
-            <p>No image available</p>
-        {% endif %}
-            <h5>{{ product.nume }}</h5>
-            <h5>{{ product.pret_unitar }} RON</h5>
-        </div>
-
+        <a href="{% url 'product' product.produs_id %}">
+            <div class="catalog-item">
+            {% if image_data %}
+                <img class="catalog-image" src="data:image/jpeg;base64,{{ image_data|b64encode }}" alt="{{ product.nume }}" />
+            {% else %}
+                <p>No image available</p>
+            {% endif %}
+                <h5>{{ product.nume }}</h5>
+                <h5>{{ product.pret_unitar }} RON</h5>
+            </div>
+        </a>
         {% endfor %}
     </div>
 

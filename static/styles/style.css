@@ -60,6 +60,10 @@ html, body {
     box-sizing: border-box;
 }
 
+.catalog-item:hover {
+    box-shadow: 0px 0px 10px #D484E2;
+}
+
 .catalog-image {
     width: 100%;
     height: auto;
