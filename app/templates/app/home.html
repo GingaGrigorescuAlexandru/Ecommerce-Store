@@ -12,7 +12,9 @@
 
     {% block content %}
 
+    {% if request.user.is_superuser %}
         <a href="{% url 'add_product' %}">Add a New Product</a>
+    {% endif %}
 
     {% endblock content %}
 

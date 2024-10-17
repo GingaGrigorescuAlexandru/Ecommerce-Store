@@ -9,14 +9,7 @@
 
     {% block content %}
 
-    <form method="POST" action="">
-        {% csrf_token %}
-        {{ formProduct.as_p }}
-
-        <h4>Tags</h4>
-        {{ formProperties.as_p }}
-        <input type="submit" name="submit_product_creation"/>
-    </form>
+    {% include 'app/components/add_product_form_component.html' %}
 
     {% endblock content %}
 </body>
