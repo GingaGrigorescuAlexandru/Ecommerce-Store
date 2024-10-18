@@ -219,11 +219,8 @@ class Cosuri(models.Model):
     data_adaugare = models.DateField()
 
     class Meta:
-        unique_together = (('client', 'produs'),)  # This defines the composite primary key
+        managed = False
         db_table = 'cosuri'  # Optional, in case you want to control the table name
-
-    def __str__(self):
-        return f'{self.client} - {self.produs}'
 
 
 class Furnizori(models.Model):

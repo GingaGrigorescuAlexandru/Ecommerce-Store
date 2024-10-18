@@ -163,7 +163,7 @@ def cartPage(request, pk):
         product_instance = get_object_or_404(Produse, produs_id=product_id)
 
         cart_item, created = Cosuri.objects.get_or_create(
-            cos_id=str(client_id)+(product_id),
+            cos_id=str(client_id)+"#"+str(product_id),
             client=client_instance,
             produs=product_instance,
             defaults={'cantitate': quantity, 'data_adaugare': add_product_date}

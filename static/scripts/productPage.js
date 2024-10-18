@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert("Failed to add product to cart!")
             }
         })
+        console.log('Hello')
         .catch(error=> {
             console.error('Error:', error);
             alert("An error occurred while adding the product to the cart.")
