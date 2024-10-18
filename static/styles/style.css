@@ -79,6 +79,7 @@ html, body {
 
     margin: 10px;
     padding: 10px;
+
 }
 
 .product-page-image {
@@ -114,6 +115,11 @@ html, body {
 }
 
 .add-to-cart-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
     min-width: 350px;
     min-height: 50px;
 
@@ -133,6 +139,11 @@ html, body {
 }
 
 .add-to-favourites-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
     min-width: 350px;
     min-height: 50px;
 
