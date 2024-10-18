@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.http import JsonResponse
 from .forms import CustomUserCreationForm, PropertiesProductForm, ProductCreationForm
+from django.contrib.auth.hashers import make_password
 import logging
 from .models import (Clienti,
                      Produse,
@@ -28,6 +29,7 @@ def register(request):
         if form.is_valid():
             user = form.save(commit = False)
             user.username = user.username.lower()
+            user.password = make_password(user.password)
             user.save()
 
             new_client = Clienti(
@@ -95,18 +97,13 @@ def addProduct(request):
             properties.produs = product
             properties.save()
 
-            print("All good til here")
             image_file = request.FILES.get('catalog-image-input')
-            print("Got the image file")
-            print(image_file)
+
             if image_file:
                 image_data = image_file.read()
-                print("Got the image data")
                 product_image = ProduseImagini(produs = product,
                                                imagine_catalog = image_data)
-                print("Instantiated the product image")
                 product_image.save()
-                print("FINALLY, saved the product image")
             return redirect('catalog')
 
     context = {'formProduct': formProduct,
@@ -145,34 +142,43 @@ def productPage(request, pk):
                }
     return render(request, 'app/product.html', context)
 logger = logging.getLogger(__name__)
+
+
 def cartPage(request, pk):
-    logger.info(f"Accessing cart page for client with PK: {pk}")
     cart_items = Cosuri.objects.filter(client=pk).select_related('produs')
-    logger.debug(f"Initial query for cart items: {cart_items.query}")
     cart_items = cart_items.prefetch_related(
         Prefetch('produs__proprietatiproduse', queryset = ProprietatiProduse.objects.all(), to_attr = 'properties'),
         Prefetch('produs__produseimagini', queryset = ProduseImagini.objects.all(), to_attr = 'images'),
         Prefetch('produs__categorie', queryset = Categorie.objects.all(), to_attr = 'category')
     )
-    logger.info(f"Number of cart items retrieved: {cart_items.count()}")
+
     if request.method == 'POST':
         client_id = request.POST.get('client_id')
         product_id = request.POST.get('product_id')
-        quantity = request.POST.get('quantity')
+        quantity = int(request.POST.get('quantity'))
         add_product_date = request.POST.get('addProductDate')
 
         client_instance = get_object_or_404(Clienti, client_id=client_id)
 
         product_instance = get_object_or_404(Produse, produs_id=product_id)
 
-        cart_item = Cosuri(client = client_instance,
-                           produs = product_instance,
-                           cantitate = quantity,
-                           data_adaugare = add_product_date
-                           )
-        cart_item.save()
+        cart_item, created = Cosuri.objects.get_or_create(
+            cos_id=str(client_id)+(product_id),
+            client=client_instance,
+            produs=product_instance,
+            defaults={'cantitate': quantity, 'data_adaugare': add_product_date}
+        )
 
-        return JsonResponse({'message': 'Product added to cart!'}, status = 200)
+        if not created:
+            # If the item already exists, update the quantity (or handle as needed)
+            cart_item.cantitate += quantity
+            cart_item.save()
+            message = 'Product quantity updated in the cart!'
+        else:
+            # If a new item was created
+            message = 'Product added to the cart!'
+
+        return JsonResponse({'message': message}, status = 200)
 
     context = {
         'cart_items': cart_items

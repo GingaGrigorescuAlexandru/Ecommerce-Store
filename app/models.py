@@ -212,14 +212,18 @@ class Comenzi(models.Model):
 
 
 class Cosuri(models.Model):
-    client = models.OneToOneField(Clienti, models.CASCADE, primary_key=True)
-    produs = models.ForeignKey('Produse', models.CASCADE)
+    cos_id = models.CharField(max_length=50, primary_key=True)
+    client = models.ForeignKey(Clienti, on_delete=models.CASCADE)
+    produs = models.ForeignKey('Produse', on_delete=models.CASCADE)
     cantitate = models.IntegerField()
     data_adaugare = models.DateField()
 
     class Meta:
-        managed = False
-        db_table = 'cosuri'
+        unique_together = (('client', 'produs'),)  # This defines the composite primary key
+        db_table = 'cosuri'  # Optional, in case you want to control the table name
+
+    def __str__(self):
+        return f'{self.client} - {self.produs}'
 
 
 class Furnizori(models.Model):

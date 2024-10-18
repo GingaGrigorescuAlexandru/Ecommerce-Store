@@ -11,14 +11,13 @@
 </head>
 <body>
     <div class="row-info-container">
-        <div class="column-information">
         {% for item in cart_items %}
+        <div class="column-information">
             <h1>{{ item.produs.nume }}</h1>
             <h4>{{ item.produs.pret_unitar }}</h4>
             <h4>{{ item.produs.category.nume_categorie }} {{ item.produs.properties.domeniu }}</h4>
-        {% endfor %}
         </div>
-
+        {% endfor %}
         <div class="column-information">
             <h1>Summary</h1>
             <h4>Voucher?</h4>
