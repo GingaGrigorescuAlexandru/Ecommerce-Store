@@ -1,14 +1,16 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
+from django.http import JsonResponse
 from .forms import CustomUserCreationForm, PropertiesProductForm, ProductCreationForm
 from .models import (Clienti,
                      Produse,
                      ProduseImagini,
                      ProprietatiProduse,
-                     Categorie)
+                     Categorie,
+                     Cosuri)
 
 def home(request):
     context = {}
@@ -139,3 +141,44 @@ def productPage(request, pk):
                'properties_fields': properties_fields
                }
     return render(request, 'app/product.html', context)
+
+def add_to_cart(request):
+    if request.method == 'POST':
+        client_id = request.POST.get('client_id')
+        product_id = request.POST.get('product_id')
+        quantity = request.POST.get('quantity')
+        add_product_date = request.POST.get('addProductdate')
+
+        cart_item = Cosuri(client = client_id,
+                           produs = product_id,
+                           cantitate = quantity,
+                           data_adaugare = add_product_date
+                           )
+        cart_item.save()
+        return JsonResponse({'message': 'Product added to cart!'}, status = 200)
+
+    return JsonResponse({'error': 'Invalid request'}, status = 400)
+def cartPage(request, pk):
+    context = {}
+    if request.method == 'POST':
+        client_id = request.POST.get('client_id')
+        product_id = request.POST.get('product_id')
+        quantity = request.POST.get('quantity')
+        add_product_date = request.POST.get('addProductDate')
+
+        # Retrieve the Clienti instance
+        client_instance = get_object_or_404(Clienti, client_id=client_id)
+
+        # Retrieve the Produs instance if necessary
+        product_instance = get_object_or_404(Produse, produs_id=product_id)
+
+        cart_item = Cosuri(client = client_instance,
+                           produs = product_instance,
+                           cantitate = quantity,
+                           data_adaugare = add_product_date
+                           )
+        cart_item.save()
+        return JsonResponse({'message': 'Product added to cart!'}, status = 200)
+
+
+    return render(request, 'app/cart.html', context)

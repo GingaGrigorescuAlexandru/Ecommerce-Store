@@ -214,7 +214,7 @@ class Comenzi(models.Model):
 class Cosuri(models.Model):
     client = models.OneToOneField(Clienti, models.CASCADE, primary_key=True)
     produs = models.ForeignKey('Produse', models.CASCADE)
-    cantitate_cos = models.IntegerField()
+    cantitate = models.IntegerField()
     data_adaugare = models.DateField()
 
     class Meta:
