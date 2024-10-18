@@ -71,6 +71,91 @@ html, body {
     max-height: 150px;
 }
 
+.product-buy-info-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+}
+
+.product-page-image {
+    position: sticky;
+    max-height: 600px;
+    object-fit: contain;
+    top: 0;
+    z-index: 10;
+}
+
+.product-information {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    max-width: 350px;
+}
+
+.properties-list {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.product-information button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-to-cart-button {
+    min-width: 350px;
+    min-height: 50px;
+
+    border: none;
+    border-radius: 25px;
+    margin: 10px;
+    padding: 10px;
+
+    background-color: black;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.add-to-cart-button:hover {
+    background-color: #555555;
+}
+
+.add-to-favourites-button {
+    min-width: 350px;
+    min-height: 50px;
+
+    border: 1px solid black;
+    border-radius: 25px;
+    margin: 10px;
+    padding: 10px;
+
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.add-to-favourites-button:hover {
+    border: 2px solid black;
+}
+
+.product-description {
+    text-align: left;
+}
+
+.reviews-container h3 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
 
 .footer-container {
     display: flex;
@@ -87,8 +172,8 @@ html, body {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    justify-content: left;
-    align-items: left;
+    justify-content: flex-start;
+    align-items: flex-start;
     margin-left: 150px;
     margin-right: 150px;
     margin-top: 25px;

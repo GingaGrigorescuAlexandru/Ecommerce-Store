@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load static %}
+{% load custom_filters %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+</head>
+<body>
+    <div class="product-buy-info-container">
+        <div>
+            <img class="product-page-image" src="data:image/jpeg;base64,{{ product_images.imagine_catalog|b64encode }}" alt="{{ product.nume }}" />
+        </div>
+        <div class="product-information">
+            <h1>{{ product.nume }}</h1>
+            <h4>{{ product_type.nume_categorie }} {{ product_properties.domeniu }}</h4>
+            <h4>{{ product.pret_unitar }} RON</h4>
+
+
+            {% for field in properties_fields %}
+                {% if field.name != 'produs' and field.name != 'domeniu' %}
+            <div class="properties-list">
+                    <p>{{ field.verbose_name }}:</p>
+                    <p>{{ product_properties|get_attribute:field.name }}</p>
+            </div>
+                {% endif %}
+            {% endfor %}
+            <button class="add-to-cart-button" type="button" aria-label="Press this to add the item to your cart">
+                Add to Cart<img src="{% static 'images/icons/cart.png' %}" alt="Cart Icon" class="social-icon"/>
+            </button>
+
+            <button class="add-to-favourites-button" type="button" aria-label="Press this to add the item to your favourites list">
+                Favorites<img src="{% static 'images/icons/heart.png' %}" alt="Heart Icon" class="social-icon"/>
+            </button>
+
+            <div class="product-description">
+                <h4>Livrare:</h4>
+                <p>Veți putea vedea opțiunile noastre de livrare la finalizarea comenzii!
+                </p>
+            </div>
+
+            <div class="product-description">
+                <h4>Descriere:</h4>
+                <p>Acest caiet modern, dedicat studenților la medicină dentară,
+                    are un design atrăgător și un preț accesibil. Cu foi de 80 g/mp,
+                    îți oferă o experiență plăcută de scriere, perfect pentru notițe și studii.
+                    Ideal pentru a-ți organiza informațiile esențiale!
+                </p>
+            </div>
+
+            <div class="reviews-container">
+                <h3>Reviews
+                    <img src="{% static 'images/icons/review_stars.png' %}" alt="Cart Icon" class="social-icon"/>
+                </h3>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

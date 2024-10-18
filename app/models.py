@@ -269,9 +269,10 @@ class ProduseComenzi(models.Model):
 
 class ProprietatiProduse(models.Model):
     produs = models.OneToOneField(Produse, models.CASCADE, primary_key=True)
-    dimensiune = models.CharField(max_length=50)
-    culoare = models.CharField(max_length=50)
-    tip_foaie = models.CharField(max_length=50)
+    domeniu = models.CharField(max_length=50)
+    Dimensiune = models.CharField(max_length=50)
+    Culoare = models.CharField(max_length=50)
+    Foaie = models.CharField(max_length=50)
 
     class Meta:
         managed = False

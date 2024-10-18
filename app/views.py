@@ -4,7 +4,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from .forms import CustomUserCreationForm, PropertiesProductForm, ProductCreationForm
-from .models import Clienti, Produse, ProduseImagini
+from .models import (Clienti,
+                     Produse,
+                     ProduseImagini,
+                     ProprietatiProduse,
+                     Categorie)
 
 def home(request):
     context = {}
@@ -122,5 +126,16 @@ def productCatalog(request):
 
 def productPage(request, pk):
     product = Produse.objects.get(produs_id=pk)
-    context = {'product': product}
+    product_properties = ProprietatiProduse.objects.get(produs = pk)
+    product_images = ProduseImagini.objects.get(produs = pk)
+    product_type = Categorie.objects.get(categorie_id = product.categorie_id)
+
+    properties_fields = product_properties._meta.fields
+
+    context = {'product': product,
+               'product_properties': product_properties,
+               'product_images': product_images,
+               'product_type': product_type,
+               'properties_fields': properties_fields
+               }
     return render(request, 'app/product.html', context)
