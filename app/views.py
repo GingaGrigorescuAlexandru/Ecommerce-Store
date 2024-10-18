@@ -1,16 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.db.models import Prefetch
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.http import JsonResponse
 from .forms import CustomUserCreationForm, PropertiesProductForm, ProductCreationForm
+import logging
 from .models import (Clienti,
                      Produse,
                      ProduseImagini,
                      ProprietatiProduse,
                      Categorie,
                      Cosuri)
+
 
 def home(request):
     context = {}
@@ -141,35 +144,25 @@ def productPage(request, pk):
                'properties_fields': properties_fields
                }
     return render(request, 'app/product.html', context)
-
-def add_to_cart(request):
-    if request.method == 'POST':
-        client_id = request.POST.get('client_id')
-        product_id = request.POST.get('product_id')
-        quantity = request.POST.get('quantity')
-        add_product_date = request.POST.get('addProductdate')
-
-        cart_item = Cosuri(client = client_id,
-                           produs = product_id,
-                           cantitate = quantity,
-                           data_adaugare = add_product_date
-                           )
-        cart_item.save()
-        return JsonResponse({'message': 'Product added to cart!'}, status = 200)
-
-    return JsonResponse({'error': 'Invalid request'}, status = 400)
+logger = logging.getLogger(__name__)
 def cartPage(request, pk):
-    context = {}
+    logger.info(f"Accessing cart page for client with PK: {pk}")
+    cart_items = Cosuri.objects.filter(client=pk).select_related('produs')
+    logger.debug(f"Initial query for cart items: {cart_items.query}")
+    cart_items = cart_items.prefetch_related(
+        Prefetch('produs__proprietatiproduse', queryset = ProprietatiProduse.objects.all(), to_attr = 'properties'),
+        Prefetch('produs__produseimagini', queryset = ProduseImagini.objects.all(), to_attr = 'images'),
+        Prefetch('produs__categorie', queryset = Categorie.objects.all(), to_attr = 'category')
+    )
+    logger.info(f"Number of cart items retrieved: {cart_items.count()}")
     if request.method == 'POST':
         client_id = request.POST.get('client_id')
         product_id = request.POST.get('product_id')
         quantity = request.POST.get('quantity')
         add_product_date = request.POST.get('addProductDate')
 
-        # Retrieve the Clienti instance
         client_instance = get_object_or_404(Clienti, client_id=client_id)
 
-        # Retrieve the Produs instance if necessary
         product_instance = get_object_or_404(Produse, produs_id=product_id)
 
         cart_item = Cosuri(client = client_instance,
@@ -178,7 +171,10 @@ def cartPage(request, pk):
                            data_adaugare = add_product_date
                            )
         cart_item.save()
+
         return JsonResponse({'message': 'Product added to cart!'}, status = 200)
 
-
+    context = {
+        'cart_items': cart_items
+    }
     return render(request, 'app/cart.html', context)

@@ -13,9 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
         data.append('quantity', quantity);
         data.append('addProductDate', addProductDate);
 
-        console.log("CSRF Token: ", csrfToken);
-        console.log("Data Add: ", addProductDate);
-
         fetch(`/cart/${clientId}`, {
         method: 'POST',
         body: data,
