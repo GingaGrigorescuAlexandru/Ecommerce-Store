@@ -11,7 +11,9 @@
 <body>
 
     {% if request.user.is_superuser %}
-        <a href="{% url 'add_product' %}">Add a New Product</a>
+        <a href="{% url 'add_product' %}" class="add-product-button">Add Product
+        <img src="{% static 'images/icons/plus.png' %}" alt="Plus Icon" class="social-icon"/>
+        </a>
     {% endif %}
 
     <div class="catalog-container">

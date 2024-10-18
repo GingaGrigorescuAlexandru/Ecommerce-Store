@@ -5,6 +5,11 @@ html, body {
     flex-direction: column;
 }
 
+img {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 .navbar-container {
     display: flex;
     justify-content: space-between;
@@ -42,6 +47,33 @@ html, body {
     color: white;
 }
 
+.add-product-button {
+    min-width: 150px;
+    max-width: 250px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    border: none;
+    border-radius: 25px;
+
+    padding: 10px;
+    margin: 10px;
+
+    text-decoration: none;
+    color: white;
+    background-color: #D484E2;
+    box-shadow: 2px 2px 4px rgba(1, 1, 1, 0.3);
+
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.add-product-button:hover {
+    background-color: #A96BC2;
+}
+
 .catalog-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -58,6 +90,8 @@ html, body {
     border:1px solid black;
     padding: 10px;
     box-sizing: border-box;
+
+    box-shadow: 2px 2px 4px rgba(1, 1, 1, 0.3);
 }
 
 .catalog-item:hover {
