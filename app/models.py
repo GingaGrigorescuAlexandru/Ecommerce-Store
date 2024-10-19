@@ -274,6 +274,7 @@ class ProprietatiProduse(models.Model):
     Dimensiune = models.CharField(max_length=50)
     Culoare = models.CharField(max_length=50)
     Foaie = models.CharField(max_length=50)
+    Pagina = models.CharField(max_length=50)
 
     class Meta:
         managed = False
