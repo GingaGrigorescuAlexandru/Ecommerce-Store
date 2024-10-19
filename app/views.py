@@ -115,6 +115,9 @@ def addProduct(request):
 def productCatalog(request):
     products = Produse.objects.all()
     images = ProduseImagini.objects.all()
+    cart = Cosuri.objects.filter(client = request.user.id)
+    cart_product_ids = set(cart.values_list('produs', flat=True))
+
     products_with_images = []
 
     for product in products:
@@ -123,7 +126,8 @@ def productCatalog(request):
             products_with_images.append((product, image.imagine_catalog))
         except ProduseImagini.DoesNotExist:
             products_with_images.append((product, None))
-    context = {'products_with_images': products_with_images}
+    context = {'products_with_images': products_with_images,
+               'cart_product_ids': cart_product_ids}
     return render(request, 'app/catalog.html', context)
 
 def productPage(request, pk):

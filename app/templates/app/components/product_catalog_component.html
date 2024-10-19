@@ -8,6 +8,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+
+    <script>
+        const addCartOriginal = "{% static 'images/icons/add-to-cart.png' %}";
+        const addedSuccesfully = "{% static 'images/icons/shopping-cart-check.png' %}";
+    </script>
 </head>
 <body>
 
@@ -40,9 +45,14 @@
                             data-product-id="{{ product.produs_id }}"
                             data-client-id="{{ request.user.id }}"
                             aria-label="Press this to add the item to your cart">
-                            <img src="{% static 'images/icons/add-to-cart.png' %}" alt="Add item to cart" class="social-icon"/>
+                                <img src="{% if product.produs_id in cart_product_ids %}
+                                {% static 'images/icons/shopping-cart-check.png' %}
+                                {% else %}
+                                {% static 'images/icons/add-to-cart.png' %}
+                                {% endif %}"
+                                     id="add-to-cart-image-{{ product.produs_id }}"
+                                     alt="Add item to cart" class="add-to-cart-icon"/>
                         </a>
-
                         <a href="" class="to-product-page-link">
                             <img src="{% static 'images/icons/heart.png' %}" alt="Add item to favorites list" class="social-icon"/>
                         </a>

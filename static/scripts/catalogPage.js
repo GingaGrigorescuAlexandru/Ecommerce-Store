@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function(event) {
             event.preventDefault();
 
-            console.log("Hello")
             let productId = this.dataset.productId;
             let clientId = this.dataset.clientId;
             let quantity = 1; // You can update this to be dynamic if needed
@@ -17,7 +16,15 @@ document.addEventListener('DOMContentLoaded', function() {
             data.append('quantity', quantity);
             data.append('addProductDate', addProductDate);
 
-            console.log(data);
+            const cartImage = document.getElementById(`add-to-cart-image-${productId}`)
+            console.log(cartImage)
+            if (cartImage) {
+                cartImage.src = addedSuccesfully;
+            } else {
+                console.error(`Cart image not found for product ID: ${productId}`);
+            }
+
+            this.style.pointerEvents = 'none';
 
             fetch(`/cart/${clientId}`, {
                 method: 'POST',
@@ -34,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error:', error);
                 alert("An error occurred while adding the product to the cart.");
             });
+
         });
     });
 });

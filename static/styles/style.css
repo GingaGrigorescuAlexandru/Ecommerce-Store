@@ -5,6 +5,10 @@ html, body {
     flex-direction: column;
 }
 
+a {
+    text-decoration: none;
+}
+
 img {
     margin-left: 5px;
     margin-right: 5px;
@@ -120,6 +124,12 @@ img {
     align-items: center;
 }
 
+.add-to-cart-icon {
+    height: 25px;
+    margin-right: 5px;
+
+}
+
 .row-info-container {
     display: flex;
     flex-direction: row;
@@ -128,7 +138,6 @@ img {
 
     margin: 10px;
     padding: 10px;
-
 }
 
 .product-page-image {

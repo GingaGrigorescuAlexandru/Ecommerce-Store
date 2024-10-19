@@ -32,7 +32,9 @@
                     data-product-id="{{ product.produs_id }}"
                     data-client-id="{{ request.user.id }}"
                     aria-label="Press this to add the item to your cart">
-                Add to Cart<img src="{% static 'images/icons/cart.png' %}" alt="Cart Icon" class="social-icon"/>
+                Add to Cart<img src="{% static 'images/icons/cart.png' %}"
+                                id="add-to-cart-image-{{ product.produs_id }}"
+                                alt="Cart Icon" class="social-icon"/>
             </button>
 
             <button class="add-to-favourites-button" type="button" aria-label="Press this to add the item to your favourites list">
