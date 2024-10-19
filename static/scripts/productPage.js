@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('add-to-cart').addEventListener('click', function() {
+        const quantityCounter = document.getElementById('add_quantity');
+
         let productId = this.dataset.productId;
         let clientId = this.dataset.clientId;
-        let quantity = 1;
+        let quantity = quantityCounter.value;
         let addProductDate = new Date().toISOString().slice(0, 10);
 
         let data = new FormData()
@@ -12,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
         data.append('product_id', productId);
         data.append('quantity', quantity);
         data.append('addProductDate', addProductDate);
+
 
         fetch(`/cart/${clientId}`, {
         method: 'POST',

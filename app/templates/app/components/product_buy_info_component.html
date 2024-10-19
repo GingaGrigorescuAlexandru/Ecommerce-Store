@@ -28,14 +28,19 @@
             </div>
                 {% endif %}
             {% endfor %}
-            <button class="add-to-cart-button" type="button" id="add-to-cart"
-                    data-product-id="{{ product.produs_id }}"
-                    data-client-id="{{ request.user.id }}"
-                    aria-label="Press this to add the item to your cart">
-                Add to Cart<img src="{% static 'images/icons/cart.png' %}"
-                                id="add-to-cart-image-{{ product.produs_id }}"
-                                alt="Cart Icon" class="social-icon"/>
-            </button>
+            <div class="row-info-container">
+
+                <input type="number" min="1" class="cart-add-count" id="add_quantity" value="1"/>
+
+                <button class="add-to-cart-button" type="button" id="add-to-cart"
+                        data-product-id="{{ product.produs_id }}"
+                        data-client-id="{{ request.user.id }}"
+                        aria-label="Press this to add the item to your cart">
+                    Adauga in Cos<img src="{% static 'images/icons/cart.png' %}"
+                                    id="add-to-cart-image-{{ product.produs_id }}"
+                                    alt="Cart Icon" class="social-icon"/>
+                </button>
+            </div>
 
             <button class="add-to-favourites-button" type="button" aria-label="Press this to add the item to your favourites list">
                 Favorites<img src="{% static 'images/icons/heart.png' %}" alt="Heart Icon" class="social-icon"/>
