@@ -30,13 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'POST',
                 body: data,
             })
-            .then(response => {
-                if(response.ok) {
-                    alert("Product added to cart!");
-                } else {
-                    alert("Failed to add product to cart!");
-                }
-            })
             .catch(error => {
                 console.error('Error:', error);
                 alert("An error occurred while adding the product to the cart.");

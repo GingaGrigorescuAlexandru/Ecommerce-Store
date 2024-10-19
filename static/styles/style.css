@@ -161,6 +161,9 @@ img {
     padding: 0px;
     height: auto;
     object-fit: contain;
+
+    border: 1px solid black;
+    border-radius: 20px;
 }
 
 .price-addCart-favorites {
@@ -191,6 +194,9 @@ img {
     object-fit: contain;
     top: 25px;
     z-index: 10;
+
+    border: 1px solid black;
+    border-radius: 25px;
 }
 
 .column-information {
@@ -336,7 +342,6 @@ img {
 
     padding: 10px;
 
-    border: 1px solid black;
 }
 
 .cart-item-description{
@@ -347,7 +352,6 @@ img {
 
     min-width: 400px;
 
-    border: 1px solid black;
 }
 
 .cart-item-description > * {
@@ -357,6 +361,8 @@ img {
 
 .cart-image {
     max-height: 200px;
+    border: 1px solid black;
+    border-radius: 10px;
 }
 
 .footer-container {
