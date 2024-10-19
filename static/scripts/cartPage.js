@@ -61,3 +61,27 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+
+document.querySelectorAll('.cart-add-count').forEach(input => {
+    input.addEventListener('change', function() {
+
+        const quantity = parseInt(this.value);
+        const pricePerUnit = parseFloat(this.closest('.cart-item-container').dataset.price);
+        const itemTotalPriceElement = this.closest('.cart-item-container').querySelector('.item-total-price');
+        const subtotalElement = document.getElementById('subtotal');
+        const totalElement = document.getElementById('total');
+
+        // Update the item total price
+        const itemTotalPrice = quantity * pricePerUnit;
+        itemTotalPriceElement.textContent = itemTotalPrice.toFixed(2) + ' RON';
+
+        // Calculate new subtotal
+        let newSubtotal = 0;
+        document.querySelectorAll('.item-total-price').forEach(totalPriceElement => {
+            newSubtotal += parseFloat(totalPriceElement.textContent);
+        });
+        subtotalElement.textContent = newSubtotal.toFixed(2) + ' RON';
+        totalElement.textContent = newSubtotal.toFixed(2) + ' RON'; // Adjust if you have shipping fees etc.
+    });
+});

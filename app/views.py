@@ -156,6 +156,25 @@ def cartPage(request, pk):
         Prefetch('produs__categorie', queryset = Categorie.objects.all(), to_attr = 'category')
     )
 
+    total_price = 0.0
+
+    cart_items_with_totals = []
+
+    for item in cart_items:
+        product_price = item.produs.pret_unitar
+        quantity = item.cantitate
+
+        item_total_price = product_price * quantity
+
+        total_price += item_total_price
+
+        cart_items_with_totals.append({
+            'item': item,
+            'item_total_price': item_total_price,
+            'product_price': product_price,
+            'quantity': quantity,
+        })
+
     if request.method == 'POST':
         client_id = request.POST.get('client_id')
         product_id = request.POST.get('product_id')
@@ -186,7 +205,8 @@ def cartPage(request, pk):
         return JsonResponse({'message': message}, status = 200)
 
     context = {
-        'cart_items': cart_items
+        'cart_items_with_totals': cart_items_with_totals,
+        'total_price': total_price
     }
     return render(request, 'app/cart.html', context)
 
