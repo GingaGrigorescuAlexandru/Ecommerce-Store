@@ -26,7 +26,10 @@
                     data-client-id="{{ request.user.id }}"
                     data-product-id="{{ item.produs.produs_id }}"
                     aria-label="Use this field to incraese or decrease the quantity of the product"/>
+
                     <button type="button" class="eliminate-product-from-cart-button"
+                            data-client-id="{{ request.user.id }}"
+                            data-product-id="{{ item.produs.produs_id }}"
                             aria-label="Press this to eliminate the item from your cart">
                         <img src="{% static 'images/icons/open-trash-can.png' %}" alt="Trash Icon" class="social-icon"/>
                     </button>

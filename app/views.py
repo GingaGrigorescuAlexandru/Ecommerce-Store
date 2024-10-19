@@ -167,10 +167,10 @@ def cartPage(request, pk):
         product_instance = get_object_or_404(Produse, produs_id=product_id)
 
         cart_item, created = Cosuri.objects.get_or_create(
-            cos_id=str(client_id)+"#"+str(product_id),
-            client=client_instance,
-            produs=product_instance,
-            defaults={'cantitate': quantity, 'data_adaugare': add_product_date}
+            cos_id = str(client_id) + "#" + str(product_id),
+            client = client_instance,
+            produs = product_instance,
+            defaults = {'cantitate': quantity, 'data_adaugare': add_product_date}
         )
 
         if not created:
@@ -189,3 +189,19 @@ def cartPage(request, pk):
         'cart_items': cart_items
     }
     return render(request, 'app/cart.html', context)
+
+def delete_item_from_cart(request):
+
+    if request.method == "POST":
+        client_id = request.POST.get('client_id')
+        product_id = request.POST.get('product_id')
+
+        cos_id = str(client_id) + "#" + str(product_id)
+
+        product_cos = Cosuri.objects.get(cos_id = cos_id)
+        product_cos.delete()
+
+        return JsonResponse({'message': 'Item successfully deleted'}, status = 200)
+
+    context = {}
+    return JsonResponse({'message': 'Invalid request'}, status = 400)
