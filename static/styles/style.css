@@ -9,6 +9,13 @@ a {
     text-decoration: none;
 }
 
+hr {
+    border: 0; /* Remove the default border */
+    border-top: 0.1px solid #d3d3d3; /* Slimmer black line */
+    width: 100%;
+    margin: 10px 0;
+}
+
 img {
     margin-left: 5px;
     margin-right: 5px;
@@ -74,11 +81,50 @@ img {
     background-color: #A96BC2;
 }
 
+.catalog-layout{
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    gap: 20px;
+    width: 100%;
+    height: auto;
+}
+
+.filter-container {
+    display: block;
+    position: sticky;
+    top: 25px;
+    z-index: 10;
+
+    height: fit-content; ********************************************************
+
+    margin: 10px;
+    padding: 10px;
+}
+
+.filter-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    flex-grow: 0;
+    height: auto;
+
+    width: 100%;
+}
+
+.filter-icon {
+    width: 15px;
+    margin-right: 5px;
+}
+
 .catalog-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 16px;
     padding: 16px;
+    overflow: auto; /* Enable scrolling if content overflows */
+    height: fit-content; /* Adjust height based on content */
 }
 
 .catalog-item {
@@ -230,7 +276,7 @@ img {
     min-width: 350px;
     max-height: 50px;
 
-    border: 1px solid black;
+    border: 2px solid black;
     border-radius: 25px;
     margin: 10px;
     margin-top: 5px;
@@ -241,10 +287,15 @@ img {
     color: black;
     font-size: 16px;
     font-weight: bold;
+
+    /* Add this to include padding and border in the button's total size */
+    box-sizing: border-box;
 }
 
 .add-to-favourites-button:hover {
-    border: 2px solid black;
+    /* Keep the border thicker on hover, but it won't cause shifting */
+    background-color: #f0f0f0;
+    box-sizing: border-box;
 }
 
 .product-description {
