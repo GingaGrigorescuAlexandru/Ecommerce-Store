@@ -175,11 +175,12 @@ def cartPage(request, pk):
 
         if not created:
             # If the item already exists, update the quantity (or handle as needed)
-            cart_item.cantitate += quantity
+            cart_item.cantitate = quantity
             cart_item.save()
             message = 'Product quantity updated in the cart!'
         else:
             # If a new item was created
+            cart_item.cantitate = quantity
             message = 'Product added to the cart!'
 
         return JsonResponse({'message': message}, status = 200)

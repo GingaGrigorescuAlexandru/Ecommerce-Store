@@ -21,7 +21,11 @@
                         <h4>{{ item.produs.pret_unitar }}</h4>
                     </div>
                     <h4>{{ item.produs.category.nume_categorie }} {{ item.produs.properties.domeniu }}</h4>
-                    <input type="number" min="1" class="cart-add-count" id="add_quantity" value="{{ item.cantitate }}"/>
+                    <input type="number" min="1" class="cart-add-count" id="add-quantity-{{ item.produs.produs_id }}"
+                    value="{{ item.cantitate }}"
+                    data-client-id="{{ request.user.id }}"
+                    data-product-id="{{ item.produs.produs_id }}"
+                    aria-label="Use this field to incraese or decrease the quantity of the product"/>
                 </div>
             </div>
         {% endfor %}
@@ -36,7 +40,7 @@
             <h4>Total:</h4>
             <button type="button" id="checkout-button">Plateste</button>
         </div>
-
     </div>
+    <script src="{% static 'scripts/cartPage.js' %}"></script>
 </body>
 </html>
