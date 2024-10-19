@@ -69,6 +69,7 @@ document.querySelectorAll('.cart-add-count').forEach(input => {
         const quantity = parseInt(this.value);
         const pricePerUnit = parseFloat(this.closest('.cart-item-container').dataset.price);
         const itemTotalPriceElement = this.closest('.cart-item-container').querySelector('.item-total-price');
+
         const subtotalElement = document.getElementById('subtotal');
         const totalElement = document.getElementById('total');
 

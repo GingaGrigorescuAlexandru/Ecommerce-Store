@@ -28,6 +28,10 @@ img {
 
     padding: 16px;
     background-color: #D484E2;
+
+    z-index: 10;
+
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
 }
 
 .navbar-redirections {
@@ -52,6 +56,20 @@ img {
 .home-link {
     text-decoration: none;
     color: white;
+}
+
+.home-hero-container {
+    width: 100%;
+    max-height: 500px;
+    overflow: hidden; /* Hide any overflow to prevent stretching */
+}
+
+.home-hero-image {
+    width: 100%; /* Make the image take the full width of the container */
+    height: auto; /* Maintain the aspect ratio */
+    max-height: 100%; /* Limit the height to the container's height */
+    object-fit: cover; /* This will crop the image to fill the container */
+    margin: 0;
 }
 
 .add-product-button {
