@@ -17,8 +17,9 @@
         <div class="column-information">
             <h1>{{ product.nume }}</h1>
             <h4>{{ product_type.nume_categorie }} {{ product_properties.domeniu }}</h4>
-            <h4>{{ product.pret_unitar }} RON</h4>
+            <h4 style="color: #D484E2;">{{ product.pret_unitar }} RON</h4>
 
+            <hr>
 
             {% for field in properties_fields %}
                 {% if field.name != 'produs' and field.name != 'domeniu' %}
@@ -28,6 +29,9 @@
             </div>
                 {% endif %}
             {% endfor %}
+
+            <hr>
+
             <div class="row-info-container">
 
                 <input type="number" min="1" class="cart-add-count" id="add_quantity" value="1"/>
@@ -46,11 +50,15 @@
                 Favorites<img src="{% static 'images/icons/heart.png' %}" alt="Heart Icon" class="social-icon"/>
             </button>
 
+            <hr>
+
             <div class="product-description">
                 <h4>Livrare:</h4>
                 <p>Veți putea vedea opțiunile noastre de livrare la finalizarea comenzii!
                 </p>
             </div>
+
+            <hr>
 
             <div class="product-description">
                 <h4>Descriere:</h4>
@@ -60,6 +68,8 @@
                     Ideal pentru a-ți organiza informațiile esențiale!
                 </p>
             </div>
+
+            <hr>
 
             <div class="reviews-container">
                 <h3>Reviews

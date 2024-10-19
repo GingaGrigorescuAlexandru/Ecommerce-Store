@@ -204,10 +204,17 @@ img {
     padding: 10px;
 }
 
+.column-information > * {
+    margin: 5px;
+}
+
 .properties-list {
     display: flex;
     flex-direction: row;
+}
 
+.properties-list > * {
+    margin: 5px;
 }
 
 .product-information button {
