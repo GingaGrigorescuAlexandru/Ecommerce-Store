@@ -16,7 +16,7 @@
             <div class="cart-item-container">
                 <img class="cart-image" src="data:image/jpeg;base64,{{ item.produs.images.imagine_catalog|b64encode }}" alt="{{ product.nume }}" />
                 <div class="cart-item-description">
-                    <div class="filter-header">
+                    <div class="cart-item-header">
                         <h2>{{ item.produs.nume }}</h2>
                         <h4>{{ item.produs.pret_unitar }}</h4>
                     </div>
@@ -26,6 +26,10 @@
                     data-client-id="{{ request.user.id }}"
                     data-product-id="{{ item.produs.produs_id }}"
                     aria-label="Use this field to incraese or decrease the quantity of the product"/>
+                    <button type="button" class="eliminate-product-from-cart-button"
+                            aria-label="Press this to eliminate the item from your cart">
+                        <img src="{% static 'images/icons/open-trash-can.png' %}" alt="Trash Icon" class="social-icon"/>
+                    </button>
                 </div>
             </div>
 
