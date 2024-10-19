@@ -11,18 +11,17 @@
 </head>
 <body>
     <div class="row-info-container">
-        <div class="column-information">
+        <div class="cart-items-column">
         {% for item in cart_items %}
-            <div class="row-info-container">
-                <img class="catalog-image" src="data:image/jpeg;base64,{{ item.produs.images.imagine_catalog|b64encode }}" alt="{{ product.nume }}" />
-                <div>
-                    <div class="row-info-container">
-                        <h1>{{ item.produs.nume }}</h1>
+            <div class="cart-item-container">
+                <img class="cart-image" src="data:image/jpeg;base64,{{ item.produs.images.imagine_catalog|b64encode }}" alt="{{ product.nume }}" />
+                <div class="cart-item-description">
+                    <div class="filter-header">
+                        <h2>{{ item.produs.nume }}</h2>
                         <h4>{{ item.produs.pret_unitar }}</h4>
                     </div>
-                    <div>
-                        <h4>{{ item.produs.category.nume_categorie }} {{ item.produs.properties.domeniu }}</h4>
-                    </div>
+                    <h4>{{ item.produs.category.nume_categorie }} {{ item.produs.properties.domeniu }}</h4>
+                    <input type="number" min="1" class="cart-add-count" id="add_quantity" value="{{ item.cantitate }}"/>
                 </div>
             </div>
         {% endfor %}
@@ -30,6 +29,7 @@
 
         <div class="column-information">
             <h1>Summary</h1>
+            <hr>
             <h4>Voucher?</h4>
             <h4>Suma Produse:</h4>
             <h4>Taxa de Transport:</h4>
