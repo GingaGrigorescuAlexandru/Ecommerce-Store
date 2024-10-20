@@ -111,7 +111,6 @@ def addProduct(request):
 
     return render(request, 'app/add_product_page.html', context)
 
-
 def productCatalog(request):
     products = Produse.objects.all()
     images = ProduseImagini.objects.all()
@@ -144,7 +143,8 @@ def productPage(request, pk):
                'product_type': product_type,
                'properties_fields': properties_fields
                }
-    return render(request, 'app/product.html', context)
+    return render(request, 'app/productPage.html', context)
+
 logger = logging.getLogger(__name__)
 
 

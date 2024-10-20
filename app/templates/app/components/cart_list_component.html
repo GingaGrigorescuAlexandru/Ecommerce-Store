@@ -14,10 +14,15 @@
         <div class="cart-items-column">
         {% for item in cart_items_with_totals %}
             <div class="cart-item-container" data-price="{{ item.product_price }}">
-                <img class="cart-image" src="data:image/jpeg;base64,{{ item.item.produs.images.imagine_catalog|b64encode }}" alt="{{ product.nume }}" />
+                <a href="{% url 'product' item.item.produs.produs_id %}">
+                    <img class="cart-image"
+                         src="data:image/jpeg;base64,{{ item.item.produs.images.imagine_catalog|b64encode }}"
+                         alt="{{ product.nume }}" />
+                </a>
+
                 <div class="cart-item-description">
                     <div class="cart-item-header">
-                        <h2>{{ item.item.produs.nume }}</h2>
+                        <h2><a href="{% url 'product' item.item.produs.produs_id %}">{{ item.item.produs.nume }}</a></h2>
                         <h4 class="item-total-price">{{ item.item_total_price }} RON</h4>
                     </div>
                     <h4>{{ item.item.produs.category.nume_categorie }} {{ item.item.produs.properties.domeniu }}</h4>
