@@ -11,8 +11,8 @@ a {
 }
 
 hr {
-    border: 0; /* Remove the default border */
-    border-top: 0.1px solid #d3d3d3; /* Slimmer black line */
+    border: 0;
+    border-top: 0.1px solid #d3d3d3;
     width: 100%;
     margin: 10px 0;
 }

@@ -9,9 +9,10 @@
 
 
     {% block content %}
-
+    <div class="row-info-container">
         {% include 'app/components/cart_list_component.html' %}
-
+        {% include 'app/components/cart_checkout_component.html' %}
+    </div>
     {% endblock content %}
 </body>
 </html>

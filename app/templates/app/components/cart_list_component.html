@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
 </head>
 <body>
-    <div class="row-info-container">
         <div class="cart-items-column">
         {% for item in cart_items_with_totals %}
             <div class="cart-item-container" data-price="{{ item.product_price }}">
+
                 <a href="{% url 'product' item.item.produs.produs_id %}">
                     <img class="cart-image"
                          src="data:image/jpeg;base64,{{ item.item.produs.images.imagine_catalog|b64encode }}"
@@ -21,11 +21,14 @@
                 </a>
 
                 <div class="cart-item-description">
+
                     <div class="cart-item-header">
                         <h2><a href="{% url 'product' item.item.produs.produs_id %}">{{ item.item.produs.nume }}</a></h2>
                         <h4 class="item-total-price">{{ item.item_total_price }} RON</h4>
                     </div>
+
                     <h4>{{ item.item.produs.category.nume_categorie }} {{ item.item.produs.properties.domeniu }}</h4>
+
                     <input type="number" min="1" class="cart-add-count" id="add-quantity-{{ item.item.produs.produs_id }}"
                     value="{{ item.item.cantitate }}"
                     data-client-id="{{ request.user.id }}"
@@ -38,27 +41,14 @@
                             aria-label="Press this to eliminate the item from your cart">
                         <img src="{% static 'images/icons/open-trash-can.png' %}" alt="Trash Icon" class="social-icon"/>
                     </button>
-                </div>
-            </div>
 
+                </div>
+
+            </div>
             <hr>
         {% endfor %}
         </div>
 
-        <div class="column-information">
-            <h1>Summary</h1>
-            <hr>
-            <h4>Voucher?</h4>
-            <hr>
-            <h4>Suma Produse: <span id="subtotal">{{ total_price }} RON</span></h4>
-            <hr>
-            <h4>Taxa de Transport:</h4>
-            <hr>
-            <h4>Total: <span id="total">{{ total_price }} RON</span></h4>
-            <hr>
-            <button type="button" id="checkout-button">Plateste</button>
-        </div>
-    </div>
     <script src="{% static 'scripts/cartPage.js' %}"></script>
 </body>
 </html>
