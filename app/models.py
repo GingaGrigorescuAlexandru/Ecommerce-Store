@@ -186,6 +186,9 @@ class Categorie(models.Model):
         managed = False
         db_table = 'categorie'
 
+    def __str__(self):
+        return self.nume_categorie
+
 
 class Clienti(models.Model):
     client_id = models.AutoField(primary_key=True)
@@ -231,6 +234,9 @@ class Furnizori(models.Model):
         managed = False
         db_table = 'furnizori'
 
+    def __str__(self):
+        return self.nume_furnizor
+
 
 class Plati(models.Model):
     comanda = models.OneToOneField(Comenzi, models.CASCADE, primary_key=True)
@@ -272,7 +278,7 @@ class ProprietatiProduse(models.Model):
     produs = models.OneToOneField(Produse, models.CASCADE, primary_key=True)
     domeniu = models.CharField(max_length=50)
     Dimensiune = models.CharField(max_length=50)
-    Culoare = models.CharField(max_length=50)
+    Culori = models.CharField(max_length=50)
     Foaie = models.CharField(max_length=50)
     Pagina = models.CharField(max_length=50)
 

@@ -10,12 +10,60 @@
 <body>
     <form method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ formProduct.as_p }}
-        <label>Image</label>
+
+        <div class="form-group">
+            <label>Categorie:</label>
+            {{ formProduct.categorie }}
+        </div>
+
+        <div class="form-group">
+            <label>Nume:</label>
+            {{ formProduct.nume }}
+        </div>
+
+        <div class="form-group">
+            <label>Pret:</label>
+            {{ formProduct.pret_unitar }}
+        </div>
+
+        <div class="form-group">
+            <label>Stoc:</label>
+            {{ formProduct.stoc }}
+        </div>
+
+        <div class="form-group">
+            <label>Furnizor:</label>
+            {{ formProduct.furnizor }}
+        </div>
+
         <input type="file" accept=".jpeg, .jpg" name="catalog-image-input" />
 
         <h4>Tags</h4>
-        {{ formProperties.as_p }}
+        <div class="form-group">
+            <label>Domeniu:</label>
+            {{ formProperties.domeniu }}
+        </div>
+
+        <div class="form-group">
+            <label>Dimensiune:</label>
+            {{ formProperties.Dimensiune }}
+        </div>
+
+        <div class="form-group">
+            <label>Tip Foaie:</label>
+            {{ formProperties.Foaie }}
+        </div>
+
+        <div class="form-group">
+            <label>Tip Pagina:</label>
+            {{ formProperties.Pagina }}
+        </div>
+
+        <div class="form-group">
+            <label>Culori:</label>
+            {{ formProperties.Culori }}
+        </div>
+
         <input type="submit" name="submit_product_creation"/>
     </form>
 </body>
