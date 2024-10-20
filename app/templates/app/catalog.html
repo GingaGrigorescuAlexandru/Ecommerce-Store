@@ -9,9 +9,14 @@
 
     {% block content %}
 
+        {% include 'app/components/catalog_addProduct_component.html' %}
 
-    {% include 'app/components/product_catalog_component.html' %}
+        <div class="catalog-layout">
 
+            {% include 'app/components/catalog_filters_component.html' %}
+            {% include 'app/components/catalog_productList_component.html' %}
+
+        </div>
 
     {% endblock content %}
 </body>

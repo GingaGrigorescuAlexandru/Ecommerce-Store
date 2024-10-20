@@ -18,6 +18,7 @@
                 <a href ="{% url 'profile' request.user.id %}">Profil</a>
                 <a href="{% url 'logout' %}">Log Out</a>
             {% else %}
+                <a href ="{% url 'login' %}">Profil</a>
                 <a href="{% url 'login' %}">Log In</a>
             {% endif %}
         </div>
