@@ -98,9 +98,23 @@ h4 {
     margin-bottom: 10px;
 }
 
-@media (max-width: 768px) {
-    form {
-        padding: 15px;
-        width: 90%;
+@media (max-width: 600px) {
+    form,
+    input,
+    label,
+    select,
+    .login-form-container {
+        width: 95%; /* Wider on smaller screens */
+        padding: 10px; /* Adjust padding if needed */
+    }
+}
+
+@media (max-width: 400px) {
+    form,
+    input,
+    label,
+    select,
+    .login-form-container {
+        width: 100%; /* Take full width on very small screens */
     }
 }
