@@ -141,13 +141,17 @@ def productPage(request, pk):
     product_images = ProduseImagini.objects.get(produs = pk)
     product_type = Categorie.objects.get(categorie_id = product.categorie_id)
 
+    favorite_items = Favorites.objects.filter(client = request.user.id)
+    favorite_products_ids = set(favorite_items.values_list('product', flat = True))
+
     properties_fields = product_properties._meta.fields
 
     context = {'product': product,
                'product_properties': product_properties,
                'product_images': product_images,
                'product_type': product_type,
-               'properties_fields': properties_fields
+               'properties_fields': properties_fields,
+               'favorite_products_ids': favorite_products_ids
                }
     return render(request, 'app/productPage.html', context)
 

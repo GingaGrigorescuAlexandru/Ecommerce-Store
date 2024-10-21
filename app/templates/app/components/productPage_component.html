@@ -8,12 +8,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+
+    <script>
+        const addedToFavoritesSuccessfully = "{% static 'images/icons/added-favorites-heart.png' %}";
+    </script>
 </head>
 <body>
+
     <div class="row-info-container">
 
         <div>
-            <img class="product-page-image" src="data:image/jpeg;base64,{{ product_images.imagine_catalog|b64encode }}" alt="{{ product.nume }}" />
+            <img class="product-page-image" src="data:image/jpeg;base64,{{ product_images.imagine_catalog|b64encode }}"
+                 alt="{{ product.nume }}" />
         </div>
 
         <div class="column-information">
@@ -48,9 +54,21 @@
                 </button>
             </div>
 
-            <button class="add-to-favourites-button" type="button" aria-label="Press this to add the item to your favourites list">
-                Favorites<img src="{% static 'images/icons/heart.png' %}" alt="Heart Icon" class="social-icon"/>
+            {% if product.produs_id in favorite_products_ids %}
+            <button class="add-to-favourites-button" type="button"
+                    aria-label="Press this to add the item to your favourites list"
+                    style="border-color: #D484E2;" disabled>
+                    <img src="{% static 'images/icons/added-favorites-heart.png' %}" alt="Heart Icon" class="social-icon"/>
             </button>
+            {% else %}
+            <button class="add-to-favourites-button" type="button" id="add-to-favorites"
+                    data-product-id="{{ product.produs_id }}"
+                    data-client-id="{{ request.user.id }}"
+                    aria-label="Press this to add the item to your favourites list">
+                Favorites<img src="{% static 'images/icons/heart.png' %}" id="add-to-favorites-image-{{ product.produs_id }}"
+                              alt="Heart Icon" class="social-icon"/>
+            </button>
+            {% endif %}
 
             <hr>
 
@@ -80,7 +98,6 @@
             </div>
         </div>
     </div>
-
     <script src="{% static 'scripts/productPage.js' %}"></script>
 </body>
 </html>
