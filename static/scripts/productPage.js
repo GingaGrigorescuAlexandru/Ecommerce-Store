@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 cartImage.src = addedToFavoritesSuccessfully;
                 this.style.borderColor = "#D484E2";
                  removeTextNodes(this);
+                 this.disabled = true;
                 alert("Product added to favorites!");
             } else {
                 alert("Failed to add product to favorites!");

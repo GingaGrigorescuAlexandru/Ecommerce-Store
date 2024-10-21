@@ -11,17 +11,29 @@
 </head>
 <body>
         <div class="column-information">
-            <h1>Summary</h1>
+                <h1 class="checkout-headers">Summary</h1>
             <hr>
-            <h4>Voucher?</h4>
+
+            <h3 class="checkout-headers">Voucher?</h3>
+            <input type="text" class="voucher-input"/>
             <hr>
-            <h4>Suma Produse: <span id="subtotal">{{ total_price }} RON</span></h4>
+
+            <h3 class="checkout-headers">Suma Produse:
+                <span id="subtotal">{{ total_price }} RON</span>
+            </h3>
             <hr>
-            <h4>Taxa de Transport:</h4>
+
+            <h3 class="checkout-headers">Taxa de Transport:
+                <span>Fara Taxa</span>
+            </h3>
             <hr>
-            <h4>Total: <span id="total">{{ total_price }} RON</span></h4>
+
+            <h3 class="checkout-headers">Total:
+                <span id="total">{{ total_price }} RON</span>
+            </h3>
             <hr>
-            <button type="button" id="checkout-button">Plateste</button>
+
+            <button type="button" id="checkout-button" class="checkout-button">Checkout</button>
         </div>
 </body>
 </html>
