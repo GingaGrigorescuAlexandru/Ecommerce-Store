@@ -13,7 +13,8 @@ from .models import (Clienti,
                      ProduseImagini,
                      ProprietatiProduse,
                      Categorie,
-                     Cosuri)
+                     Cosuri,
+                     Favorites)
 
 
 def home(request):
@@ -115,7 +116,11 @@ def productCatalog(request):
     products = Produse.objects.all()
     images = ProduseImagini.objects.all()
     cart = Cosuri.objects.filter(client = request.user.id)
-    cart_product_ids = set(cart.values_list('produs', flat=True))
+    cart_product_ids = set(cart.values_list('produs', flat = True))
+
+    favorite_items = Favorites.objects.filter(client = request.user.id)
+    favorite_products_ids = set(favorite_items.values_list('product', flat = True))
+
 
     products_with_images = []
 
@@ -126,7 +131,8 @@ def productCatalog(request):
         except ProduseImagini.DoesNotExist:
             products_with_images.append((product, None))
     context = {'products_with_images': products_with_images,
-               'cart_product_ids': cart_product_ids}
+               'cart_product_ids': cart_product_ids,
+               'favorite_products_ids': favorite_products_ids}
     return render(request, 'app/catalog.html', context)
 
 def productPage(request, pk):
@@ -225,3 +231,23 @@ def delete_item_from_cart(request):
 
     context = {}
     return JsonResponse({'message': 'Invalid request'}, status = 400)
+
+def add_item_to_favorites(request):
+    if request.method == "POST":
+        client_id = request.POST.get("client_id")
+        product_id = request.POST.get("product_id")
+
+        client_instance = get_object_or_404(Clienti, client_id=client_id)
+        product_instance = get_object_or_404(Produse, produs_id=product_id)
+
+        favorite_id = f"{client_id}#{product_id}"
+
+        favorite_item, created = Favorites.objects.get_or_create(
+            favorite=favorite_id,
+            client = client_instance,
+            product = product_instance
+        )
+
+        return JsonResponse({'message': "Added product to favorites list"}, status=200)
+
+    return JsonResponse({'message': "Invalid request method"}, status=400)

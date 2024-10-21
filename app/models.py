@@ -225,6 +225,14 @@ class Cosuri(models.Model):
         managed = False
         db_table = 'cosuri'  # Optional, in case you want to control the table name
 
+class Favorites(models.Model):
+    favorite = models.CharField(max_length = 50, primary_key = True)
+    client = models.ForeignKey(Clienti, on_delete=models.CASCADE)
+    product = models.ForeignKey('Produse', on_delete=models.CASCADE)
+
+    class Meta:
+        managed = False
+        db_table = 'favorites'
 
 class Furnizori(models.Model):
     furnizor_id = models.AutoField(primary_key=True)
