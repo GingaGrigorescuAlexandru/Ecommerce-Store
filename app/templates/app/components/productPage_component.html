@@ -30,7 +30,7 @@
             <hr>
 
             {% for field in properties_fields %}
-                {% if field.name != 'produs' and field.name != 'domeniu' %}
+                {% if field.name != 'produs' and field.name != 'domeniu' and field.name != 'Category' %}
             <div class="properties-list">
                     <p>{{ field.verbose_name }}:</p>
                     <p>{{ product_properties|get_attribute:field.name }}</p>

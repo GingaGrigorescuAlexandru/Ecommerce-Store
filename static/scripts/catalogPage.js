@@ -78,6 +78,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 function displayFilterList(element) {
+
+    if (element.id === "price-header") {
+    const budget_bar = document.getElementById("budget-selector");
+
+        if(budget_bar.style.display === "none") {
+            budget_bar.style.display = "flex";
+        } else {
+            budget_bar.style.display = "none";
+        }
+    }
+
+    else {
     const selectableList = element.querySelector('.selectable-list');
 
     if (selectableList) {
@@ -86,15 +98,17 @@ function displayFilterList(element) {
         } else {
             selectableList.style.display = "none";
         }
+        event.stopPropagation();
     };
+    }
 };
 
-const rangeInput = document.getElementById('budget');
-const rangeValue = document.getElementById('rangeValue');
-
-rangeInput.addEventListener('input', function() {
-    rangeValue.textContent = this.value; // Update the value display
+document.getElementById('budget').addEventListener('input', function() {
+    const rangeValue = document.getElementById('rangeValue');
+    rangeValue.textContent = this.value;
+    console.log('Selectable list exists:', document.querySelector('.selectable-list') !== null);
 });
+
 
 document.querySelectorAll('.filter-instance input[type="checkbox"], #budget-selector input[type="range"]').forEach(filter => {
     filter.addEventListener('change', function() {
@@ -142,7 +156,6 @@ function applyFilters() {
     .then(response => response.json())
 
     .then(data => {
-        console.log('Data received from server:', data);
         document.querySelector('.catalog-container').innerHTML = data.html;
     })
     .catch(error => console.error('Error:', error));

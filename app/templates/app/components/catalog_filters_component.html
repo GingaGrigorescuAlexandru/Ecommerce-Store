@@ -33,17 +33,16 @@
             </div>
             <hr>
 
-            <div class="filter-instance" onclick="displayFilterList(this)">
-                <div class="filter-header">
+            <div class="filter-instance">
+                <div class="filter-header" id="price-header" onclick="displayFilterList(this)">
                     <h3>Pret</h3>
                     <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
                 </div>
 
                 <div class="selectable-list" style="display: none;" id = "budget-selector">
                     <input type="range" id="budget" name="budget"
-                           min="0" max="100" value="30" step="1"
-                           oninput="document.getElementById('rangeValue').textContent = this.value">
-                    <span id="rangeValue">30</span>
+                           min="0" max="100" value="100" step="1">
+                    <span id="rangeValue">100</span>
                 </div>
             </div>
             <hr>

@@ -166,17 +166,9 @@ def filter_products(request):
         domains = filter_data.get('domains', [])
         page_types = filter_data.get('pageTypes', [])
 
-        print(selected_budget)
-        print(selected_budget)
-        print(selected_budget)
-        print(selected_budget)
-        print(selected_budget)
-
         products = Produse.objects.all()
         properties = ProprietatiProduse.objects.all()
         query = Q()
-
-        # Filter products based on selected budget
 
         if product_categories:
             properties = properties.filter(Category__in = product_categories)
@@ -217,23 +209,23 @@ def filter_products(request):
             except ProduseImagini.DoesNotExist:
                 filtered_products_with_images.append((product, None))
 
-        # Render the filtered products into an HTML snippet for updating the page dynamically
-        html_content = render_to_string('app\components\catalog_productList_component.html', {
+        html_content = render_to_string('app\components\catalog_filteredProducts_component.html', {
             'products_with_images': filtered_products_with_images,
             'cart_product_ids': cart_product_ids,
             'favorite_products_ids': favorite_products_ids,
         })
 
-        # Return the rendered HTML content in JSON
         return JsonResponse({'html': html_content})
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 def productPage(request, pk):
     product = Produse.objects.get(produs_id=pk)
+
     product_properties = ProprietatiProduse.objects.get(produs = pk)
     product_images = ProduseImagini.objects.get(produs = pk)
     product_type = Categorie.objects.get(categorie_id = product.categorie_id)
+
 
     favorite_items = Favorites.objects.filter(client = request.user.id)
     favorite_products_ids = set(favorite_items.values_list('product', flat = True))

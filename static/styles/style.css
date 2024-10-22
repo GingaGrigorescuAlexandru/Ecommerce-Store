@@ -181,15 +181,15 @@ img {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 16px;
     padding: 16px;
-    overflow: auto; /* Enable scrolling if content overflows */
-    height: fit-content; /* Adjust height based on content */
+    overflow: auto;
+    height: fit-content;
 }
 
 .catalog-item {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    center-items: left;
+    align-items: flex-start;
 
     border:none;
     padding:3px;
