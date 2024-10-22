@@ -106,7 +106,6 @@ function displayFilterList(element) {
 document.getElementById('budget').addEventListener('input', function() {
     const rangeValue = document.getElementById('rangeValue');
     rangeValue.textContent = this.value;
-    console.log('Selectable list exists:', document.querySelector('.selectable-list') !== null);
 });
 
 
