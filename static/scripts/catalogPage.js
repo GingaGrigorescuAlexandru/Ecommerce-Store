@@ -76,3 +76,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
+function displayFilterList(element) {
+    const selectableList = element.querySelector('.selectable-list');
+
+    if (selectableList) {
+        if (selectableList.style.display === "none" || selectableList.style.display === "") {
+            selectableList.style.display = "flex";
+        } else {
+            selectableList.style.display = "none";
+        }
+    };
+};
+
+const rangeInput = document.getElementById('budget');
+const rangeValue = document.getElementById('rangeValue');
+
+rangeInput.addEventListener('input', function() {
+    rangeValue.textContent = this.value; // Update the value display
+});

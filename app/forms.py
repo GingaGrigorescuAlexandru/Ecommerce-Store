@@ -35,7 +35,7 @@ class PropertiesProductForm(ModelForm):
         ("Inginerie", "Inginerie")
     ]
 
-    DIMENIUNE_OPTIONS = [
+    DIMENSIUNE_OPTIONS = [
         ("A4", "A4"),
         ("A5", "A5"),
         ("B5", "B5"),
@@ -70,7 +70,7 @@ class PropertiesProductForm(ModelForm):
     ]
 
     domeniu = forms.ChoiceField(choices = DOMENIU_OPTIONS)
-    Dimensiune = forms.ChoiceField(choices = DIMENIUNE_OPTIONS)
+    Dimensiune = forms.ChoiceField(choices = DIMENSIUNE_OPTIONS)
     Foaie = forms.ChoiceField(choices = FOAIE_OPTIONS)
     Pagina = forms.ChoiceField(choices= PAGINA_OPTIONS)
     Culori = forms.MultipleChoiceField(choices = CULORI_OPTIONS, widget = forms.CheckboxSelectMultiple)

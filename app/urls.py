@@ -18,5 +18,15 @@ urlpatterns = [
 
     path('cart/<str:pk>', views.cartPage, name = 'cart'),
     path('delete-from-cart/', views.delete_item_from_cart, name = 'delete-from-cart'),
-    path('add-item-to-favorites/', views.add_item_to_favorites, name = 'add-item-to-favorites')
+    path('add-item-to-favorites/', views.add_item_to_favorites, name = 'add-item-to-favorites'),
+
+    path('about/', views.about, name = 'about'),
+
+    path('contact/', views.contactUs, name = 'contact'),
+
+    path('privacy/', views.contactUs, name = 'privacy'),
+
+    path('legal/', views.legalPage, name = 'legal'),
+
+    path('terms_conditions/', views.legalPage, name = 'terms_conditions')
 ]

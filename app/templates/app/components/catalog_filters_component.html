@@ -14,31 +14,93 @@
                 <h1 class="filter-header">Filtre</h1>
             </div>
             <hr>
-            <div class="filter-header">
-                <h3 class="filter-header">Tip Produs</h3>
-                <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
+
+
+            <div class="filter-instance" id="product-type" onclick="displayFilterList(this)">
+                <div class="filter-header">
+                    <h3>Tip Produs</h3>
+                    <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
+                </div>
+
+                <div class="selectable-list" style="display: none;" id = "product-types">
+                    {% for category in product_categories %}
+                    <label>
+                        <input type="checkbox" value="{{ category.nume_categorie }}"> {{ category.nume_categorie }}
+                    </label>
+                    {% endfor %}
+                    <hr>
+                </div>
             </div>
             <hr>
-            <div class="filter-header">
-                <h3 class="filter-header">Pret</h3>
-                <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
+
+            <div class="filter-instance" onclick="displayFilterList(this)">
+                <div class="filter-header">
+                    <h3>Pret</h3>
+                    <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
+                </div>
+
+                <div class="selectable-list" style="display: none;" id = "budget-selector">
+                    <input type="range" id="budget" name="budget"
+                           min="0" max="100" value="30" step="1"
+                           oninput="document.getElementById('rangeValue').textContent = this.value">
+                    <span id="rangeValue">30</span>
+                </div>
+
             </div>
             <hr>
-            <div class="filter-header">
-                <h3 class="filter-header">Domeniu</h3>
-                <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
+
+            <div class="filter-instance" onclick="displayFilterList(this)">
+                <div class="filter-header" id="product-domain">
+                    <h3>Domeniu</h3>
+                    <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
+                </div>
+
+                <div class="selectable-list" style="display: none;" id = "domain-types">
+                    {% for domain in product_domains %}
+                    <label>
+                        <input type="checkbox" value="{{ domain.name }}"> {{ domain.name }}
+                    </label>
+                    {% endfor %}
+                    <hr>
+                </div>
             </div>
             <hr>
-            <div class="filter-header">
-                <h3 class="filter-header">Culori</h3>
-                <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
+
+            <div class="filter-instance" onclick="displayFilterList(this)">
+                <div class="filter-header">
+                    <h3>Culori</h3>
+                    <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
+                </div>
+
+                <div class="selectable-list" style="display: none;" id = "color-types">
+                    {% for color in product_colors %}
+                    <label>
+                        <input type="checkbox" value="{{ color.name }}"> {{ color.name }}
+                    </label>
+                    {% endfor %}
+                    <hr>
+                </div>
             </div>
             <hr>
-            <div class="filter-header">
-                <h3 class="filter-header">Tip Pagina</h3>
-                <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
+
+            <div class="filter-instance" onclick="displayFilterList(this)">
+                <div class="filter-header">
+                    <h3>Tip Pagina</h3>
+                    <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
+                </div>
+
+                <div class="selectable-list" style="display: none;" id = "page-types">
+                    {% for type in product_page_types %}
+                    <label>
+                        <input type="checkbox" value="{{ type.name }}"> {{ type.name }}
+                    </label>
+                    {% endfor %}
+                    <hr>
+                </div>
             </div>
             <hr>
+
         </div>
+    <script src="{% static 'scripts/catalogPage.js' %}"></script>
 </body>
 </html>

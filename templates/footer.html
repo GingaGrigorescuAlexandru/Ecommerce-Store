@@ -11,19 +11,24 @@
 
     <footer class = 'footer-container'>
                 <div class = 'footer-column'>
-                <h4><img src="{% static 'images/icons/phone.png' %}" alt="Phone Icon" class="social-icon"/>
-                    XXXX XXX XXX</h4>
-                <h4><img src="{% static 'images/icons/email.png' %}" alt="Email Icon" class="social-icon"/>
-                    stomagia@yahoo.com</h4>
-                <h4><img src="{% static 'images/icons/contact_us.png' %}" alt="Contact Us Icon" class="social-icon"/>
-                    Contacteaza-ne</h4>
+                <a><img src="{% static 'images/icons/phone.png' %}" alt="Phone Icon" class="social-icon"/>
+                    XXXX XXX XXX
+                </a>
+
+                <a><img src="{% static 'images/icons/email.png' %}" alt="Email Icon" class="social-icon"/>
+                    stomagia@yahoo.com
+                    </a>
+
+                <a href="{% url 'contact' %}"><img src="{% static 'images/icons/contact_us.png' %}" alt="Contact Us Icon" class="social-icon"/>
+                    Contacteaza-ne
+                </a>
             </div>
 
             <div class = 'footer-column'>
-                <a href="">About Us</a>
-                <a href="">Politica de Confidentialitate</a>
-                <a href="">Termeni si Conditii</a>
-                <a href="">Legal</a>
+                <a href="{% url 'about' %}">About Us</a>
+                <a href="{% url 'privacy' %}">Politica de Confidentialitate</a>
+                <a href="{% url 'terms_conditions' %}">Termeni si Conditii</a>
+                <a href="{% url 'legal' %}">Legal</a>
 
             </div>
 

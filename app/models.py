@@ -201,6 +201,14 @@ class Clienti(models.Model):
         managed = False
         db_table = 'clienti'
 
+class Colors(models.Model):
+    color_id = models.AutoField(primary_key = True)
+    name = models.CharField(max_length = 50)
+
+    class Meta:
+        managed = False
+        db_table = 'colors'
+
 
 class Comenzi(models.Model):
     comanda_id = models.AutoField(primary_key=True)
@@ -225,6 +233,14 @@ class Cosuri(models.Model):
         managed = False
         db_table = 'cosuri'  # Optional, in case you want to control the table name
 
+class Domains(models.Model):
+    domain_id = models.AutoField(primary_key = True)
+    name = models.CharField(max_length = 50)
+
+    class Meta:
+        managed = False
+        db_table = 'domains'
+
 class Favorites(models.Model):
     favorite = models.CharField(max_length = 50, primary_key = True)
     client = models.ForeignKey(Clienti, on_delete=models.CASCADE)
@@ -244,6 +260,14 @@ class Furnizori(models.Model):
 
     def __str__(self):
         return self.nume_furnizor
+
+class PageType(models.Model):
+    pg_type_id = models.AutoField(primary_key = True)
+    name = models.CharField(max_length = 50)
+
+    class Meta:
+        managed = False
+        db_table = 'page_types'
 
 
 class Plati(models.Model):

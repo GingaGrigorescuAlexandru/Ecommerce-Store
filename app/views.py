@@ -9,11 +9,14 @@ from .forms import CustomUserCreationForm, PropertiesProductForm, ProductCreatio
 from django.contrib.auth.hashers import make_password
 import logging
 from .models import (Clienti,
+                     PageType,
                      Produse,
                      ProduseImagini,
                      ProprietatiProduse,
                      Categorie,
+                     Colors,
                      Cosuri,
+                     Domains,
                      Favorites)
 
 
@@ -118,6 +121,11 @@ def productCatalog(request):
     cart = Cosuri.objects.filter(client = request.user.id)
     cart_product_ids = set(cart.values_list('produs', flat = True))
 
+    product_categories = Categorie.objects.all()
+    product_domains = Domains.objects.all()
+    product_page_types = PageType.objects.all()
+    product_colors = Colors.objects.all()
+
     favorite_items = Favorites.objects.filter(client = request.user.id)
     favorite_products_ids = set(favorite_items.values_list('product', flat = True))
 
@@ -132,7 +140,12 @@ def productCatalog(request):
             products_with_images.append((product, None))
     context = {'products_with_images': products_with_images,
                'cart_product_ids': cart_product_ids,
-               'favorite_products_ids': favorite_products_ids}
+               'favorite_products_ids': favorite_products_ids,
+               'product_categories': product_categories,
+               'product_domains': product_domains,
+               'product_page_types': product_page_types,
+               'product_colors': product_colors
+               }
     return render(request, 'app/catalog.html', context)
 
 def productPage(request, pk):
@@ -219,6 +232,22 @@ def cartPage(request, pk):
         'total_price': total_price
     }
     return render(request, 'app/cart.html', context)
+
+
+def about(request):
+    return render(request, 'app/about.html')
+
+def contactUs(request):
+    return render(request, 'app/contact.html')
+
+def privacyPolicy(request):
+    return render(request, 'app/privacy.html')
+
+def termsConditions(request):
+    return render(request, 'app/terms_conditions.html')
+
+def legalPage(request):
+    return render(request, 'app/legal.html')
 
 def delete_item_from_cart(request):
 

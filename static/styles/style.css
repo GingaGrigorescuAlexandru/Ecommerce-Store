@@ -8,6 +8,8 @@ html, body {
 a {
     text-decoration: none;
     color: black;
+    margin: 0;
+    padding: 0;
 }
 
 hr {
@@ -62,14 +64,14 @@ img {
 .home-hero-container {
     width: 100%;
     max-height: 500px;
-    overflow: hidden; /* Hide any overflow to prevent stretching */
+    overflow: hidden;
 }
 
 .home-hero-image {
-    width: 100%; /* Make the image take the full width of the container */
-    height: auto; /* Maintain the aspect ratio */
-    max-height: 100%; /* Limit the height to the container's height */
-    object-fit: cover; /* This will crop the image to fill the container */
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: cover;
     margin: 0;
 }
 
@@ -132,9 +134,46 @@ img {
     width: 100%;
 }
 
+.filter-instance{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    flex-grow: 0;
+    height: auto;
+
+    width: 100%;
+}
+
+.filter-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    flex-grow: 0;
+    height: auto;
+
+    width: 100%;
+}
+
 .filter-icon {
     width: 15px;
     margin-right: 5px;
+}
+
+
+.selectable-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    flex-grow: 0;
+    height: auto;
+
+    width: 100%;
 }
 
 .catalog-container {
