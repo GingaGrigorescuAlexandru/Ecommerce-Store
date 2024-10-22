@@ -78,14 +78,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 function displayFilterList(element) {
+    const headerIcon = element.querySelector('.filter-icon');
 
     if (element.id === "price-header") {
     const budget_bar = document.getElementById("budget-selector");
 
         if(budget_bar.style.display === "none") {
             budget_bar.style.display = "flex";
+            headerIcon.src = minusIcon;
         } else {
             budget_bar.style.display = "none";
+            headerIcon.src = plusIcon;
         }
     }
 
@@ -95,8 +98,10 @@ function displayFilterList(element) {
     if (selectableList) {
         if (selectableList.style.display === "none" || selectableList.style.display === "") {
             selectableList.style.display = "flex";
+            headerIcon.src = minusIcon;
         } else {
             selectableList.style.display = "none";
+            headerIcon.src = plusIcon;
         }
         event.stopPropagation();
     };
