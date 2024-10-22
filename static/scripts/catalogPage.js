@@ -159,3 +159,13 @@ function applyFilters() {
     })
     .catch(error => console.error('Error:', error));
 };
+
+document.getElementById('budget').addEventListener('input', function() {
+    const value = this.value; // 'this' refers to the input element now
+    const min = this.min ? this.min : 0;
+    const max = this.max ? this.max : 100;
+    const percentage = ((value - min) / (max - min)) * 100;
+
+    // Set the background as a linear gradient based on the current value
+    this.style.background = `linear-gradient(90deg, #D484E2 ${percentage}%, transparent ${percentage}%)`;
+});

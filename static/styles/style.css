@@ -125,7 +125,7 @@ img {
     overflow-x: hidden; /* Hide horizontal scrolling */
     height: calc(100vh - 25px); /* Full height minus top offset */
     margin: 10px;
-    padding: 10px;
+    padding: 20px;
 }
 
 .filter-header{
@@ -146,8 +146,12 @@ img {
     justify-content: flex-start;
     align-items: center;
 
+    cursor: pointer;
+
     flex-grow: 0;
     height: auto;
+
+    margin-bottom: 15px;
 
     width: 100%;
 }
@@ -167,6 +171,11 @@ img {
 .filter-icon {
     width: 15px;
     margin-right: 5px;
+    transition: transform 0.2s; /* Smooth transform transition */
+}
+
+.filter-header:hover .filter-icon {
+    transform: rotate(90deg); /* Rotate icon on hover */
 }
 
 
@@ -178,8 +187,85 @@ img {
 
     flex-grow: 0;
     height: auto;
+    padding: 20px;
 
     width: 100%;
+}
+
+.selectable-list input[type = "checkbox"] {
+    margin: 5px;
+    font-size: 32px;
+}
+
+#budget {
+    width: 100%;
+    margin: 10px 0;
+}
+
+#rangeValue {
+    font-weight: bold;
+}
+
+input[type="range"] {
+    -webkit-appearance: none; /* Remove default styling */
+    width: 100%; /* Full width for range input */
+    height: 8px; /* Height of the slider track */
+    background: #D484E2; /* Background color for the track (pink) */
+    border-radius: 4px; /* Rounded corners for the track */
+    outline: none; /* Remove outline */
+}
+
+/* Styles for the thumb (the draggable part of the slider) */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Remove default styling */
+    appearance: none; /* Remove default styling */
+    width: 20px; /* Width of the thumb */
+    height: 20px; /* Height of the thumb */
+    border-radius: 50%; /* Circular thumb */
+    background: #D484E2; /* Color of the thumb */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px; /* Width of the thumb */
+    height: 20px; /* Height of the thumb */
+    border-radius: 50%; /* Circular thumb */
+    background: black; /* Color of the thumb */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Styles for the slider track in Firefox */
+input[type="range"]::-moz-range-track {
+    background: #D484E2; /* Background color for the track (pink) */
+    height: 8px; /* Height of the track */
+    border-radius: 4px; /* Rounded corners for the track */
+}
+
+/* Styles for the range input in Internet Explorer */
+input[type="range"]::-ms-track {
+    width: 100%; /* Full width for range input */
+    height: 8px; /* Height of the track */
+    background: transparent; /* Transparent background */
+    border-color: transparent; /* Transparent border */
+    color: #D484E2; /* Background color for the track (pink) */
+}
+
+input[type="range"]::-ms-fill-lower {
+    background: #D484E2; /* Color for lower part of the track (pink) */
+    border-radius: 4px; /* Rounded corners for the track */
+}
+
+input[type="range"]::-ms-fill-upper {
+    background: #D484E2; /* Color for upper part of the track (pink) */
+    border-radius: 4px; /* Rounded corners for the track */
+}
+
+input[type="range"]::-ms-thumb {
+    width: 20px; /* Width of the thumb */
+    height: 20px; /* Height of the thumb */
+    border-radius: 50%; /* Circular thumb */
+    background: black; /* Color of the thumb */
+    cursor: pointer; /* Pointer cursor on hover */
 }
 
 .catalog-container {
