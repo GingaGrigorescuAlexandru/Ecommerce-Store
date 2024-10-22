@@ -308,6 +308,7 @@ class ProduseComenzi(models.Model):
 
 class ProprietatiProduse(models.Model):
     produs = models.OneToOneField(Produse, models.CASCADE, primary_key=True)
+    Category = models.CharField(max_length=50)
     domeniu = models.CharField(max_length=50)
     Dimensiune = models.CharField(max_length=50)
     Culori = models.CharField(max_length=50)

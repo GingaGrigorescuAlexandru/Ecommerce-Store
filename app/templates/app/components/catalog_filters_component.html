@@ -25,7 +25,7 @@
                 <div class="selectable-list" style="display: none;" id = "product-types">
                     {% for category in product_categories %}
                     <label>
-                        <input type="checkbox" value="{{ category.nume_categorie }}"> {{ category.nume_categorie }}
+                        <input type="checkbox" id="productTypes_{{ category.nume_categorie }}" value="{{ category.nume_categorie }}"> {{ category.nume_categorie }}
                     </label>
                     {% endfor %}
                     <hr>
@@ -45,7 +45,6 @@
                            oninput="document.getElementById('rangeValue').textContent = this.value">
                     <span id="rangeValue">30</span>
                 </div>
-
             </div>
             <hr>
 
@@ -58,7 +57,7 @@
                 <div class="selectable-list" style="display: none;" id = "domain-types">
                     {% for domain in product_domains %}
                     <label>
-                        <input type="checkbox" value="{{ domain.name }}"> {{ domain.name }}
+                        <input type="checkbox" id="domains_{{ domain.name }}" value="{{ domain.name }}"> {{ domain.name }}
                     </label>
                     {% endfor %}
                     <hr>
@@ -75,7 +74,7 @@
                 <div class="selectable-list" style="display: none;" id = "color-types">
                     {% for color in product_colors %}
                     <label>
-                        <input type="checkbox" value="{{ color.name }}"> {{ color.name }}
+                        <input type="checkbox" id="colors_{{ color.name }}" value="{{ color.name }}"> {{ color.name }}
                     </label>
                     {% endfor %}
                     <hr>
@@ -92,7 +91,7 @@
                 <div class="selectable-list" style="display: none;" id = "page-types">
                     {% for type in product_page_types %}
                     <label>
-                        <input type="checkbox" value="{{ type.name }}"> {{ type.name }}
+                        <input type="checkbox" id="pageTypes_{{ type.name }}" value="{{ type.name }}"> {{ type.name }}
                     </label>
                     {% endfor %}
                     <hr>

@@ -72,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error:', error);
                 alert("An error occurred while adding product to the favorites list.");
             });
-
         });
     });
 });
@@ -96,3 +95,55 @@ const rangeValue = document.getElementById('rangeValue');
 rangeInput.addEventListener('input', function() {
     rangeValue.textContent = this.value; // Update the value display
 });
+
+document.querySelectorAll('.filter-instance input[type="checkbox"], #budget-selector input[type="range"]').forEach(filter => {
+    filter.addEventListener('change', function() {
+        applyFilters();
+    })
+})
+
+function applyFilters() {
+    let selectedProductCategories = [];
+    let selectedColors = [];
+    let selectedDomains = [];
+    let selectedPageTypes = [];
+
+    document.querySelectorAll('.filter-instance input[type="checkbox"]:checked').forEach(checkbox => {
+        if(checkbox.id.startsWith("productTypes")) {
+            selectedProductCategories.push(checkbox.value);
+        }else if (checkbox.id.startsWith("domains")) {
+            selectedDomains.push(checkbox.value);
+        }else if (checkbox.id.startsWith("colors")) {
+            selectedColors.push(checkbox.value);
+        }else if (checkbox.id.startsWith("pageTypes")) {
+            selectedPageTypes.push(checkbox.value);
+        };
+    });
+
+    let budget = document.getElementById('budget').value;
+
+    let filterData = {
+        productCategories: selectedProductCategories,
+        selected_budget: budget,
+        colors: selectedColors,
+        domains: selectedDomains,
+        pageTypes: selectedPageTypes,
+    };
+
+    fetch('/filter-catalog-products/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrf-token').content,
+        },
+        body: JSON.stringify(filterData),
+    })
+
+    .then(response => response.json())
+
+    .then(data => {
+        console.log('Data received from server:', data);
+        document.querySelector('.catalog-container').innerHTML = data.html;
+    })
+    .catch(error => console.error('Error:', error));
+};

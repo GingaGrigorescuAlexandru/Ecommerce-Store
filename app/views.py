@@ -7,7 +7,10 @@ from django.contrib import messages
 from django.http import JsonResponse
 from .forms import CustomUserCreationForm, PropertiesProductForm, ProductCreationForm
 from django.contrib.auth.hashers import make_password
+from django.template.loader import render_to_string
+from django.db.models import Q
 import logging
+import json
 from .models import (Clienti,
                      PageType,
                      Produse,
@@ -138,6 +141,7 @@ def productCatalog(request):
             products_with_images.append((product, image.imagine_catalog))
         except ProduseImagini.DoesNotExist:
             products_with_images.append((product, None))
+
     context = {'products_with_images': products_with_images,
                'cart_product_ids': cart_product_ids,
                'favorite_products_ids': favorite_products_ids,
@@ -147,6 +151,83 @@ def productCatalog(request):
                'product_colors': product_colors
                }
     return render(request, 'app/catalog.html', context)
+
+
+def filter_products(request):
+    if request.method == 'POST':
+        try:
+            filter_data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+        product_categories = filter_data.get('productCategories', [])
+        selected_budget = filter_data.get('selected_budget')
+        colors = filter_data.get('colors', [])
+        domains = filter_data.get('domains', [])
+        page_types = filter_data.get('pageTypes', [])
+
+        print(selected_budget)
+        print(selected_budget)
+        print(selected_budget)
+        print(selected_budget)
+        print(selected_budget)
+
+        products = Produse.objects.all()
+        properties = ProprietatiProduse.objects.all()
+        query = Q()
+
+        # Filter products based on selected budget
+
+        if product_categories:
+            properties = properties.filter(Category__in = product_categories)
+
+        if colors:
+            for color in colors:
+                query |= Q(Culori__icontains=color)
+
+            properties = properties.filter(query)
+
+        if domains:
+            properties = properties.filter(domeniu__in=domains)
+
+        if page_types:
+            properties = properties.filter(Pagina__in=page_types)
+
+        if selected_budget:
+            products = products.filter(pret_unitar__lte=selected_budget)
+
+
+        product_ids = properties.values_list('produs_id', flat=True)
+        products = products.filter(produs_id__in=product_ids)
+
+        images = ProduseImagini.objects.all()
+
+        cart = Cosuri.objects.filter(client = request.user.id)
+        cart_product_ids = set(cart.values_list('produs', flat=True))
+
+        favorite_items = Favorites.objects.filter(client = request.user.id)
+        favorite_products_ids = set(favorite_items.values_list('product', flat=True))
+
+        filtered_products_with_images = []
+
+        for product in products:
+            try:
+                image = images.get(produs = product)
+                filtered_products_with_images.append((product, image.imagine_catalog))
+            except ProduseImagini.DoesNotExist:
+                filtered_products_with_images.append((product, None))
+
+        # Render the filtered products into an HTML snippet for updating the page dynamically
+        html_content = render_to_string('app\components\catalog_productList_component.html', {
+            'products_with_images': filtered_products_with_images,
+            'cart_product_ids': cart_product_ids,
+            'favorite_products_ids': favorite_products_ids,
+        })
+
+        # Return the rendered HTML content in JSON
+        return JsonResponse({'html': html_content})
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 def productPage(request, pk):
     product = Produse.objects.get(produs_id=pk)
