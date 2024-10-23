@@ -1,48 +1,48 @@
 {% load static %}
 {% load custom_filters %}
 {% for product, image_data in products_with_images %}
-                <div class="catalog-item">
-                <a href="{% url 'product' product.produs_id %}" class="to-product-page-link">
-                {% if image_data %}
-                    <img class="catalog-image" src="data:image/jpeg;base64,{{ image_data|b64encode }}" alt="{{ product.nume }}" />
-                {% else %}
-                    <p>No image available</p>
-                {% endif %}
+    <div class="catalog-item">
+    <a href="{% url 'product' product.produs_id %}" class="to-product-page-link">
+    {% if image_data %}
+        <img class="catalog-image" src="data:image/jpeg;base64,{{ image_data|b64encode }}" alt="{{ product.nume }}" />
+    {% else %}
+        <p>No image available</p>
+    {% endif %}
+    </a>
+    <a href="{% url 'product' product.produs_id %}" class="to-product-page-link">
+        <h3>{{ product.nume }}</h3>
+    </a>
+        <div class="price-addCart-favorites">
+            <a href="{% url 'product' product.produs_id %}" class="to-product-page-link">
+                <p>{{ product.pret_unitar }} RON</p>
+            </a>
+            <div>
+                <a href="" class="add-to-cart" onclick="event.preventDefault(); addFilteredToCart(this);"
+                    data-product-id="{{ product.produs_id }}"
+                    data-client-id="{{ client.client_id }}"
+                    aria-label="Press this to add the item to your cart">
+                        <img src="{% if product.produs_id in cart_product_ids %}
+                        {% static 'images/icons/shopping-cart-check.png' %}
+                        {% else %}
+                        {% static 'images/icons/add-to-cart.png' %}
+                        {% endif %}"
+                             id="add-to-cart-image-{{ product.produs_id }}"
+                             alt="Add item to cart" class="add-to-cart-icon"/>
                 </a>
-                <a href="{% url 'product' product.produs_id %}" class="to-product-page-link">
-                    <h3>{{ product.nume }}</h3>
-                </a>
-                    <div class="price-addCart-favorites">
-                        <a href="{% url 'product' product.produs_id %}" class="to-product-page-link">
-                            <p>{{ product.pret_unitar }} RON</p>
-                        </a>
-                        <div>
-                            <a href="" class="add-to-cart"
-                                data-product-id="{{ product.produs_id }}"
-                                data-client-id="{{ request.user.id }}"
-                                aria-label="Press this to add the item to your cart">
-                                    <img src="{% if product.produs_id in cart_product_ids %}
-                                    {% static 'images/icons/shopping-cart-check.png' %}
-                                    {% else %}
-                                    {% static 'images/icons/add-to-cart.png' %}
-                                    {% endif %}"
-                                         id="add-to-cart-image-{{ product.produs_id }}"
-                                         alt="Add item to cart" class="add-to-cart-icon"/>
-                            </a>
 
-                            <a href="" class="add-to-favorites"
-                                data-client-id="{{ request.user.id }}"
-                                data-product-id="{{ product.produs_id }}">
-                                <img src="{% if product.produs_id in favorite_products_ids %}
-                                    {% static 'images/icons/added-favorites-heart.png' %}
-                                    {% else %}
-                                    {% static 'images/icons/heart.png' %}
-                                    {% endif %}"
-                                     id="add-to-favorites-image-{{ product.produs_id }}"
-                                     alt="Add item to favorites list"
-                                     class="social-icon"/>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                <a href="{% url 'home' %}" class="add-to-favorites" onclick="event.preventDefault(); addFavoriteToList(this);"
+                    data-client-id="{{ client.client_id }}"
+                    data-product-id="{{ product.produs_id }}">
+                    <img src="{% if product.produs_id in favorite_products_ids %}
+                        {% static 'images/icons/added-favorites-heart.png' %}
+                        {% else %}
+                        {% static 'images/icons/heart.png' %}
+                        {% endif %}"
+                         id="add-to-favorites-image-{{ product.produs_id }}"
+                         alt="Add item to favorites list"
+                         class="social-icon"/>
+                </a>
+            </div>
+        </div>
+    </div>
 {% endfor %}

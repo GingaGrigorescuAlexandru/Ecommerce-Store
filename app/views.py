@@ -220,8 +220,11 @@ def addProduct(request):
 def productCatalog(request):
     products = Produse.objects.all()
     images = ProduseImagini.objects.all()
+
     cart = Cosuri.objects.filter(client = request.user.id)
     cart_product_ids = set(cart.values_list('produs', flat = True))
+
+    client = Clienti.objects.get(client_id=request.user.id)
 
     product_categories = Categorie.objects.all()
     product_domains = Domains.objects.all()
@@ -247,7 +250,9 @@ def productCatalog(request):
                'product_categories': product_categories,
                'product_domains': product_domains,
                'product_sizes': product_sizes,
-               'product_colors': product_colors
+               'product_colors': product_colors,
+               'user': 1,
+               'client': client,
                }
     return render(request, 'app/catalog.html', context)
 
@@ -258,6 +263,7 @@ def filter_products(request):
             filter_data = json.loads(request.body)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
 
         product_categories = filter_data.get('productCategories', [])
         selected_budget = filter_data.get('selected_budget')
@@ -293,6 +299,8 @@ def filter_products(request):
 
         images = ProduseImagini.objects.all()
 
+        client = Clienti.objects.get(client_id = request.user.id)
+
         cart = Cosuri.objects.filter(client = request.user.id)
         cart_product_ids = set(cart.values_list('produs', flat=True))
 
@@ -308,11 +316,16 @@ def filter_products(request):
             except ProduseImagini.DoesNotExist:
                 filtered_products_with_images.append((product, None))
 
-        html_content = render_to_string('app\components\catalog_filteredProducts_component.html', {
+        print(request.user.id)
+
+        context = {
             'products_with_images': filtered_products_with_images,
             'cart_product_ids': cart_product_ids,
+            'client': client,
             'favorite_products_ids': favorite_products_ids,
-        })
+        }
+
+        html_content = render_to_string('app\components\catalog_filteredProducts_component.html', context)
 
         return JsonResponse({'html': html_content})
 
@@ -370,6 +383,7 @@ def cartPage(request, pk):
         })
 
     if request.method == 'POST':
+        print('Trying to add to cart')
         client_id = request.POST.get('client_id')
         product_id = request.POST.get('product_id')
         quantity = int(request.POST.get('quantity'))
@@ -438,6 +452,7 @@ def delete_item_from_cart(request):
 
 def add_item_to_favorites(request):
     if request.method == "POST":
+        print("Trying to add to favorites")
         client_id = request.POST.get("client_id")
         product_id = request.POST.get("product_id")
 

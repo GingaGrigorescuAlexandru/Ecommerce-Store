@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.add-to-cart').forEach(function(button) {
         button.addEventListener('click', function(event) {
-            event.preventDefault();
+            event.preventDefault(); // This should prevent the form submission or link action
+            console.log("Button clicked, default action prevented");
+            console.log("Button clicked, default action prevented");
+            console.log("Button clicked, default action prevented");
+            console.log("Button clicked, default action prevented");
 
             let productId = this.dataset.productId;
             let clientId = this.dataset.clientId;
@@ -17,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
             data.append('addProductDate', addProductDate);
 
             const cartImage = document.getElementById(`add-to-cart-image-${productId}`)
-            console.log(cartImage)
+
             if (cartImage) {
                 cartImage.src = addedToCartSuccessfully;
             } else {
@@ -138,8 +142,6 @@ function applyFilters() {
         };
     });
 
-    console.log(selectedSizes);
-    console.log(selectedColors);
 
     let budget = document.getElementById('budget').value;
 
@@ -178,3 +180,80 @@ document.getElementById('budget').addEventListener('input', function() {
     // Set the background as a linear gradient based on the current value
     this.style.background = `linear-gradient(90deg, #D484E2 ${percentage}%, transparent ${percentage}%)`;
 });
+
+
+
+
+function addFilteredToCart(element) {
+    // Access data attributes using element.dataset
+    let productId = element.dataset.productId; // Get data-product-id
+    let clientId = element.dataset.clientId;   // Get data-client-id
+    let quantity = 1; // You can update this to be dynamic if needed
+    let addProductDate = new Date().toISOString().slice(0, 10);
+
+    let data = new FormData();
+    let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    data.append('csrfmiddlewaretoken', csrfToken);
+    data.append('client_id', clientId);
+    data.append('product_id', productId);
+    data.append('quantity', quantity);
+    data.append('addProductDate', addProductDate);
+
+    const cartImage = document.getElementById(`add-to-cart-image-${productId}`)
+
+    if (cartImage) {
+        cartImage.src = addedToCartSuccessfully;
+    } else {
+        console.error(`Cart image not found for product ID: ${productId}`);
+    }
+
+    element.style.pointerEvents = 'none';
+
+    fetch(`/cart/${clientId}`, {
+        method: 'POST',
+        body: data,
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("An error occurred while adding the product to the cart.");
+    });
+}
+
+
+
+function addFavoriteToList(element) {
+    // Access data attributes using element.dataset
+    let productId = element.dataset.productId; // Get data-product-id
+    let clientId = element.dataset.clientId;   // Get data-client-id
+
+    // Print the values
+    console.log("Product ID:", productId);
+    console.log("Client ID:", clientId);
+
+    let data = new FormData();
+    let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    data.append('csrfmiddlewaretoken', csrfToken);
+    data.append('client_id', clientId);
+    data.append('product_id', productId);
+
+    const cartImage = document.getElementById(`add-to-favorites-image-${productId}`)
+
+    if (cartImage) {
+        cartImage.src = addedToFavoritesSuccessfully;
+    } else {
+        console.error(`Cart image not found for product ID: ${productId}`);
+    }
+
+    element.style.pointerEvents = 'none';
+
+    fetch('/add-item-to-favorites/', {
+        method: 'POST',
+        body: data,
+    })
+
+    .catch(error => {
+        console.error('Error:', error);
+        alert("An error occurred while adding product to the favorites list.");
+    });
+};
+

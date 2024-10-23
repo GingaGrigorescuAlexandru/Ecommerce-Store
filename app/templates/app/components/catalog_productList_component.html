@@ -16,7 +16,6 @@
     </script>
 </head>
 <body>
-
         <div class="catalog-container">
             {% for product, image_data in products_with_images %}
                 <div class="catalog-item">
@@ -48,7 +47,7 @@
                                          alt="Add item to cart" class="add-to-cart-icon"/>
                             </a>
 
-                            <a href="" class="add-to-favorites"
+                            <a href="" class="add-to-favorites" onclick="doSomething()"
                                 data-client-id="{{ request.user.id }}"
                                 data-product-id="{{ product.produs_id }}">
                                 <img src="{% if product.produs_id in favorite_products_ids %}
@@ -67,5 +66,6 @@
         </div>
 
     <script src="{% static 'scripts/catalogPage.js' %}"></script>
+
 </body>
 </html>
