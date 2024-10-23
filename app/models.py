@@ -328,3 +328,12 @@ class ProduseImagini(models.Model):
         db_table = 'produse_imagini'
 
 
+class Sizes(models.Model):
+    size_id = models.AutoField(primary_key=True)
+    size_name = models.CharField(max_length = 50)
+
+    class Meta:
+        managed = False
+        db_table = 'sizes'
+
+

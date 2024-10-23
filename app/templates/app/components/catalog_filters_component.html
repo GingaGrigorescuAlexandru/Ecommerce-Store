@@ -85,14 +85,14 @@
 
             <div class="filter-instance" onclick="displayFilterList(this)">
                 <div class="filter-header">
-                    <h3>Tip Pagina</h3>
+                    <h3>Dimensiune</h3>
                     <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
                 </div>
 
-                <div class="selectable-list" style="display: none;" id = "page-types">
-                    {% for type in product_page_types %}
+                <div class="selectable-list" style="display: none;" id = "size-types">
+                    {% for size in product_sizes %}
                     <label>
-                        <input type="checkbox" id="pageTypes_{{ type.name }}" value="{{ type.name }}"> {{ type.name }}
+                        <input type="checkbox" id="sizes_{{ size.size_name }}" value="{{ size.size_name }}"> {{ size.size_name }}
                     </label>
                     {% endfor %}
                 </div>

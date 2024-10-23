@@ -178,7 +178,6 @@ img {
     transform: rotate(90deg); /* Rotate icon on hover */
 }
 
-
 .selectable-list {
     display: flex;
     flex-direction: column;
@@ -193,8 +192,7 @@ img {
 }
 
 .selectable-list input[type = "checkbox"] {
-    margin: 5px;
-    font-size: 32px;
+    margin: 10px;
 }
 
 #budget {

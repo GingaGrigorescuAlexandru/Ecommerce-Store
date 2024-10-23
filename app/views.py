@@ -20,7 +20,8 @@ from .models import (Clienti,
                      Colors,
                      Cosuri,
                      Domains,
-                     Favorites)
+                     Favorites,
+                     Sizes)
 
 
 def home(request):
@@ -126,7 +127,7 @@ def productCatalog(request):
 
     product_categories = Categorie.objects.all()
     product_domains = Domains.objects.all()
-    product_page_types = PageType.objects.all()
+    product_sizes = Sizes.objects.all()
     product_colors = Colors.objects.all()
 
     favorite_items = Favorites.objects.filter(client = request.user.id)
@@ -147,7 +148,7 @@ def productCatalog(request):
                'favorite_products_ids': favorite_products_ids,
                'product_categories': product_categories,
                'product_domains': product_domains,
-               'product_page_types': product_page_types,
+               'product_sizes': product_sizes,
                'product_colors': product_colors
                }
     return render(request, 'app/catalog.html', context)
@@ -164,7 +165,7 @@ def filter_products(request):
         selected_budget = filter_data.get('selected_budget')
         colors = filter_data.get('colors', [])
         domains = filter_data.get('domains', [])
-        page_types = filter_data.get('pageTypes', [])
+        sizes = filter_data.get('sizes', [])
 
         products = Produse.objects.all()
         properties = ProprietatiProduse.objects.all()
@@ -182,8 +183,8 @@ def filter_products(request):
         if domains:
             properties = properties.filter(domeniu__in=domains)
 
-        if page_types:
-            properties = properties.filter(Pagina__in=page_types)
+        if sizes:
+            properties = properties.filter(Dimensiune__in=sizes)
 
         if selected_budget:
             products = products.filter(pret_unitar__lte=selected_budget)
@@ -225,7 +226,6 @@ def productPage(request, pk):
     product_properties = ProprietatiProduse.objects.get(produs = pk)
     product_images = ProduseImagini.objects.get(produs = pk)
     product_type = Categorie.objects.get(categorie_id = product.categorie_id)
-
 
     favorite_items = Favorites.objects.filter(client = request.user.id)
     favorite_products_ids = set(favorite_items.values_list('product', flat = True))

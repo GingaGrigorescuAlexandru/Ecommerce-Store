@@ -124,7 +124,7 @@ function applyFilters() {
     let selectedProductCategories = [];
     let selectedColors = [];
     let selectedDomains = [];
-    let selectedPageTypes = [];
+    let selectedSizes = [];
 
     document.querySelectorAll('.filter-instance input[type="checkbox"]:checked').forEach(checkbox => {
         if(checkbox.id.startsWith("productTypes")) {
@@ -133,10 +133,13 @@ function applyFilters() {
             selectedDomains.push(checkbox.value);
         }else if (checkbox.id.startsWith("colors")) {
             selectedColors.push(checkbox.value);
-        }else if (checkbox.id.startsWith("pageTypes")) {
-            selectedPageTypes.push(checkbox.value);
+        }else if (checkbox.id.startsWith("sizes")) {
+            selectedSizes.push(checkbox.value);
         };
     });
+
+    console.log(selectedSizes);
+    console.log(selectedColors);
 
     let budget = document.getElementById('budget').value;
 
@@ -145,7 +148,7 @@ function applyFilters() {
         selected_budget: budget,
         colors: selectedColors,
         domains: selectedDomains,
-        pageTypes: selectedPageTypes,
+        sizes: selectedSizes,
     };
 
     fetch('/filter-catalog-products/', {
@@ -164,6 +167,7 @@ function applyFilters() {
     })
     .catch(error => console.error('Error:', error));
 };
+
 
 document.getElementById('budget').addEventListener('input', function() {
     const value = this.value; // 'this' refers to the input element now
