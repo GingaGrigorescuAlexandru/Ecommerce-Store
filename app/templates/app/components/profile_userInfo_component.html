@@ -13,15 +13,40 @@
     <div class="column-information">
         <h1>{{ user.last_name }}  {{ user.first_name }}</h1>
         <p>@{{ user.username }}</p>
-        <p>{{ user.email }}</p>
+        <b><p>{{ user.email }}</p></b>
 
         <hr>
 
-        <a href="#"><p>Comenzile Mele</p></a>
-        <a href="#"><p>Metode de Plata</p><a>
-        <a href="#"><p>Adresele Mele</p><a>
-        <a href="{% url 'cart' request.user.id %}"><p>Cos</p><a>
-        <a href="#"><p>Favorite</p><a>
+        <a href="#">
+            <img src="{% static 'images/icons/order-icon.png' %}" alt="Favorite Items List"
+                 class="profile-list-icon"/>
+            <h4>Comenzile Mele</h4>
+        </a>
+
+        <a href="#">
+            <img src="{% static 'images/icons/credit-card.png' %}" alt="Favorite Items List"
+                 class="profile-list-icon"/>
+            <h4>Metode de Plata</h4>
+        <a>
+
+        <a href="#">
+            <img src="{% static 'images/icons/address.png' %}" alt="Favorite Items List"
+                 class="profile-list-icon"/>
+            <h4>Adresele Mele</h4>
+        <a>
+
+        <a href="{% url 'cart' request.user.id %}">
+            <img src="{% static 'images/icons/black-cart.png' %}" alt="Favorite Items List"
+                 class="profile-list-icon"/>
+            <h4>Cos</h4>
+        <a>
+
+        <a href="#">
+            <img src="{% static 'images/icons/heart.png' %}" alt="Favorite Items List"
+                 class="profile-list-icon"/>
+            <h4>Favorite</h4>
+        <a>
+
     </div>
 </body>
 </html>

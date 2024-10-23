@@ -44,6 +44,18 @@ img {
     padding: 10px;
 }
 
+.column-information a{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-list-icon {
+    height: 20px;
+    width: 20px;
+}
+
 
 .update-information {
     display: flex;
