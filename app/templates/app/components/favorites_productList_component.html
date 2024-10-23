@@ -20,19 +20,19 @@
         <div class="catalog-container">
             {% for product, image_data in products_with_images %}
                 <div class="catalog-item">
-                <a href="{% url 'product' product.product %}" class="to-product-page-link">
+                <a href="{% url 'product' product.product.produs_id %}" class="to-product-page-link">
                 {% if image_data %}
                     <img class="catalog-image" src="data:image/jpeg;base64,{{ image_data|b64encode }}" alt="{{ product.nume }}" />
                 {% else %}
                     <p>No image available</p>
                 {% endif %}
                 </a>
-                <a href="{% url 'product' product.product %}" class="to-product-page-link">
-                    <h3>{{ product.nume }}</h3>
+                <a href="{% url 'product' product.product.produs_id %}" class="to-product-page-link">
+                    <h3>{{ product.product.nume }}</h3>
                 </a>
                     <div class="price-addCart-favorites">
                         <a href="{% url 'product' product.product %}" class="to-product-page-link">
-                            <p>{{ product.pret_unitar }} RON</p>
+                            <p>{{ product.product.pret_unitar }} RON</p>
                         </a>
                         <div>
                             <a href="" class="add-to-cart"
