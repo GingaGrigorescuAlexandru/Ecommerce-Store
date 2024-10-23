@@ -131,3 +131,41 @@ img {
 .update-user-info button:hover{
     background-color: #555555;
 }
+
+.newsletter-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+
+    width: 100%;
+}
+
+.newsletter-form input {
+    border-radius: 10px;
+    width: 100%;
+    margin: 5px;
+    padding: 10px;
+
+    box-sizing: border-box;
+}
+
+.newsletter-form button {
+    padding: 10px;
+    width: 100%;
+
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+
+    color: white;
+    background-color: black;
+
+    border: none;
+}
+
+.newsletter-form button:hover{
+    background-color: #555555;
+}

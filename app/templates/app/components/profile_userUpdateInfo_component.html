@@ -32,6 +32,15 @@
             <input type="text" name="phone_number" value="{{ user.phone_number }}"/>
             <button type="submit" name="updated_info_submit_button">Submit</button>
         </form>
+
+        <hr>
+
+        <form class="newsletter-form" method="POST">
+            {% csrf_token %}
+            <h2>Subscribe Form</h2>
+            <input type="email" name="newsletter-email-input" placeholder="Email Address" required/>
+            <button type="submit" name="newsletter-submit-button">Submit</button>
+        </form>
     </div>
 </body>
 </html>
