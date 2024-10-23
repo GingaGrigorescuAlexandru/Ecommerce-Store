@@ -42,7 +42,6 @@ img {
     max-width: 350px;
     margin: 10px;
     padding: 10px;
-
 }
 
 
@@ -55,7 +54,6 @@ img {
     width: fit-content;
     margin: 10px;
     padding: 10px;
-
 }
 
 .column-information p {
@@ -70,10 +68,12 @@ img {
     align-items: center;
 
     max-width: fit-content;
-    margin: 10px;
 
     border: 1px solid black;
     border-radius: 15px;
+
+    padding-right: 10px;
+
 
 }
 
@@ -97,8 +97,7 @@ img {
     grid-template-columns: repeat(2, minmax(300px, 1fr));
 
     max-width: fit-content;
-    margin: 10px;
-    padding: 10px;
+
 }
 
 @media (max-width: 1200px) {
@@ -109,6 +108,7 @@ img {
 
 .update-user-info input{
     margin: 10px;
+    margin-left: 0px;
     padding: 10px;
 
     border-radius: 10px;
@@ -116,6 +116,7 @@ img {
 
 .update-user-info button {
     margin: 10px;
+    margin-left: 0px;
     padding: 10px;
 
     border-radius: 10px;
@@ -141,6 +142,7 @@ img {
     position: relative;
 
     width: 100%;
+
 }
 
 .newsletter-form input {
