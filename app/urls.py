@@ -13,6 +13,8 @@ urlpatterns = [
     path('address-list/<str:pk>', views.addressList, name = 'address-list'),
     path('edit-address/<str:pk>', views.editAddress, name = 'edit-address'),
 
+    path('favorite-list/<str:pk>', views.favoriteList, name = 'favorite-list'),
+
     path('add_product/', views.addProduct, name = "add_product"),
 
     path('catalog/', views.productCatalog, name = 'catalog'),

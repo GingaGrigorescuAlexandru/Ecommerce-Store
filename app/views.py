@@ -153,6 +153,41 @@ def editAddress(request, pk):
     context = {}
     return HttpResponse("Some content")
 
+def favoriteList(request, pk):
+    favorite_items = Favorites.objects.filter(client = pk).select_related('product')
+    favorite_products_ids = set(favorite_items.values_list('product', flat = True))
+
+    images = ProduseImagini.objects.all()
+
+    cart = Cosuri.objects.filter(client = request.user.id)
+    cart_product_ids = set(cart.values_list('produs', flat = True))
+
+    product_categories = Categorie.objects.all()
+    product_domains = Domains.objects.all()
+    product_sizes = Sizes.objects.all()
+    product_colors = Colors.objects.all()
+
+    products_with_images = []
+
+    for product in favorite_items:
+        try:
+            image = images.get(produs = product.product)
+            products_with_images.append((product, image.imagine_catalog))
+        except ProduseImagini.DoesNotExist:
+            products_with_images.append((product, None))
+
+
+    context = {'products_with_images': products_with_images,
+               'cart_product_ids': cart_product_ids,
+               'favorite_products_ids': favorite_products_ids,
+               'product_categories': product_categories,
+               'product_domains': product_domains,
+               'product_sizes': product_sizes,
+               'product_colors': product_colors
+               }
+
+    return render(request, 'app/favorite.html', context)
+
 def addProduct(request):
     formProduct = ProductCreationForm()
     formProperties = PropertiesProductForm()

@@ -274,4 +274,11 @@ img {
     cursor: pointer;
 }
 
+.success {
+    color: green;
+    font-wight: bold;
+
+    font-size: 18px;
+}
+
 

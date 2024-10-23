@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+{% load static %}
+{% load custom_filters %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+
+    <script>
+        const minusIcon = "{% static 'images/icons/minus.png' %}";
+        const plusIcon = "{% static 'images/icons/plus-filter.png' %}";
+    </script>
+</head>
+<body>
+        <div class="filter-container">
+            <div class="filter-header">
+                <h1 class="filter-header">Filtre</h1>
+            </div>
+            <hr>
+
+
+            <div class="filter-instance" id="product-type" onclick="displayFilterList(this)">
+                <div class="filter-header">
+                    <h3>Tip Produs</h3>
+                    <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
+                </div>
+
+                <div class="selectable-list" style="display: none;" id = "product-types">
+                    {% for category in product_categories %}
+                    <label>
+                        <input type="checkbox" id="productTypes_{{ category.nume_categorie }}" value="{{ category.nume_categorie }}"> {{ category.nume_categorie }}
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <hr>
+
+            <div class="filter-instance">
+                <div class="filter-header" id="price-header" onclick="displayFilterList(this)">
+                    <h3>Pret</h3>
+                    <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
+                </div>
+
+                <div class="selectable-list" style="display: none;" id = "budget-selector">
+                    <input type="range" id="budget" name="budget"
+                           min="0" max="100" value="100" step="1">
+                    <span id="rangeValue">100</span>
+                </div>
+            </div>
+            <hr>
+
+            <div class="filter-instance" onclick="displayFilterList(this)">
+                <div class="filter-header" id="product-domain">
+                    <h3>Domeniu</h3>
+                    <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
+                </div>
+
+                <div class="selectable-list" style="display: none;" id = "domain-types">
+                    {% for domain in product_domains %}
+                    <label>
+                        <input type="checkbox" id="domains_{{ domain.name }}" value="{{ domain.name }}"> {{ domain.name }}
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <hr>
+
+            <div class="filter-instance" onclick="displayFilterList(this)">
+                <div class="filter-header">
+                    <h3>Culori</h3>
+                    <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
+                </div>
+
+                <div class="selectable-list" style="display: none;" id = "color-types">
+                    {% for color in product_colors %}
+                    <label>
+                        <input type="checkbox" id="colors_{{ color.name }}" value="{{ color.name }}"> {{ color.name }}
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <hr>
+
+            <div class="filter-instance" onclick="displayFilterList(this)">
+                <div class="filter-header">
+                    <h3>Dimensiune</h3>
+                    <img src="{% static 'images/icons/plus-filter.png' %}" alt="Plus Icon" class="filter-icon"/>
+                </div>
+
+                <div class="selectable-list" style="display: none;" id = "size-types">
+                    {% for size in product_sizes %}
+                    <label>
+                        <input type="checkbox" id="sizes_{{ size.size_name }}" value="{{ size.size_name }}"> {{ size.size_name }}
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <hr>
+
+        </div>
+    <script src="{% static 'scripts/catalogPage.js' %}"></script>
+</body>
+</html>

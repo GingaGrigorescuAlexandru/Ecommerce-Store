@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Favorite - Stomagia</title>
+</head>
+<body>
+    {% extends 'main.html' %}
+
+
+    {% block content %}
+
+        <div class="catalog-layout">
+
+            {% include 'app/components/favorites_filters_component.html' %}
+            {% include 'app/components/favorites_productList_component.html' %}
+
+        </div>
+
+    {% endblock content %}
+</body>
+</html>
