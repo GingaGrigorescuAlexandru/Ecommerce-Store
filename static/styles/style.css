@@ -502,7 +502,7 @@ input[type="range"]::-ms-thumb {
     flex-grow: 0;
     height: auto;
 
-    width: 100%;
+    width: fit-content;
 }
 
 .cart-item-header > * {

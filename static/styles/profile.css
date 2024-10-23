@@ -1,0 +1,133 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    margin: 0;
+    padding: 0;
+}
+
+hr {
+    border: 0;
+    border-top: 0.1px solid #d3d3d3;
+    width: 100%;
+    margin: 10px 0;
+}
+
+img {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.row-information {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+
+    padding: 10px;
+}
+
+.column-information {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    max-width: 350px;
+    margin: 10px;
+    padding: 10px;
+
+}
+
+
+.update-information {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    width: fit-content;
+    margin: 10px;
+    padding: 10px;
+
+}
+
+.column-information p {
+    margin: 5px;
+    padding: 5px;
+}
+
+.add-address-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    max-width: fit-content;
+    margin: 10px;
+
+    border: 1px solid black;
+    border-radius: 15px;
+
+}
+
+.add-address-header {
+    margin: 10px;
+    margin-right: 0px;
+    padding: 10px;
+
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.address-icon{
+    margin: 0px;
+    width: 25px;
+    height: 25px;
+}
+
+.update-user-info {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(300px, 1fr));
+
+    max-width: fit-content;
+    margin: 10px;
+    padding: 10px;
+}
+
+@media (max-width: 1200px) {
+    .update-user-info {
+        grid-template-columns: 1fr;
+    }
+}
+
+.update-user-info input{
+    margin: 10px;
+    padding: 10px;
+
+    border-radius: 10px;
+}
+
+.update-user-info button {
+    margin: 10px;
+    padding: 10px;
+
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+
+    color: white;
+    background-color: black;
+
+    border: none;
+}
+
+.update-user-info button:hover{
+    background-color: #555555;
+}

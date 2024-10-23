@@ -2,14 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Prfile Page</title>
+    <title>Profile Page - Stomagia</title>
 </head>
 <body>
     {% extends 'main.html' %}
 
     {% block content %}
 
-    <h1>@{{ user.username }}</h1>
+    <div class="row-information">
+        {% include 'app/components/profile_userInfo_component.html' %}
+        {% include 'app/components/profile_userUpdateInfo_component.html' %}
+    </div>
 
     {% endblock content %}
 </body>

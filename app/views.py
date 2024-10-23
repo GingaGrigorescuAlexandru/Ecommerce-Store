@@ -11,8 +11,8 @@ from django.template.loader import render_to_string
 from django.db.models import Q
 import logging
 import json
-from .models import (Clienti,
-                     PageType,
+from .models import (AuthUser,
+                     Clienti,
                      Produse,
                      ProduseImagini,
                      ProprietatiProduse,
@@ -86,9 +86,14 @@ def logoutUser(request):
     return redirect('home')
 
 def profilePage(request, pk):
-    user = User.objects.get(id = pk)
+    user = AuthUser.objects.get(id = pk)
+
     context = {'user': user}
     return render(request, 'app/profile.html', context)
+
+def addAddress(request):
+    context = {}
+    return render(request, 'app/add_address.html', context)
 
 def addProduct(request):
     formProduct = ProductCreationForm()
@@ -357,3 +362,4 @@ def add_item_to_favorites(request):
         return JsonResponse({'message': "Added product to favorites list"}, status=200)
 
     return JsonResponse({'message': "Invalid request method"}, status=400)
+

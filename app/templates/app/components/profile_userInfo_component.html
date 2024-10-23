@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+{% load custom_filters %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'styles/profile.css' %}" />
+</head>
+<body>
+    <div class="column-information">
+        <h1>{{ user.last_name }}  {{ user.first_name }}</h1>
+        <p>@{{ user.username }}</p>
+        <p>{{ user.email }}</p>
+
+        <hr>
+
+        <a href="#"><p>Comenzile Mele</p></a>
+        <a href="#"><p>Metode de Plata</p><a>
+        <a href="#"><p>Adresele Mele</p><a>
+        <a href="{% url 'cart' request.user.id %}"><p>Cos</p><a>
+        <a href="#"><p>Favorite</p><a>
+    </div>
+</body>
+</html>
