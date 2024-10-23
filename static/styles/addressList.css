@@ -1,0 +1,11 @@
+.addresses-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin: 25px;
+    width: 100%;
+
+    border: 1px solid black;
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+{% load static %}
+{% load custom_filters %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'styles/profile.css' %}" />
+</head>
+<body>
+    <div class="addresses-page-container">
+        <a href="{% url 'add-address' %}">
+            <div class="add-address-form">
+                <p class="add-address-header">Add Address</p>
+                <img src="{% static 'images/icons/address.png' %}" class="address-icon"/>
+                <img src="{% static 'images/icons/small-plus.png' %}" class="address-icon"/>
+            </div>
+        </a>
+
+            <div class="addresses-container">
+                {% for address in addresses %}
+                    <div class="address-item">
+                        <div class="row-information">
+                            <input type="text" id="address_name" value="{{ address.nume_adresa }}" disabled/>
+                        </div>
+
+                        <hr>
+
+                        <div class="row-information">
+                            <label for="address_country">Tara:</label>
+                            <input type="text" id="address_country" value="{{ address.tara }}" disabled/>
+                        </div>
+
+                        <div class="row-information">
+                            <label for="address_state">Judet:</label>
+                            <input type="text" id="address_state" value="{{ address.judet }}" disabled/>
+                        </div>
+
+                        <div class="row-information">
+                            <label for="address_city">Loc:</label>
+                            <input type="text" id="address_city" value="{{ address.localitate }}" disabled/>
+                        </div>
+
+                        <hr>
+
+                        <div class="row-information">
+                            <label for="address_street">Str:</label>
+                            <input type="text" id="address_street" value="{{ address.strada }}" disabled/>
+                        </div>
+
+                        <div class="row-information">
+                            <label for="address_number">Nr:</label>
+                            <input type="text" id="address_number" value="{{ address.numar }}" disabled/>
+                        </div>
+
+                        <div class="row-information">
+                            <label for="address_block">Bl:</label>
+                            <input type="text" id="address_block" value="{{ address.bloc }}"disabled/>
+                        </div>
+
+                        <div class="row-information">
+                            <label for="address_stair">Sc:</label>
+                            <input type="text" id="address_stair" value="{{ address.scara }}" disabled/>
+                        </div>
+
+                        <div class="row-information">
+                            <label for="address_floor">Et:</label>
+                            <input type="text" id="address_floor" value="{{ address.etaj }}" disabled/>
+                        </div>
+
+                        <div class="row-information">
+                            <label for="address_apartament">Ap:</label>
+                            <input type="text" id="address_apartament" value="{{ address.apartament }}" disabled/>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+    </div>
+</body>
+</html>

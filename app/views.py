@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db.models import Prefetch
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
+from django.urls import reverse
 from django.http import JsonResponse
 from .forms import (CustomUserCreationForm,
                     PropertiesProductForm,
@@ -113,10 +114,15 @@ def addAddress(request):
             address.client_id = request.user.id
             address.save()
 
-            return redirect('home')
+            return redirect(reverse('address-list', kwargs={'pk': request.user.id}))
 
     context = {'form': form}
     return render(request, 'app/add_address.html', context)
+
+def addressList(request, pk):
+    addresses = Adrese.objects.filter(client = pk)
+    context = {'addresses': addresses}
+    return render(request, 'app/address_list.html', context)
 
 def addProduct(request):
     formProduct = ProductCreationForm()

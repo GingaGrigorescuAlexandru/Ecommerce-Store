@@ -29,7 +29,7 @@
             <h4>Metode de Plata</h4>
         </a>
 
-        <a href="#">
+        <a href="{% url 'address-list' request.user.id %}">
             <img src="{% static 'images/icons/address.png' %}" alt="Favorite Items List"
                  class="profile-list-icon"/>
             <h4>Adresele Mele</h4>

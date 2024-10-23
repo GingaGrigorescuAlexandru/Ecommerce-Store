@@ -30,6 +30,7 @@ img {
     justify-content: center;
     text-align: center;
 
+
     padding: 10px;
 }
 
@@ -183,3 +184,81 @@ img {
 .newsletter-form button:hover{
     background-color: #555555;
 }
+
+
+
+
+
+
+.addresses-page-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin: 25px;
+}
+
+.addresses-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+
+    margin: 25px;
+    width: 80%;
+}
+
+.address-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    background-color: #FFB6C1;
+    border:1px solid black;
+    color: black;
+
+    border-radius: 25px;
+
+
+    margin: 10px;
+    padding: 10px;
+}
+
+.address-item label {
+    padding: 2px;
+}
+
+.address-item input {
+    margin-left: 10px;
+    padding: 5px;
+
+    border-radius: 10px;
+}
+
+
+.address-item input:disabled {
+    border: 1px solid #ccc;
+    background-color: white;
+    color: inherit;
+}
+
+#address_name {
+    border: none;
+    background: transparent;
+
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+}
+
+#address_name:focus {
+    outline: none;         /* Remove the default outline */
+    border: none;          /* Remove any border (if applicable) */
+    background: transparent; /* Keep the background transparent */
+    color: inherit;        /* Keep the text color same as the rest of the text */
+    box-shadow: none;      /* Remove any box-shadow */
+}
+
+
