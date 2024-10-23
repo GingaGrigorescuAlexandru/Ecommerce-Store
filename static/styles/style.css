@@ -322,6 +322,8 @@ input[type="range"]::-ms-thumb {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+
+    width: 100%;
 }
 
 .add-to-cart-icon {
