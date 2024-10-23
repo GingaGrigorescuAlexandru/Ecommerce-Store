@@ -239,8 +239,8 @@ img {
 }
 
 
-.address-item input:disabled {
-    border: 1px solid #ccc;
+.address-item input:readonly {
+    border: 1px solid white;
     background-color: white;
     color: inherit;
     box-sizing: border-box;

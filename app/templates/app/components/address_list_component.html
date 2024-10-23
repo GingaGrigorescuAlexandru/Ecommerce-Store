@@ -27,9 +27,10 @@
 
             <div class="addresses-container">
                 {% for address in addresses %}
-                    <div class="address-item">
+                    <form method="POST" action="{% url 'edit-address' address.address_id %}" class="address-item">
+                        {% csrf_token %}
                         <div class="row-information">
-                            <input type="text" id="address_name" value="{{ address.nume_adresa }}" disabled/>
+                            <input type="text" id="address_name" name="address_name" value="{{ address.nume_adresa }}" readonly/>
                             <img src="{% static 'images/icons/edit-icon.png' %}" class="edit-address-icon"/>
                         </div>
 
@@ -37,53 +38,54 @@
 
                         <div class="row-information">
                             <label for="address_country">Tara:</label>
-                            <input type="text" id="address_country" value="{{ address.tara }}" disabled/>
+                            <input type="text" id="address_country" name="address_country" value="{{ address.tara }}" readonly/>
                         </div>
 
                         <div class="row-information">
                             <label for="address_state">Judet:</label>
-                            <input type="text" id="address_state" value="{{ address.judet }}" disabled/>
+                            <input type="text" id="address_state" name="address_state" value="{{ address.judet }}" readonly/>
                         </div>
 
                         <div class="row-information">
                             <label for="address_city">Loc:</label>
-                            <input type="text" id="address_city" value="{{ address.localitate }}" disabled/>
+                            <input type="text" id="address_city" name="address_city" value="{{ address.localitate }}" readonly/>
                         </div>
 
                         <hr>
 
                         <div class="row-information">
                             <label for="address_street">Str:</label>
-                            <input type="text" id="address_street" value="{{ address.strada }}" disabled/>
+                            <input type="text" id="address_street" name="address_street" value="{{ address.strada }}" readonly/>
                         </div>
 
                         <div class="row-information">
                             <label for="address_number">Nr:</label>
-                            <input type="text" id="address_number" value="{{ address.numar }}" disabled/>
+                            <input type="text" id="address_number" name="address_number" value="{{ address.numar }}" readonly/>
                         </div>
 
                         <div class="row-information">
                             <label for="address_block">Bl:</label>
-                            <input type="text" id="address_block" value="{{ address.bloc }}"disabled/>
+                            <input type="text" id="address_block" name="address_block" value="{{ address.bloc }}" readonly/>
                         </div>
 
                         <div class="row-information">
                             <label for="address_stair">Sc:</label>
-                            <input type="text" id="address_stair" value="{{ address.scara }}" disabled/>
+                            <input type="text" id="address_stair" name="address_stair" value="{{ address.scara }}" readonly/>
                         </div>
 
                         <div class="row-information">
                             <label for="address_floor">Et:</label>
-                            <input type="text" id="address_floor" value="{{ address.etaj }}" disabled/>
+                            <input type="number" id="address_floor" name="address_floor" value="{{ address.etaj }}" readonly/>
                         </div>
 
                         <div class="row-information">
-                            <label for="address_apartament">Ap:</label>
-                            <input type="text" id="address_apartament" value="{{ address.apartament }}" disabled/>
+                            <label for="address_apartment">Ap:</label>
+                            <input type="number" id="address_apartment" name="address_apartment" value="{{ address.apartament }}" readonly/>
                         </div>
-                    </div>
+                    </form>
                 {% endfor %}
             </div>
+
     </div>
 
     <script src="{% static 'scripts/addressListPage.js' %}"></script>

@@ -5,7 +5,7 @@ from django.db.models import Prefetch
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.urls import reverse
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from .forms import (CustomUserCreationForm,
                     PropertiesProductForm,
                     ProductCreationForm,
@@ -123,6 +123,35 @@ def addressList(request, pk):
     addresses = Adrese.objects.filter(client = pk)
     context = {'addresses': addresses}
     return render(request, 'app/address_list.html', context)
+
+def editAddress(request, pk):
+
+
+    if request.method == "POST":
+        print(pk)
+        print(request.POST)
+
+        address = Adrese.objects.filter(address_id = pk)
+
+        data = {
+            'nume_adresa': request.POST.get("address_name"),
+            'tara': request.POST.get("address_country"),
+            'judet': request.POST.get("address_state"),
+            'localitate': request.POST.get("address_city"),
+            'strada': request.POST.get("address_street"),
+            'numar': request.POST.get("address_number"),
+            'bloc': request.POST.get("address_block"),
+            'scara': request.POST.get("address_stair"),
+            'etaj': request.POST.get("address_floor"),
+            'apartament': request.POST.get("address_apartment")
+        }
+
+        address.update(**data)
+        messages.success(request, 'Address updated successfully.')
+        return redirect(reverse('address-list', kwargs={'pk': request.user.id}))
+
+    context = {}
+    return HttpResponse("Some content")
 
 def addProduct(request):
     formProduct = ProductCreationForm()
