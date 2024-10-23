@@ -8,6 +8,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'styles/profile.css' %}" />
+
+    <script>
+        confirmIcon = "{% static 'images/icons/confirm-icon.png' %}";
+        editIcon = "{% static 'images/icons/edit-icon.png' %}";
+    </script>
+
 </head>
 <body>
     <div class="addresses-page-container">
@@ -24,6 +30,7 @@
                     <div class="address-item">
                         <div class="row-information">
                             <input type="text" id="address_name" value="{{ address.nume_adresa }}" disabled/>
+                            <img src="{% static 'images/icons/edit-icon.png' %}" class="edit-address-icon"/>
                         </div>
 
                         <hr>
@@ -77,7 +84,8 @@
                     </div>
                 {% endfor %}
             </div>
-
     </div>
+
+    <script src="{% static 'scripts/addressListPage.js' %}"></script>
 </body>
 </html>

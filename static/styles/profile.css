@@ -214,11 +214,11 @@ img {
     justify-content: center;
     align-items: flex-start;
 
-    background-color: #FFB6C1;
+    background-color: #F9F9F9;
     border:1px solid black;
     color: black;
 
-    border-radius: 25px;
+    border-radius: 15px;
 
 
     margin: 10px;
@@ -230,10 +230,12 @@ img {
 }
 
 .address-item input {
+    border: 1px solid black;
     margin-left: 10px;
     padding: 5px;
 
     border-radius: 10px;
+    box-sizing: border-box;
 }
 
 
@@ -241,16 +243,20 @@ img {
     border: 1px solid #ccc;
     background-color: white;
     color: inherit;
+    box-sizing: border-box;
 }
 
 #address_name {
     border: none;
+    width: 100%;
     background: transparent;
 
     font-size: 24px;
     font-weight: bold;
     margin: 0px;
     padding: 0px;
+
+    box-sizing: border-box;
 }
 
 #address_name:focus {
@@ -259,6 +265,13 @@ img {
     background: transparent; /* Keep the background transparent */
     color: inherit;        /* Keep the text color same as the rest of the text */
     box-shadow: none;      /* Remove any box-shadow */
+}
+
+.edit-address-icon {
+    margin: 0px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
 }
 
 
