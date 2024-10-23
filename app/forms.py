@@ -1,7 +1,8 @@
 from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.models import User
-from .models import Produse, ProprietatiProduse, Furnizori, Categorie
+from django.core.exceptions import ValidationError
+from .models import Produse, ProprietatiProduse, Furnizori, Categorie, Adrese
 
 class CustomUserCreationForm(ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -79,3 +80,21 @@ class PropertiesProductForm(ModelForm):
         fields = '__all__'
         exclude = ["produs"]
 
+class AddressForm(ModelForm):
+    COUNTRY_OPTIONS = [
+        ('Romania', 'Romania'),
+        ('Bulgaria', 'Bulgaria'),
+        ('Grecia', 'Grecia'),
+        ('Polonia', 'Polonia'),
+        ('Serbia', 'Serbia'),
+        ('Ucraina', 'Ucraina'),
+        ('Ungaria', 'Romania')
+    ]
+    tara = forms.ChoiceField(choices = COUNTRY_OPTIONS)
+    class Meta:
+        model = Adrese
+        fields = '__all__'
+        exclude = ['client']
+        labels = {
+            'localitate': 'Localitate / Sector ( daca locuiti in Bucuresti )',
+        }

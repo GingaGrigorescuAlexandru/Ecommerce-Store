@@ -118,12 +118,14 @@ class DjangoSession(models.Model):
 
 
 class Adrese(models.Model):
-    client_id = models.ForeignKey('Clienti', models.CASCADE)
-    nume_adresa = models.CharField(primary_key=True, max_length=50)  # The composite primary key (nume_adresa, client_id) found, that is not supported. The first column is selected.
-    tara = models.CharField(max_length=50)
+    address_id = models.AutoField(primary_key=True)
+    client = models.ForeignKey('Clienti', models.CASCADE)
+    nume_adresa = models.CharField(max_length=50, default='Home')
+    tara = models.CharField(max_length=50, default='Romania')
     judet = models.CharField(max_length=50)
     localitate = models.CharField(max_length=50)
     strada = models.CharField(max_length=50)
+    numar = models.CharField(max_length=50)
     bloc = models.CharField(max_length=50)
     scara = models.CharField(max_length=50)
     etaj = models.PositiveIntegerField()

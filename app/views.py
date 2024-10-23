@@ -5,13 +5,18 @@ from django.db.models import Prefetch
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.http import JsonResponse
-from .forms import CustomUserCreationForm, PropertiesProductForm, ProductCreationForm
+from .forms import (CustomUserCreationForm,
+                    PropertiesProductForm,
+                    ProductCreationForm,
+                    AddressForm
+                    )
 from django.contrib.auth.hashers import make_password
 from django.template.loader import render_to_string
 from django.db.models import Q
 import logging
 import json
 from .models import (AuthUser,
+                     Adrese,
                      Clienti,
                      Produse,
                      ProduseImagini,
@@ -21,7 +26,8 @@ from .models import (AuthUser,
                      Cosuri,
                      Domains,
                      Favorites,
-                     Sizes)
+                     Sizes
+                     )
 
 
 def home(request):
@@ -92,7 +98,24 @@ def profilePage(request, pk):
     return render(request, 'app/profile.html', context)
 
 def addAddress(request):
-    context = {}
+    form = AddressForm()
+    addresses = Adrese.objects.filter( client_id = request.user.id ).values_list('nume_adresa', flat = True)
+    print(addresses)
+    if request.method == "POST":
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            address = form.save(commit = False)
+
+            if address.nume_adresa in addresses:
+                messages.error(request, "You can't have 2 addresses with the same name!")
+                return render(request, 'app/add_address.html', {'form': form})
+
+            address.client_id = request.user.id
+            address.save()
+
+            return redirect('home')
+
+    context = {'form': form}
     return render(request, 'app/add_address.html', context)
 
 def addProduct(request):
