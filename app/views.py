@@ -125,11 +125,7 @@ def addressList(request, pk):
     return render(request, 'app/address_list.html', context)
 
 def editAddress(request, pk):
-
-
     if request.method == "POST":
-        print(pk)
-        print(request.POST)
 
         address = Adrese.objects.filter(address_id = pk)
 
@@ -147,7 +143,7 @@ def editAddress(request, pk):
         }
 
         address.update(**data)
-        messages.success(request, 'Address updated successfully.')
+        messages.success(request, 'Address Saved')
         return redirect(reverse('address-list', kwargs={'pk': request.user.id}))
 
     context = {}

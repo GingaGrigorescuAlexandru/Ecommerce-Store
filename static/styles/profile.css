@@ -274,11 +274,21 @@ img {
     cursor: pointer;
 }
 
+.messages {
+    margin: 10px;
+    padding: 10px;
+
+    border: 3px solid green;
+
+    border-radius: 5px;
+
+}
+
 .success {
     color: green;
-    font-wight: bold;
+    font-weight: bold;
 
-    font-size: 18px;
+    font-size: 32px;
 }
 
 
