@@ -10,7 +10,7 @@ urlpatterns = [
 
     path('profile/<str:pk>', views.profilePage, name = 'profile'),
 
-    path('add-cards/', views.addCard, name = 'add-card'),
+    path('add-card/', views.addCard, name = 'add-card'),
     path('cards/<str:pk>', views.cardsPage, name = 'cards'),
 
     path('add-address/', views.addAddress, name = 'add-address'),

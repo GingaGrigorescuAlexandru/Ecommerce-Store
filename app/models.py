@@ -165,7 +165,7 @@ class AgentiiLivrare(models.Model):
 
 class CarduriClienti(models.Model):
     card_id = models.AutoField(primary_key=True)
-    client_id = models.ForeignKey('Clienti', models.CASCADE)
+    client = models.ForeignKey('Clienti', models.CASCADE)
     denumire = models.CharField(max_length=50)
     numar_card = models.CharField(max_length=50)
     nume_proprietar = models.CharField(max_length=50)
@@ -195,6 +195,7 @@ class Categorie(models.Model):
 
 class Clienti(models.Model):
     client_id = models.AutoField(primary_key=True)
+    stripe_customer_id = models.CharField(max_length=255, blank=True, null=True, default="NULL")
     nume = models.CharField(max_length=50)
     prenume = models.CharField(max_length=50)
     email = models.CharField(max_length=255)

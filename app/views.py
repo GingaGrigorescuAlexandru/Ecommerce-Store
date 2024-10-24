@@ -9,15 +9,19 @@ from django.http import JsonResponse, HttpResponse
 from .forms import (CustomUserCreationForm,
                     PropertiesProductForm,
                     ProductCreationForm,
-                    AddressForm
+                    AddressForm,
+                    CardForm
                     )
 from django.contrib.auth.hashers import make_password
 from django.template.loader import render_to_string
 from django.db.models import Q
+from django.conf import settings
 import logging
 import json
+import stripe
 from .models import (AuthUser,
                      Adrese,
+                     CarduriClienti,
                      Clienti,
                      Produse,
                      ProduseImagini,
@@ -30,6 +34,8 @@ from .models import (AuthUser,
                      Sizes
                      )
 
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def home(request):
     context = {}
@@ -47,12 +53,20 @@ def register(request):
             user.password = make_password(user.password)
             user.save()
 
+            customer = stripe.Customer.create(email=form.cleaned_data['email'])
+
             new_client = Clienti(
                 nume=form.cleaned_data['first_name'],
                 prenume=form.cleaned_data['last_name'],
                 email=form.cleaned_data['email'],
             )
             new_client.save()
+
+            customer = stripe.Customer.create(email=new_client.email)
+            # Set the stripe_customer_id to be the same as the client_id
+            new_client.stripe_customer_id = new_client.client_id  # Set to client_id
+            new_client.save()  # Save the client with the updated stripe_customer_id
+
 
             login(request, user)
             return redirect('home')
@@ -98,9 +112,48 @@ def profilePage(request, pk):
     context = {'user': user}
     return render(request, 'app/profile.html', context)
 
+
 def addCard(request):
-    context = {}
-    return render(request, 'app/add_card.html', context)
+    if request.method == 'GET':
+        context = {
+            'stripe_public_key': settings.STRIPE_PUBLIC_KEY
+        }
+        return render(request, 'app/add_card.html', context)
+
+    elif request.method == 'POST':
+        try:
+            # Get the client associated with the logged-in user
+            client = Clienti.objects.get(client_id=request.user.id)
+
+            # Retrieve payment method ID from the request body
+            data = json.loads(request.body)
+            payment_method_id = data.get('payment_method_id')
+
+            # Use the Stripe customer ID associated with this client
+            customer_id = client.stripe_customer_id
+
+            # Attach the payment method to the Stripe customer
+            stripe.PaymentMethod.attach(
+                payment_method_id,
+                customer=customer_id,
+            )
+
+            # Set the payment method as the default for future payments
+            stripe.Customer.modify(
+                customer_id,
+                invoice_settings={
+                    'default_payment_method': payment_method_id,
+                },
+            )
+
+            return JsonResponse({'success': True}, status=200)
+
+        except Clienti.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Client not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=400)
+
+    return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
 
 def cardsPage(request, pk):
     context = {}
@@ -228,7 +281,6 @@ def productCatalog(request):
     cart = Cosuri.objects.filter(client = request.user.id)
     cart_product_ids = set(cart.values_list('produs', flat = True))
 
-    client = Clienti.objects.get(client_id=request.user.id)
 
     product_categories = Categorie.objects.all()
     product_domains = Domains.objects.all()
@@ -255,8 +307,6 @@ def productCatalog(request):
                'product_domains': product_domains,
                'product_sizes': product_sizes,
                'product_colors': product_colors,
-               'user': 1,
-               'client': client,
                }
     return render(request, 'app/catalog.html', context)
 

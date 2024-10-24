@@ -2,7 +2,13 @@ from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from .models import Produse, ProprietatiProduse, Furnizori, Categorie, Adrese
+from .models import (Adrese,
+                     Produse,
+                     CarduriClienti,
+                     Categorie,
+                     Furnizori,
+                     ProprietatiProduse
+                     )
 
 class CustomUserCreationForm(ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -98,3 +104,11 @@ class AddressForm(ModelForm):
         labels = {
             'localitate': 'Localitate / Sector ( daca locuiti in Bucuresti )',
         }
+
+class CardForm(ModelForm):
+
+    class Meta:
+        model = CarduriClienti
+        fields = '__all__'
+        exclude = ['client']
+
