@@ -98,6 +98,14 @@ def profilePage(request, pk):
     context = {'user': user}
     return render(request, 'app/profile.html', context)
 
+def addCard(request):
+    context = {}
+    return render(request, 'app/add_card.html', context)
+
+def cardsPage(request, pk):
+    context = {}
+    return render(request, 'app/cards.html', context)
+
 def addAddress(request):
     form = AddressForm()
     addresses = Adrese.objects.filter( client_id = request.user.id ).values_list('nume_adresa', flat = True)

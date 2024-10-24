@@ -74,7 +74,18 @@ img {
     padding: 5px;
 }
 
-.add-address-form {
+.row-space-between-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    width: 100%;
+}
+
+.add-command-info-form {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -90,7 +101,7 @@ img {
 
 }
 
-.add-address-header {
+.add-command-info-header {
     margin: 10px;
     margin-right: 0px;
     padding: 10px;
@@ -99,7 +110,7 @@ img {
     font-weight: bold;
 }
 
-.address-icon{
+.add-command-info-icon{
     margin: 0px;
     width: 25px;
     height: 25px;
@@ -108,6 +119,8 @@ img {
 .update-user-info {
     display: grid;
     grid-template-columns: repeat(2, minmax(300px, 1fr));
+
+    gap: 16px;
 
     max-width: fit-content;
 
@@ -122,6 +135,7 @@ img {
 .update-user-info input{
     margin: 10px;
     margin-left: 0px;
+    margin-right: 0px;
     padding: 10px;
 
     border-radius: 10px;
@@ -184,10 +198,6 @@ img {
 .newsletter-form button:hover{
     background-color: #555555;
 }
-
-
-
-
 
 
 .addresses-page-container {
