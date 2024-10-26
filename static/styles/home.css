@@ -1,3 +1,43 @@
+.about-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background-color: #f9f9f9;
+    width: 75%;
+    margin: auto;
+    margin-top: 25px;
+    gap: 20px;
+
+}
+
+.about-content {
+    max-width: 350px;
+    padding-right: 20px;
+    font-size: 20px;
+}
+
+.about-content h2 {
+    font-size: 2em;
+    color: #4A4A4A;
+    margin-bottom: 20px;
+}
+
+.about-content p {
+    margin-bottom: 15px;
+    color: #666;
+}
+
+.about-image {
+    flex: 1;
+}
+
+.about-image img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .reviews-section {
     display: flex;
     flex-direction: column;
@@ -55,14 +95,18 @@ button:hover {
     right: 10px;
 }
 
+@media (max-width: 1200px) {
+    .about-section {
+        flex-direction: column;
+    }
 
-@media (max-width: 960px) {
     .carousel {
         max-width: 620px;
     }
 }
 
-@media (max-width: 650px) {
+
+@media (max-width: 900px) {
     .carousel {
         max-width: 310px;
     }
