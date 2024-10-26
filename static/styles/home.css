@@ -172,6 +172,21 @@ hr {
     background-color: #D484E2;
 }
 
+.row-center-elements-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+}
+
+#newsletter-submit-success {
+    margin: 0px;
+    width: 125px;
+    height: 125px;
+}
+
 @media (max-width: 600px) {
     .newsletter-form input,
     .newsletter-button {

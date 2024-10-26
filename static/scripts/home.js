@@ -1,8 +1,9 @@
-let currentSlide = 0;
+var currentSlide = 0;
 
 function showSlide(index) {
     const slides = document.querySelectorAll('.carousel-images img');
 
+    let slideLimit;
     if (window.innerWidth >= 1200) {
         slideLimit = slides.length / 3;
     } else if (window.innerWidth >= 900) {
@@ -17,8 +18,7 @@ function showSlide(index) {
         currentSlide = index;
     }
 
-
-    const offset = -currentSlide * 100; // Each slide takes 100% width
+    const offset = -currentSlide * 100;
     document.querySelector('.carousel-images').style.transform = `translateX(${offset}%)`;
 }
 
@@ -26,13 +26,10 @@ function moveSlide(step) {
     showSlide(currentSlide + step);
 }
 
-// Initial call to display the first slide
-showSlide(currentSlide);
-
-
 function showFeedbackSlide(index) {
     const slides = document.querySelectorAll('.feedback-images img');
 
+    let slideLimit;
     if (window.innerWidth >= 1200) {
         slideLimit = slides.length / 3;
     } else if (window.innerWidth >= 900) {
@@ -47,7 +44,7 @@ function showFeedbackSlide(index) {
         currentSlide = index;
     }
 
-    const offset = -currentSlide * 100; // Each slide takes 100% width
+    const offset = -currentSlide * 100;
     document.querySelector('.feedback-images').style.transform = `translateX(${offset}%)`;
 }
 
@@ -55,5 +52,4 @@ function moveFeedbackSlide(step) {
     showFeedbackSlide(currentSlide + step);
 }
 
-// Initial call to display the first slide
-showSlide(currentSlide);
+

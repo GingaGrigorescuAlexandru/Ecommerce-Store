@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 {% load static %}
+{% load custom_filters %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'styles/home.css' %}" />
+
+    <script>logged_user = {{ request.user.id }}</script>
 </head>
 <body>
-        <form class="newsletter-form" method="POST">
+        <form class="newsletter-form" action="" id="newsletter-form" method="POST"
+              data-url="{% url 'add_newsletter_email' request.user.id %}">
             {% csrf_token %}
             <h2>Aboneaza-te la Newsletter</h2>
             <input type="email" name="newsletter-email-input" placeholder="Email Address" required/>
             <button type="submit" name="newsletter-submit-button" class="newsletter-button">Submit</button>
         </form>
+
+        <div class="row-center-elements-container">
+            <img src="{% static 'images/icons/successful.png' %}" id="newsletter-submit-success" style="display: none;"/>
+        </div>
+
+    <script src="{% static 'scripts/newsletter.js' %}"></script>
 </body>
 </html>
