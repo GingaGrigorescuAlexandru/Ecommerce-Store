@@ -113,6 +113,29 @@ def profilePage(request, pk):
     return render(request, 'app/profile.html', context)
 
 
+def addStripe(request):
+    client = Clienti.objects.get(client_id=request.user.id)
+
+    data = json.loads(request.body)
+    payment_method_id = data.get('payment_method_id')
+
+    customer_id = client.stripe_customer_id
+
+    stripe.PaymentMethod.attach(
+        payment_method_id,
+        customer=customer_id,
+    )
+
+    stripe.Customer.modify(
+        customer_id,
+        invoice_settings={
+            'default_payment_method': payment_method_id,
+        },
+    )
+    return JsonResponse({'success': True}, status=200)
+
+
+
 def addCard(request):
     if request.method == 'GET':
         context = {
@@ -122,30 +145,26 @@ def addCard(request):
 
     elif request.method == 'POST':
         try:
-            # Get the client associated with the logged-in user
+            print(request.user.id)
             client = Clienti.objects.get(client_id=request.user.id)
-
-            # Retrieve payment method ID from the request body
+            print("Hello")
             data = json.loads(request.body)
             payment_method_id = data.get('payment_method_id')
-
-            # Use the Stripe customer ID associated with this client
+            print(payment_method_id)
             customer_id = client.stripe_customer_id
+            print(customer_id)
 
-            # Attach the payment method to the Stripe customer
             stripe.PaymentMethod.attach(
                 payment_method_id,
                 customer=customer_id,
             )
-
-            # Set the payment method as the default for future payments
+            print("Hello")
             stripe.Customer.modify(
                 customer_id,
                 invoice_settings={
                     'default_payment_method': payment_method_id,
                 },
             )
-
             return JsonResponse({'success': True}, status=200)
 
         except Clienti.DoesNotExist:

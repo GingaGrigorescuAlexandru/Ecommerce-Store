@@ -19,8 +19,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # settings.py
-STRIPE_SECRET_KEY = 'sk_test_51Q3j8SCHn57WARm8C4XKZ05PBGFJWnxyQv55wOktmb50hRBUb4rWPZCfpHDaE3eSBJe2Aki0yBAv6tyd8KiudoEi00SIKjSYa2'  # Secret key from Stripe Dashboard
-STRIPE_PUBLIC_KEY = 'pk_test_51Q3j8SCHn57WARm8fMDgKE1yaOuhrq0IyrZm3adm8rDwDwhvEhDHnkb8iLcCHOUKm9OCwoeOaAYh4M3fJsKUlw5h00gj5ElymB'  # Public key from Stripe Dashboard
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIC_KEY")
 # Application definition
 
 INSTALLED_APPS = [

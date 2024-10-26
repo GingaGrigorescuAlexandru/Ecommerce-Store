@@ -1,71 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Add Card</title>
-<script src="https://js.stripe.com/v3/"></script>
-<style>
+  <meta charset="UTF-8">
+  <title>Add Card</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
 
-html, body {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-}
+    #add-card-form {
+      position: relative;
+      top: 10%;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      margin: 0 auto;
+    }
 
-#add-card-form {
-  position: relative;
-  top: 10%;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  margin: 0 auto;
-}
+    h2 {
+      text-align: left;
+    }
 
-h2 {
-  text-align: left;
-}
+    .input-field {
+      margin-bottom: 15px;
+    }
 
-.input-field {
-  margin-bottom: 15px;
-}
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
 
-label {
-  display: block;
-  margin-bottom: 5px;
-}
+    #submit-button {
+      background-color: #6772e5;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
 
-input[type="text"], input[type="month"] {
-  width: 94%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+    #submit-button:hover {
+      background-color: #5469d4;
+    }
 
-  border: 1px solid black;
-}
+    .error-message {
+      color: red;
+      margin-top: 10px;
+      display: none;
+    }
 
-#submit-button {
-  background-color: #6772e5;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 10px;
-  cursor: pointer;
-  font-size: 16px;
-  width: 100%;
-}
-
-#submit-button:hover {
-  background-color: #5469d4;
-}
-
-.error-message {
-  color: red;
-  margin-top: 10px;
-  display: none;
-}
+    #card-element {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body>
@@ -74,47 +70,32 @@ input[type="text"], input[type="month"] {
     <h2>Add New Card</h2>
 
     <div class="input-field">
-      <label for="card-number">Card Number</label>
-      <input type="text" id="card-number" placeholder="4242 4242 4242 4242" required>
-    </div>
-
-    <div class="input-field">
-      <label for="expiration-date">Expiration Date (MM/YY)</label>
-      <input type="month" id="expiration-date" required>
-    </div>
-
-    <div class="input-field">
-      <label for="cvc">CVC</label>
-      <input type="text" id="cvc" placeholder="123" required>
+      <label for="card-element">Card Details</label>
+      <!-- Stripe Elements will create a card input field here -->
+      <div id="card-element"></div>
     </div>
 
     <button id="submit-button">Add Card</button>
+
     <div id="card-errors" class="error-message"></div>
   </form>
 
   <script>
     const stripe = Stripe('{{ stripe_public_key }}');
+    const elements = stripe.elements();
+
+    const cardElement = elements.create('card');
+
+    cardElement.mount('#card-element');
 
     const form = document.getElementById('add-card-form');
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
 
-      const cardNumber = document.getElementById('card-number').value;
-      const expirationDate = document.getElementById('expiration-date').value;
-      const cvc = document.getElementById('cvc').value;
-
-      // Split the expiration date into month and year
-      const [year, month] = expirationDate.split('-').map(num => num.slice(-2)); // get last two digits for the year
-
       const { paymentMethod, error } = await stripe.createPaymentMethod({
         type: 'card',
-        card: {
-          number: cardNumber,
-          exp_month: month,
-          exp_year: year,
-          cvc: cvc,
-        },
+        card: cardElement,
       });
 
       const errorMessageElement = document.getElementById('card-errors');
@@ -125,22 +106,24 @@ input[type="text"], input[type="month"] {
       } else {
         errorMessageElement.style.display = 'none';
         console.log('Payment Method ID:', paymentMethod.id);
-        // Send the PaymentMethod ID to your backend for further processing
-        fetch("{% url 'add-card' %}", {
+
+        fetch("/add-card/", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'X-CSRFToken': '{{ csrf_token }}'
           },
           body: JSON.stringify({ payment_method_id: paymentMethod.id }),
-        }).then(response => response.json()).then(data => {
-          if (data.success) {
-            alert('Card added successfully!');
-            // Optionally reset the form or redirect the user
-          } else {
-            alert('Failed to add card');
-          }
-        });
+        })
+        console.log("We got this far right?")
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              alert('Card added successfully!');
+            } else {
+              alert('Failed to add card');
+            }
+          });
       }
     });
   </script>
