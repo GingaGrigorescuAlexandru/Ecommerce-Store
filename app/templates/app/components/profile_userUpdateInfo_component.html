@@ -8,6 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'styles/profile.css' %}" />
+
+    <script>logged_user = {{ request.user.id }}</script>
 </head>
 <body>
     <div class="update-information">
@@ -45,12 +47,16 @@
 
         <hr>
 
-        <form class="newsletter-form" method="POST">
+        <form class="newsletter-form" action="{% url 'add_newsletter_email' request.user.id %}" method="POST"
+                data-url="{% url 'add_newsletter_email' request.user.id %}">
             {% csrf_token %}
             <h2>Subscribe Form</h2>
             <input type="email" name="newsletter-email-input" placeholder="Email Address" required/>
             <button type="submit" name="newsletter-submit-button">Submit</button>
         </form>
+
     </div>
+
+    <script src="{% static 'scripts/profile.js' %}"></script>
 </body>
 </html>

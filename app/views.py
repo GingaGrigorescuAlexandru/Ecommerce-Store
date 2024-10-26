@@ -10,7 +10,7 @@ from .forms import (CustomUserCreationForm,
                     PropertiesProductForm,
                     ProductCreationForm,
                     AddressForm,
-                    CardForm
+                    CardForm,
                     )
 from django.contrib.auth.hashers import make_password
 from django.template.loader import render_to_string
@@ -31,6 +31,7 @@ from .models import (AuthUser,
                      Cosuri,
                      Domains,
                      Favorites,
+                     NewsletterEmails,
                      Sizes
                      )
 
@@ -542,5 +543,27 @@ def add_item_to_favorites(request):
 
         return JsonResponse({'message': "Added product to favorites list"}, status=200)
 
-    return JsonResponse({'message': "Invalid request method"}, status=400)
+    return JsonResponse({'message': "Invalid request method"}, status=400)\
+
+def add_newsletter_email(request, pk):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        new_email = data.get("newsletter-email-input")
+
+        client = NewsletterEmails.objects.filter(client = pk).first()
+        client_instance = get_object_or_404(Clienti, client_id = pk)
+
+        if client:
+            # Update the existing record's email
+            client.email = new_email
+            client.save()
+            return JsonResponse({'message': 'Email successfully updated!'}, status=200)
+        else:
+            NewsletterEmails.objects.create(
+                client = client_instance,
+                email = new_email
+            )
+            return JsonResponse({'message': 'Email successfully added!'}, status=200)
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 

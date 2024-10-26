@@ -265,6 +265,16 @@ class Furnizori(models.Model):
     def __str__(self):
         return self.nume_furnizor
 
+
+class NewsletterEmails(models.Model):
+    email_id = models.AutoField(primary_key = True)
+    client = models.ForeignKey(Clienti, on_delete = models.CASCADE)
+    email = models.CharField(max_length = 255)
+
+    class Meta:
+        managed = False
+        db_table = 'newsletter_emails'
+
 class PageType(models.Model):
     pg_type_id = models.AutoField(primary_key = True)
     name = models.CharField(max_length = 50)

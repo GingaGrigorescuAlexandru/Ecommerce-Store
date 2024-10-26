@@ -38,5 +38,7 @@ urlpatterns = [
 
     path('legal/', views.legalPage, name = 'legal'),
 
-    path('terms_conditions/', views.legalPage, name = 'terms_conditions')
+    path('terms_conditions/', views.legalPage, name = 'terms_conditions'),
+
+    path('add_newsletter_email/<str:pk>', views.add_newsletter_email, name = 'add_newsletter_email')
 ]

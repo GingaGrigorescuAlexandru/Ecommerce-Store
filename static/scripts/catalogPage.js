@@ -2,10 +2,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.add-to-cart').forEach(function(button) {
         button.addEventListener('click', function(event) {
             event.preventDefault(); // This should prevent the form submission or link action
-            console.log("Button clicked, default action prevented");
-            console.log("Button clicked, default action prevented");
-            console.log("Button clicked, default action prevented");
-            console.log("Button clicked, default action prevented");
 
             let productId = this.dataset.productId;
             let clientId = this.dataset.clientId;
