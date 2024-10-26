@@ -60,19 +60,20 @@
     margin-bottom: 25px;
     overflow: hidden;
 }
-
+.feedback-images,
 .carousel-images {
     display: flex;
     justify-content: row;
     transition: transform 0.5s ease-in-out;
 }
 
+.feedback-images img,
 .carousel-images img {
     width: 300px;
     display: block;
 }
 
-button {
+.prev {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -81,19 +82,26 @@ button {
     cursor: pointer;
     padding: 10px;
     z-index: 1;
-}
-
-button:hover {
-    background-color: rgba(255, 255, 255, 1);
-}
-
-.prev {
     left: 10px;
 }
 
 .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1;
     right: 10px;
 }
+
+.prev:hover,
+.next:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
 
 @media (max-width: 1200px) {
     .about-section {
@@ -118,3 +126,57 @@ hr {
     width: 100%;
     margin: 10px 0;
 }
+
+.newsletter-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 25px;
+    margin-bottom: 25px;
+
+    position: relative;
+
+    width: 100%;
+}
+
+.newsletter-form input {
+    border-radius: 10px;
+    width: 500px;
+    margin: 5px;
+    padding: 10px;
+
+    box-sizing: border-box;
+}
+
+.newsletter-form input:hover {
+    border:2px solid #D484E2;
+}
+
+.newsletter-button {
+    padding: 10px;
+    width: 500px;
+
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+
+    color: white;
+    background-color: black;
+
+    border: none;
+}
+
+.newsletter-button:hover{
+    background-color: #D484E2;
+}
+
+@media (max-width: 600px) {
+    .newsletter-form input,
+    .newsletter-button {
+        max-width: 310px;
+    }
+}
+
+
