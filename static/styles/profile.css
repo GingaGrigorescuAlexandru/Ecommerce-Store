@@ -24,6 +24,10 @@ img {
     margin-right: 5px;
 }
 
+h4:hover {
+    color: #D484E2;
+}
+
 .row-information {
     display: flex;
     flex-direction: row;
@@ -93,12 +97,15 @@ img {
 
     max-width: fit-content;
 
-    border: 1px solid black;
+    border: 2px solid black;
     border-radius: 15px;
 
     padding-right: 10px;
 
+}
 
+.add-command-info-form:hover {
+    border: 2px solid #D484E2;
 }
 
 .add-command-info-header {
@@ -157,7 +164,7 @@ img {
 }
 
 .update-user-info button:hover{
-    background-color: #555555;
+    background-color: #D484E2;
 }
 
 .newsletter-form {
@@ -196,7 +203,7 @@ img {
 }
 
 .newsletter-form button:hover{
-    background-color: #555555;
+    background-color: #D484E2;
 }
 
 
@@ -299,6 +306,10 @@ img {
     font-weight: bold;
 
     font-size: 32px;
+}
+
+input:hover {
+    border: 2px solid #D484E2;
 }
 
 
