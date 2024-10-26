@@ -1,6 +1,20 @@
+.reviews-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.reviews-section p {
+    font-size: 32px;
+    margin-top: 25px;
+    margin-bottom: 0px;
+}
+
+
 .carousel {
     position: relative;
-    max-width: 620px;
+    max-width: 930px;
     margin: auto;
     margin-top: 25px;
     margin-bottom: 25px;
@@ -41,8 +55,22 @@ button:hover {
     right: 10px;
 }
 
+
+@media (max-width: 960px) {
+    .carousel {
+        max-width: 620px;
+    }
+}
+
 @media (max-width: 650px) {
     .carousel {
         max-width: 310px;
     }
+}
+
+hr {
+    border: 0;
+    border-top: 0.1px solid #d3d3d3;
+    width: 100%;
+    margin: 10px 0;
 }
