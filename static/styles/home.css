@@ -134,7 +134,7 @@ hr {
     align-items: center;
 
     margin-top: 25px;
-    margin-bottom: 25px;
+    margin-bottom: 50px;
 
     position: relative;
 
@@ -182,7 +182,7 @@ hr {
 }
 
 #newsletter-submit-success {
-    margin: 0px;
+    margin: 50px;
     width: 125px;
     height: 125px;
 }

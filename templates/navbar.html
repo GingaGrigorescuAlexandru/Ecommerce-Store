@@ -9,7 +9,9 @@
 </head>
 <body>
     <div class = "navbar-container">
-        <h1 class = "navbar-icon"><a href="{% url 'home' %}" class="home-link">Stomagia</a></h1>
+        <a href="{% url 'home' %}" class="home-link">
+            <img src="{% static 'images/Stomagia.png' %}" class="navbar-icon"/>
+        </a>
         <div class = "navbar-redirections">
             <a href = "{% url 'catalog' %}" >Catalog</a>
             <a href = "{% url 'cart' request.user.id %}">Cos</a>

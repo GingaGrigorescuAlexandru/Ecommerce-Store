@@ -511,7 +511,7 @@ def cartPage(request, pk):
 
     context = {
         'cart_items_with_totals': cart_items_with_totals,
-        'total_price': total_price
+        'total_price': round(total_price, 2)
     }
     return render(request, 'app/cart.html', context)
 

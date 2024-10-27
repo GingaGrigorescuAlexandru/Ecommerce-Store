@@ -41,7 +41,7 @@
             </form>
 
             {% for review in review_posts %}
-                <p>@{{ review.client.username }} - {{ review.post_date }}</p>
+                <p>@{{ review.client.username }} - {{ review.post_date|timesince }}</p>
                 <div class="flex-start-row-container">
                 {% for i in review.nr_stars|times %}
                     <img src="{% static 'images/icons/star.png' %}" class="star-icon">
