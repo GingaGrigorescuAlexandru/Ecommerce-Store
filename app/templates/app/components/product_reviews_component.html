@@ -16,20 +16,28 @@
 </head>
 <body>
         <div class="reviews-container">
-            <h3>Reviews
-                <img src="{% static 'images/icons/review_stars.png' %}" alt="Cart Icon" class="social-icon"/>
-            </h3>
+            <h2>Reviews</h2>
 
             <form class="add-review-form" action="" method="POST">
                 {% csrf_token %}
-                <input type="number" name="number_of_stars" />
+                <div class="star-rating">
+                    <span class="star" data-value="1"></span>
+                    <span class="star" data-value="2"></span>
+                    <span class="star" data-value="3"></span>
+                    <span class="star" data-value="4"></span>
+                    <span class="star" data-value="5"></span>
+                </div>
                 <textarea name="input_review" placeholder="Write a review..."></textarea>
                 <button type="submit" name="submit_review">Submit Review</button>
             </form>
 
             {% for review in review_posts %}
-                <p>@{{ review.client.username }}</p>
-                <p>{{ review.nr_stars }}</p>
+                <p>@{{ review.client.username }} - {{ review.post_date }}</p>
+                <div class="flex-start-row-container">
+                {% for i in review.nr_stars|times %}
+                    <img src="{% static 'images/icons/star.png' %}" class="star-icon">
+                {% endfor %}
+                </div>
                 <p>{{ review.body }}</p>
                 <hr>
             {% endfor %}

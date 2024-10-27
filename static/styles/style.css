@@ -31,6 +31,12 @@ img {
     align-items: center;
 }
 
+.flex-start-row-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
 .navbar-container {
     position: sticky;
     top: 0px;
@@ -480,6 +486,70 @@ input[type="range"]::-ms-thumb {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+.add-review-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    width: 450px;
+}
+
+.add-review-form textarea {
+    width: 100%;
+    border-radius: 10px;
+
+    padding: 10px;
+    margin: 5px;
+}
+
+.add-review-form button {
+    width: 150px;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+
+    background-color: black;
+    color: white;
+
+    border: none;
+
+    font-weight: bold;
+}
+
+.add-review-form button:hover {
+    background-color: #555555;
+}
+
+.star-rating {
+    margin-left: 5px;
+    display: inline-block;
+    direction: rtl;
+}
+
+.star {
+    cursor: pointer;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-image: url('/static/images/icons/blank_star.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.star:hover,
+.star:hover ~ .star {
+    background-image: url('/static/images/icons/star.png'); /* Path to your filled star image */
+}
+
+.selected {
+    background-image: url('/static/images/icons/star.png'); /* Set the filled star image for selected stars */
+}
+
+.star-icon {
+    width: 20px;
+    margin: 0px;
 }
 
 .cart-items-column{
