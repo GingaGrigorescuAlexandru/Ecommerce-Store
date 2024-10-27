@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
@@ -340,6 +341,23 @@ class ProduseImagini(models.Model):
     class Meta:
         managed = False
         db_table = 'produse_imagini'
+
+
+class Reviews(models.Model):
+    review_id = models.AutoField(primary_key = True)
+    client_id = models.ForeignKey(Clienti, on_delete = models.CASCADE)
+    product_id = models.ForeignKey(Produse, on_delete = models.CASCADE)
+    body = models.TextField()
+    nr_stars = models.PositiveSmallIntegerField(default = 1,
+                                                validators = [
+                                                    MinValueValidator(1),
+                                                    MaxValueValidator(5)
+    ])
+    post_date = models.DateField(auto_now = True)
+
+    class Meta:
+        managed = False
+        db_table = 'reviews'
 
 
 class Sizes(models.Model):
