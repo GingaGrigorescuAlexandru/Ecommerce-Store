@@ -540,11 +540,13 @@ input[type="range"]::-ms-thumb {
 
 .star:hover,
 .star:hover ~ .star {
-    background-image: url('/static/images/icons/star.png'); /* Path to your filled star image */
+    background-image: url('/static/images/icons/star.png');
 }
 
-.selected {
-    background-image: url('/static/images/icons/star.png'); /* Set the filled star image for selected stars */
+
+input[type="radio"]:checked ~ label.star,
+input[type="radio"]:checked ~ label.star ~ label.star {
+    background-image: url('/static/images/icons/star.png');
 }
 
 .star-icon {

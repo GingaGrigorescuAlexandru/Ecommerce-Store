@@ -21,11 +21,20 @@
             <form class="add-review-form" action="" method="POST">
                 {% csrf_token %}
                 <div class="star-rating">
-                    <span class="star" data-value="1"></span>
-                    <span class="star" data-value="2"></span>
-                    <span class="star" data-value="3"></span>
-                    <span class="star" data-value="4"></span>
-                    <span class="star" data-value="5"></span>
+                    <input type="radio" id="star5" name="rating" value="5" hidden>
+                    <label for="star5" class="star" data-value="5"></label>
+
+                    <input type="radio" id="star4" name="rating" value="4" hidden>
+                    <label for="star4" class="star" data-value="4"></label>
+
+                    <input type="radio" id="star3" name="rating" value="3" hidden>
+                    <label for="star3" class="star" data-value="3"></label>
+
+                    <input type="radio" id="star2" name="rating" value="2" hidden>
+                    <label for="star2" class="star" data-value="2"></label>
+
+                    <input type="radio" id="star1" name="rating" value="1" hidden>
+                    <label for="star1" class="star" data-value="1"></label>
                 </div>
                 <textarea name="input_review" placeholder="Write a review..."></textarea>
                 <button type="submit" name="submit_review">Submit Review</button>
@@ -44,6 +53,6 @@
 
         </div>
 
-    <script src="{% static 'scripts/productPage.js' %}"?></script>
+    <script src="{% static 'scripts/review.js' %}"></script>
 </body>
 </html>
