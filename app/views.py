@@ -32,6 +32,7 @@ from .models import (AuthUser,
                      Domains,
                      Favorites,
                      NewsletterEmails,
+                     Reviews,
                      Sizes
                      )
 
@@ -417,12 +418,33 @@ def productPage(request, pk):
 
     properties_fields = product_properties._meta.fields
 
+    reviews = Reviews.objects.filter(product_id = product)
+
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        review_body = data.get('input_review')
+        nr_of_stars = data.get('nr_of_stars')
+        client_instance = get_object_or_404(Clienti, client_id = request.user.id)
+        product_instance = get_object_or_404(Produse, produs_id = pk)
+
+
+        Reviews.objects.create(
+            client = client_instance,
+            product = product_instance,
+            body = review_body,
+            nr_stars = nr_of_stars
+        )
+
+        return JsonResponse({'message': 'Review added successfully!'})
+
     context = {'product': product,
                'product_properties': product_properties,
                'product_images': product_images,
                'product_type': product_type,
                'properties_fields': properties_fields,
-               'favorite_products_ids': favorite_products_ids
+               'favorite_products_ids': favorite_products_ids,
+               'reviews': reviews
                }
     return render(request, 'app/productPage.html', context)
 

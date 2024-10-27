@@ -74,3 +74,38 @@ function removeTextNodes(button) {
         }
     });
 }
+
+document.querySelector('.add-review-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    const nrStars = document.querySelector('input[type="number"]').value;
+    const reviewBody = document.querySelector('textarea[name="input_review"]').value;
+
+    const data = {
+        'input_review':  reviewBody,
+        'nr_of_stars': nrStars
+    };
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify(data),
+    })
+
+    .then(response => {
+        if (response.ok) {
+            alert("Added Review!");
+        } else {
+            alert("Failed to add review!");
+        }
+    })
+
+    .catch(error => {
+            console.error('Error:', error);
+            alert("An error occurred while adding the product to the cart.");
+        });
+});

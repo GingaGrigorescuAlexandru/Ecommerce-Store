@@ -10,7 +10,12 @@
 
     {% block content %}
 
+    <div class="centered-column-container">
         {% include 'app/components/productPage_component.html' %}
+        <hr>
+        {% include 'app/components/product_reviews_component.html' %}
+
+    </div>
 
     {% endblock content %}
 </body>

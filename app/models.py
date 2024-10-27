@@ -345,8 +345,8 @@ class ProduseImagini(models.Model):
 
 class Reviews(models.Model):
     review_id = models.AutoField(primary_key = True)
-    client_id = models.ForeignKey(Clienti, on_delete = models.CASCADE)
-    product_id = models.ForeignKey(Produse, on_delete = models.CASCADE)
+    client = models.ForeignKey(Clienti, on_delete = models.CASCADE)
+    product = models.ForeignKey(Produse, on_delete = models.CASCADE)
     body = models.TextField()
     nr_stars = models.PositiveSmallIntegerField(default = 1,
                                                 validators = [
