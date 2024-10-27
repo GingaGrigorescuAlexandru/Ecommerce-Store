@@ -524,8 +524,9 @@ input[type="range"]::-ms-thumb {
 
 .star-rating {
     margin-left: 5px;
-    display: inline-block;
-    direction: rtl;
+    display: flex;
+    flex-direction: row-reverse; /* To maintain right-to-left ordering */
+    line-height: 0;
 }
 
 .star {
@@ -543,7 +544,6 @@ input[type="range"]::-ms-thumb {
     background-image: url('/static/images/icons/star.png');
 }
 
-
 input[type="radio"]:checked ~ label.star,
 input[type="radio"]:checked ~ label.star ~ label.star {
     background-image: url('/static/images/icons/star.png');
@@ -552,6 +552,7 @@ input[type="radio"]:checked ~ label.star ~ label.star {
 .star-icon {
     width: 20px;
     margin: 0px;
+    padding: 0px;
 }
 
 .cart-items-column{
