@@ -80,6 +80,7 @@ def register(request):
     context = {'form': form}
     return render(request, 'app/register.html', context)
 
+
 def loginUser(request):
     page = "login"
     form = AuthenticationForm()
@@ -105,9 +106,11 @@ def loginUser(request):
     context = {"page": page}
     return render( request, "app/login.html", context )
 
+
 def logoutUser(request):
     logout(request)
     return redirect('home')
+
 
 def profilePage(request, pk):
     user = AuthUser.objects.get(id = pk)
@@ -116,70 +119,6 @@ def profilePage(request, pk):
     return render(request, 'app/profile.html', context)
 
 
-def addStripe(request):
-    client = Clienti.objects.get(client_id=request.user.id)
-
-    data = json.loads(request.body)
-    payment_method_id = data.get('payment_method_id')
-
-    customer_id = client.stripe_customer_id
-
-    stripe.PaymentMethod.attach(
-        payment_method_id,
-        customer=customer_id,
-    )
-
-    stripe.Customer.modify(
-        customer_id,
-        invoice_settings={
-            'default_payment_method': payment_method_id,
-        },
-    )
-    return JsonResponse({'success': True}, status=200)
-
-
-
-def addCard(request):
-    if request.method == 'GET':
-        context = {
-            'stripe_public_key': settings.STRIPE_PUBLIC_KEY
-        }
-        return render(request, 'app/add_card.html', context)
-
-    elif request.method == 'POST':
-        try:
-            print(request.user.id)
-            client = Clienti.objects.get(client_id=request.user.id)
-            print("Hello")
-            data = json.loads(request.body)
-            payment_method_id = data.get('payment_method_id')
-            print(payment_method_id)
-            customer_id = client.stripe_customer_id
-            print(customer_id)
-
-            stripe.PaymentMethod.attach(
-                payment_method_id,
-                customer=customer_id,
-            )
-            print("Hello")
-            stripe.Customer.modify(
-                customer_id,
-                invoice_settings={
-                    'default_payment_method': payment_method_id,
-                },
-            )
-            return JsonResponse({'success': True}, status=200)
-
-        except Clienti.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'Client not found'}, status=404)
-        except Exception as e:
-            return JsonResponse({'success': False, 'error': str(e)}, status=400)
-
-    return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
-
-def cardsPage(request, pk):
-    context = {}
-    return render(request, 'app/cards.html', context)
 
 def addAddress(request):
     form = AddressForm()
