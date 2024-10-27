@@ -58,6 +58,7 @@ def register(request):
             customer = stripe.Customer.create(email=form.cleaned_data['email'])
 
             new_client = Clienti(
+                username=form.cleaned_data['username'],
                 nume=form.cleaned_data['first_name'],
                 prenume=form.cleaned_data['last_name'],
                 email=form.cleaned_data['email'],
@@ -418,7 +419,8 @@ def productPage(request, pk):
 
     properties_fields = product_properties._meta.fields
 
-    reviews = Reviews.objects.filter(product_id = product)
+    review_posts = Reviews.objects.filter(product = pk).select_related('client')
+
 
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -427,7 +429,6 @@ def productPage(request, pk):
         nr_of_stars = data.get('nr_of_stars')
         client_instance = get_object_or_404(Clienti, client_id = request.user.id)
         product_instance = get_object_or_404(Produse, produs_id = pk)
-
 
         Reviews.objects.create(
             client = client_instance,
@@ -444,7 +445,7 @@ def productPage(request, pk):
                'product_type': product_type,
                'properties_fields': properties_fields,
                'favorite_products_ids': favorite_products_ids,
-               'reviews': reviews
+               'review_posts': review_posts
                }
     return render(request, 'app/productPage.html', context)
 

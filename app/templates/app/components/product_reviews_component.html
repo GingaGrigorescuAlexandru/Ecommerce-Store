@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
 
     <script>
-        const url = '{% url 'product' request.user.id %}';
+        const url = '{% url 'product' product.produs_id %}';
     </script>
 
 </head>
@@ -26,6 +26,14 @@
                 <textarea name="input_review" placeholder="Write a review..."></textarea>
                 <button type="submit" name="submit_review">Submit Review</button>
             </form>
+
+            {% for review in review_posts %}
+                <p>@{{ review.client.username }}</p>
+                <p>{{ review.nr_stars }}</p>
+                <p>{{ review.body }}</p>
+                <hr>
+            {% endfor %}
+
         </div>
 
     <script src="{% static 'scripts/productPage.js' %}"?></script>
