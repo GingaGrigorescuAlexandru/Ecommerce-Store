@@ -82,7 +82,7 @@ input[type="submit"] {
     padding: 10px;
     border: none;
     border-radius: 4px;
-    background-color: #D484E2;
+    background-color: black;
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -91,7 +91,7 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: black;
+    background-color: #D484E2;
 }
 
 /* Headings styling */

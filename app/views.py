@@ -19,6 +19,7 @@ from django.conf import settings
 import logging
 import json
 import stripe
+import ast
 from .models import (AuthUser,
                      Adrese,
                      CarduriClienti,
@@ -350,6 +351,11 @@ def productPage(request, pk):
     product = Produse.objects.get(produs_id=pk)
 
     product_properties = ProprietatiProduse.objects.get(produs = pk)
+
+    product_colors = product_properties.Culori
+    product_colors_list = ast.literal_eval(product_colors)
+    cleaned_colors = [color.strip().strip("'") for color in product_colors_list]
+
     product_images = ProduseImagini.objects.get(produs = pk)
     product_type = Categorie.objects.get(categorie_id = product.categorie_id)
 
@@ -380,6 +386,7 @@ def productPage(request, pk):
 
     context = {'product': product,
                'product_properties': product_properties,
+               'product_colors': cleaned_colors,
                'product_images': product_images,
                'product_type': product_type,
                'properties_fields': properties_fields,

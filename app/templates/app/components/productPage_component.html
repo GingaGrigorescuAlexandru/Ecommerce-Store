@@ -30,13 +30,19 @@
             <hr>
 
             {% for field in properties_fields %}
-                {% if field.name != 'produs' and field.name != 'domeniu' and field.name != 'Category' %}
+                {% if field.name != 'produs' and field.name != 'domeniu' and field.name != 'Category' and field.name != 'Culori' %}
             <div class="properties-list">
-                    <p>{{ field.verbose_name }}:</p>
-                    <p>{{ product_properties|get_attribute:field.name }}</p>
+                <p>{{ field.verbose_name }}:</p>
+                <p>{{ product_properties|get_attribute:field.name }}</p>
             </div>
                 {% endif %}
             {% endfor %}
+            <div class="properties-list">
+                <p>Culori:</p>
+                {% for color in product_colors %}
+                    <p>{{ color }},</p>
+                {% endfor %}
+            </div>
 
             <hr>
 
