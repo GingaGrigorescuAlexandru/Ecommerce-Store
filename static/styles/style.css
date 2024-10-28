@@ -388,6 +388,7 @@ input[type="range"]::-ms-thumb {
     border: 1px solid black;
     border-radius: 25px;
 
+    margin-left: 25px;
     margin-top: 30px;
 }
 
@@ -409,6 +410,7 @@ input[type="range"]::-ms-thumb {
 .properties-list {
     display: flex;
     flex-direction: row;
+    margin-left: 0px;
 }
 
 .properties-list > * {
@@ -452,7 +454,7 @@ input[type="range"]::-ms-thumb {
     justify-content: center;
     align-items: center;
 
-    min-width: 255px;
+    width: 260px;
     max-height: 50px;
 
     border: none;
@@ -478,7 +480,7 @@ input[type="range"]::-ms-thumb {
     justify-content: center;
     align-items: center;
 
-    min-width: 350px;
+    width: 350px;
     max-height: 50px;
 
     border: 2px solid black;
@@ -498,13 +500,21 @@ input[type="range"]::-ms-thumb {
 }
 
 .add-to-favourites-button:hover {
-    /* Keep the border thicker on hover, but it won't cause shifting */
     background-color: #f0f0f0;
     box-sizing: border-box;
 }
 
 .product-description {
     text-align: left;
+}
+
+.reviews-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    width: 100%;
 }
 
 .reviews-container h3 {
@@ -519,7 +529,9 @@ input[type="range"]::-ms-thumb {
     justify-content: flex-start;
     align-items: flex-start;
 
-    width: 450px;
+    width: 100%;
+    margin-left: 0px;
+    padding-left: 0px;
 }
 
 .add-review-form textarea {
@@ -528,6 +540,7 @@ input[type="range"]::-ms-thumb {
 
     padding: 10px;
     margin: 5px;
+    margin-left: 0px;
 }
 
 .add-review-form button {
@@ -535,6 +548,7 @@ input[type="range"]::-ms-thumb {
     border-radius: 10px;
     padding: 10px;
     margin: 5px;
+    margin-left: 0px;
 
     background-color: black;
     color: white;
@@ -550,6 +564,7 @@ input[type="range"]::-ms-thumb {
 
 .star-rating {
     margin: 5px;
+    margin-left: 0px;
     display: flex;
     flex-direction: row-reverse; /* To maintain right-to-left ordering */
 }
@@ -562,6 +577,7 @@ input[type="range"]::-ms-thumb {
     background-image: url('/static/images/icons/blank_star.png');
     background-size: contain;
     background-repeat: no-repeat;
+    margin-left: 0px;
 }
 
 .star:hover,
@@ -573,6 +589,27 @@ input[type="radio"]:checked ~ label.star,
 input[type="radio"]:checked ~ label.star ~ label.star {
     background-image: url('/static/images/icons/star.png');
 }
+
+@media (max-width: 1300px) {
+    #product-page-container {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 950px) {
+    .product-page-image {
+        width: 600px;
+    }
+}
+
+@media (max-width: 650px) {
+    .product-page-image {
+        width: 450px;
+    }
+}
+
 
 .star-icon {
     width: 20px;

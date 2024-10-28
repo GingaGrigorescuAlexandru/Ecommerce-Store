@@ -211,7 +211,7 @@ def favoriteList(request, pk):
 def product_image_view(request, product_id):
     try:
         image_record = ProduseImagini.objects.get(produs = product_id)
-        return HttpResponse(image_record.imagine_catalog, content_type="image/png")  # Adjust content_type if needed
+        return HttpResponse(image_record.imagine_catalog, content_type="image/jpg")  # Adjust content_type if needed
     except ProduseImagini.DoesNotExist:
         return HttpResponse(status=404)
 
@@ -222,7 +222,9 @@ def addProduct(request):
     if request.method == "POST":
         formProduct = ProductCreationForm(request.POST)
         formProperties = PropertiesProductForm(request.POST)
-
+        print(formProduct.is_valid())
+        print(formProperties.is_valid())
+        print(formProperties.errors)
         if all([formProduct.is_valid(), formProperties.is_valid()]):
             product = formProduct.save()
 
@@ -241,6 +243,7 @@ def addProduct(request):
                 product_image.save()
 
                 image_url = request.build_absolute_uri(reverse('product_image', args=[product.produs_id]))
+                print(image_url)
 
             stripe_product = stripe.Product.create(
                 name = product.nume,  # Assuming `name` is a field in `ProductCreationForm`
@@ -384,16 +387,12 @@ def productPage(request, pk):
     product_properties = ProprietatiProduse.objects.get(produs = pk)
 
     product_colors = product_properties.Culori
-    print(type(product_colors))
-    print(len(product_colors))
-    print(len(product_colors))
-    print(len(product_colors))
-    print(len(product_colors))
+
     if product_colors.startswith("[") and product_colors.endswith("]"):
         product_colors_list = ast.literal_eval(product_colors)
     else:
         product_colors_list = [product_colors]
-    print("HEEEEEEEEEEEEEEEEEELLLLLLLLLLLLLLLLLOOOOOOOOOOOOOOOO")
+
     cleaned_colors = [color.strip().strip("'") for color in product_colors_list]
 
     product_images = ProduseImagini.objects.get(produs = pk)

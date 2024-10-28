@@ -11,11 +11,12 @@
 
     <script>
         const addedToFavoritesSuccessfully = "{% static 'images/icons/added-favorites-heart.png' %}";
+        const url = '{% url 'product' product.produs_id %}';
     </script>
 </head>
 <body>
 
-    <div class="row-info-container">
+    <div class="row-info-container" id="product-page-container">
 
         <div>
             <img class="product-page-image" src="data:image/jpeg;base64,{{ product_images.imagine_catalog|b64encode }}"
@@ -31,22 +32,22 @@
 
             {% for field in properties_fields %}
                 {% if field.name != 'produs' and field.name != 'domeniu' and field.name != 'Category' and field.name != 'Culori' %}
-            <div class="properties-list">
-                <p><b>{{ field.verbose_name }}:</b></p>
-                <p>{{ product_properties|get_attribute:field.name }}</p>
-            </div>
+                    <div class="properties-list">
+                        <p><b>{{ field.verbose_name }}:</b></p>
+                        <p>{{ product_properties|get_attribute:field.name }}</p>
+                    </div>
                 {% endif %}
             {% endfor %}
-            <div class="properties-list">
-                <p><b>Culori:</b></p>
-                {% for color in product_colors %}
-                    <p>{{ color }}</p>
-                {% endfor %}
-            </div>
+                <div class="properties-list">
+                    <p><b>Culori:</b></p>
+                    {% for color in product_colors %}
+                        <p>{{ color }}</p>
+                    {% endfor %}
+                </div>
 
             <hr>
 
-            <div class="row-info-container">
+            <div class="row-info-container" style="margin-left: 0px">
 
                 <input type="number" min="1" class="cart-add-count" id="add_quantity" value="1"/>
 
@@ -79,7 +80,7 @@
             <hr>
 
             <div class="product-description">
-                <h4>Livrare:</h4>
+                <h2>Livrare:</h2>
                 <p>Veți putea vedea opțiunile noastre de livrare la finalizarea comenzii!
                 </p>
             </div>
@@ -87,14 +88,55 @@
             <hr>
 
             <div class="product-description">
-                <h4>Descriere:</h4>
+                <h2>Descriere:</h2>
                 <p>Acest caiet modern, dedicat studenților la medicină dentară,
                     are un design atrăgător și un preț accesibil. Cu foi de 80 g/mp,
                     îți oferă o experiență plăcută de scriere, perfect pentru notițe și studii.
                     Ideal pentru a-ți organiza informațiile esențiale!
                 </p>
             </div>
+
+            <hr>
+
+            <div class="reviews-container">
+                <h2>Reviews</h2>
+
+                <form class="add-review-form" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="star-rating">
+                        <input type="radio" id="star5" name="rating" value="5" hidden>
+                        <label for="star5" class="star" data-value="5"></label>
+
+                        <input type="radio" id="star4" name="rating" value="4" hidden>
+                        <label for="star4" class="star" data-value="4"></label>
+
+                        <input type="radio" id="star3" name="rating" value="3" hidden>
+                        <label for="star3" class="star" data-value="3"></label>
+
+                        <input type="radio" id="star2" name="rating" value="2" hidden>
+                        <label for="star2" class="star" data-value="2"></label>
+
+                        <input type="radio" id="star1" name="rating" value="1" hidden>
+                        <label for="star1" class="star" data-value="1"></label>
+                    </div>
+                    <textarea name="input_review" placeholder="Write a review..."></textarea>
+                    <button type="submit" name="submit_review">Submit Review</button>
+                </form>
+
+                {% for review in review_posts %}
+                    <p>@{{ review.client.username }} - {{ review.post_date|timesince }}</p>
+                    <div class="flex-start-row-container">
+                    {% for i in review.nr_stars|times %}
+                        <img src="{% static 'images/icons/star.png' %}" class="star-icon">
+                    {% endfor %}
+                    </div>
+                    <p>{{ review.body }}</p>
+                    <hr>
+                {% endfor %}
+            </div>
         </div>
+
+
     </div>
     <script src="{% static 'scripts/productPage.js' %}"></script>
 </body>

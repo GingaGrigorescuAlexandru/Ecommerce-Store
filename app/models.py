@@ -329,7 +329,7 @@ class ProprietatiProduse(models.Model):
     Category = models.CharField(max_length=50)
     domeniu = models.CharField(max_length=50)
     Dimensiune = models.CharField(max_length=50)
-    Culori = models.CharField(max_length=50)
+    Culori = models.CharField(max_length=255)
     Foaie = models.CharField(max_length=50)
     Pagina = models.CharField(max_length=50)
 
