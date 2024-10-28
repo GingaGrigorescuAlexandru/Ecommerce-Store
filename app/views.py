@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.db.models import Prefetch
 from django.contrib.auth.forms import AuthenticationForm
@@ -466,6 +467,7 @@ def cartPage(request, pk):
 
     context = {
         'cart_items_with_totals': cart_items_with_totals,
+        'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
         'total_price': round(total_price, 2)
     }
     return render(request, 'app/cart.html', context)
@@ -545,3 +547,60 @@ def add_newsletter_email(request, pk):
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+@csrf_exempt
+def create_checkout_session(request):
+    try:
+        print('Beginning Creation:')
+        session = stripe.checkout.Session.create(
+            ui_mode='embedded',
+            line_items=[
+                {
+                    'price': "price_1QEu6WCHn57WARm8nNuGKZmj",  # Replace with your actual price ID
+                    'quantity': 1,
+                },
+            ],
+            mode='payment',
+            return_url=settings.YOUR_DOMAIN + '/return.html?session_id={CHECKOUT_SESSION_ID}',  # Return URL after checkout
+        )
+        print('Created')
+        print(session.id)
+        return JsonResponse({'clientSecret': session.client_secret})  # Return the session ID for client redirection
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+
+def checkout(request):
+    context = {'STRIPE_SECRET_KEY': settings.STRIPE_SECRET_KEY}
+    return render(request, 'app/checkout.html', context)
+
+@csrf_exempt
+def session_status(request):
+    session_id = request.GET.get('session_id')
+    if not session_id:
+        return HttpResponse("Session ID missing", status=400)
+
+    try:
+        session = stripe.checkout.Session.retrieve(session_id)
+        return JsonResponse({
+            'status': session.status,
+            'customer_email': session.customer_details.email
+        })
+    except Exception as e:
+        return HttpResponse(str(e), status=500)
+
+def success(request):
+    session_id = request.GET.get('session_id')  # Get session ID from the URL
+    if session_id:
+        try:
+            # Retrieve the session details from Stripe (optional)
+            session = stripe.checkout.Session.retrieve(session_id)
+            return render(request, 'checkout/success.html', {'session': session})
+        except Exception as e:
+            return HttpResponse(f"Error retrieving session details: {str(e)}", status=500)
+    return HttpResponse("Session ID not provided", status=400)
+
+def cancel(request):
+    return render(request, 'checkout/cancel.html', {'message': 'Your payment has been cancelled.'})

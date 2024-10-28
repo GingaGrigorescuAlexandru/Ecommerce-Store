@@ -21,6 +21,7 @@ ALLOWED_HOSTS = []
 # settings.py
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIC_KEY")
+YOUR_DOMAIN = 'http://localhost:8000'
 # Application definition
 
 INSTALLED_APPS = [

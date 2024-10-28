@@ -37,5 +37,11 @@ urlpatterns = [
 
     path('terms_conditions/', views.legalPage, name = 'terms_conditions'),
 
-    path('add_newsletter_email/<str:pk>', views.add_newsletter_email, name = 'add_newsletter_email')
+    path('add_newsletter_email/<str:pk>', views.add_newsletter_email, name = 'add_newsletter_email'),
+
+    path('create-checkout-session/', views.create_checkout_session, name='create-checkout-session'),
+    path('checkout', views.checkout, name='checkout'),
+    path('session-status/', views.session_status, name='session-status'),
+    path('success/', views.success, name='success'),
+    path('cancel/', views.cancel, name='cancel'),
 ]
