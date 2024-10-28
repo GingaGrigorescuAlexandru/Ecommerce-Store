@@ -15,8 +15,9 @@
                 <h1 class="checkout-headers">Summary</h1>
             <hr>
 
-            <h3 class="checkout-headers">Voucher?</h3>
-            <input type="text" class="voucher-input"/>
+            <h3 class="checkout-headers">Voucher:</h3>
+            <input type="text" class="voucher-input" placeholder="Voucher code here..."/>
+
             <hr>
 
             <h3 class="checkout-headers">Suma Produse:
@@ -34,7 +35,7 @@
             </h3>
             <hr>
 
-            <a href="{% url 'checkout' %}">button type="button" id="checkout-button" class="checkout-button">Checkout</button></a>
+            <a href="{% url 'checkout' %}"><button type="button" id="checkout-button" class="checkout-button">Checkout $</button></a>
         </div>
 
 </body>

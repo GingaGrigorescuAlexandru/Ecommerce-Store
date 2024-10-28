@@ -147,16 +147,21 @@ img {
 }
 
 .filter-container {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
     position: sticky;
     top: 100px;
     z-index: 1;
 
     height: fit-content;
 
-    overflow-y: auto; /* Enable vertical scrolling */
-    overflow-x: hidden; /* Hide horizontal scrolling */
-    height: calc(100vh - 25px); /* Full height minus top offset */
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
     margin: 10px;
     padding: 20px;
 }
@@ -170,6 +175,7 @@ img {
     flex-grow: 0;
     height: auto;
 
+    margin-top: 0px;
     width: 100%;
 }
 
@@ -375,6 +381,7 @@ input[type="range"]::-ms-thumb {
     justify-content: center;
     text-align: center;
 
+    margin-top: 30px;
     padding: 10px;
 }
 
@@ -471,8 +478,9 @@ input[type="range"]::-ms-thumb {
 }
 
 .add-to-cart-button:hover {
-    background-color: #555555;
+    background-color: #D484E2;
 }
+
 
 .add-to-favourites-button {
     display: flex;
@@ -495,7 +503,6 @@ input[type="range"]::-ms-thumb {
     font-size: 16px;
     font-weight: bold;
 
-    /* Add this to include padding and border in the button's total size */
     box-sizing: border-box;
 }
 
@@ -617,11 +624,14 @@ input[type="radio"]:checked ~ label.star ~ label.star {
     padding: 0px;
 }
 
+
 .cart-items-column{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+
+    margin-top: 30px;
 }
 
 .cart-item-container {
@@ -689,11 +699,12 @@ input[type="radio"]:checked ~ label.star ~ label.star {
 }
 
 .voucher-input {
-    width: 95%;
+    width: 80%;
     height: 25px;
-    border-radius: 25px;
+    border-radius: 10px;
 
     padding: 5px;
+    margin-left: 20px;
     margin-top: 5px;
     margin-bottom: 5px;
 }
@@ -706,14 +717,14 @@ input[type="radio"]:checked ~ label.star ~ label.star {
     align-items: center;
 
     border: none;
-    border-radius: 25px;
+    border-radius: 10px;
 
     padding: 10px;
     margin: 10px;
 
     text-decoration: none;
     color: white;
-    background-color: #D484E2;
+    background-color: black;
     box-shadow: 2px 2px 4px rgba(1, 1, 1, 0.3);
 
     font-size: 20px;
@@ -729,8 +740,32 @@ input[type="radio"]:checked ~ label.star ~ label.star {
 
 
 .checkout-button:hover {
-    background-color: #A96BC2;
+    background-color: #D484E2;
 }
+
+@media (max-width: 1200px) {
+    #cart-page-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .cart-item-description{
+        min-width: auto;
+    }
+}
+
+@media (max-width: 750px) {
+    .cart-item-header{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+}
+
+
 
 .footer-container {
     display: flex;
