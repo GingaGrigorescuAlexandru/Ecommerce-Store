@@ -306,6 +306,8 @@ class Produse(models.Model):
     nume = models.CharField(max_length=255)
     stoc = models.SmallIntegerField()
     pret_unitar = models.FloatField()
+    stripe_product_id = models.CharField(max_length=255)
+    stripe_price_id = models.CharField(max_length=255)
 
     class Meta:
         managed = False

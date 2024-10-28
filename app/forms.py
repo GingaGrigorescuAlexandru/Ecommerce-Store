@@ -31,6 +31,7 @@ class ProductCreationForm(forms.ModelForm):
     class Meta:
         model = Produse
         fields = '__all__'
+        exclude = ["stripe_product_id", "stripe_price_id"]
 
 class PropertiesProductForm(ModelForm):
 
@@ -84,7 +85,7 @@ class PropertiesProductForm(ModelForm):
     class Meta:
         model = ProprietatiProduse
         fields = '__all__'
-        exclude = ["produs"]
+        exclude = ["produs", "Category"]
 
 class AddressForm(ModelForm):
     COUNTRY_OPTIONS = [

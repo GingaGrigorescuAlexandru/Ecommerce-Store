@@ -215,21 +215,43 @@ def addProduct(request):
     if request.method == "POST":
         formProduct = ProductCreationForm(request.POST)
         formProperties = PropertiesProductForm(request.POST)
-
+        print('Helloooo')
+        print(formProduct.is_valid())
+        print(formProperties.is_valid())
+        print(formProperties.errors)
         if all([formProduct.is_valid(), formProperties.is_valid()]):
             product = formProduct.save()
-
+            print('Helloooo')
             properties = formProperties.save(commit = False)
             properties.produs = product
             properties.save()
-
+            print('Helloooo')
             image_file = request.FILES.get('catalog-image-input')
-
             if image_file:
                 image_data = image_file.read()
                 product_image = ProduseImagini(produs = product,
                                                imagine_catalog = image_data)
                 product_image.save()
+
+            print('Helloooo')
+            stripe_product = stripe.Product.create(
+                name=product.nume,  # Assuming `name` is a field in `ProductCreationForm`
+                description=product.categorie_id,  # Adjust this to match your form field names
+                images=None,  # Pass image URL if available
+            )
+            print('Helloooo')
+            # Create price for the Stripe product
+            stripe_price = stripe.Price.create(
+                product=stripe_product.id,
+                unit_amount=int(product.pret_unitar * 100),  # Convert price to cents if using USD
+                currency="ron",  # Update to your currency
+            )
+            print('Helloooo')
+            # Save Stripe IDs to your database model if needed
+            product.stripe_product_id = stripe_product.id
+            product.stripe_price_id = stripe_price.id
+            product.save()
+
             return redirect('catalog')
 
     context = {'formProduct': formProduct,
