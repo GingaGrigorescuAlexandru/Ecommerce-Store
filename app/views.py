@@ -208,6 +208,13 @@ def favoriteList(request, pk):
 
     return render(request, 'app/favorite.html', context)
 
+def product_image_view(request, product_id):
+    try:
+        image_record = ProduseImagini.objects.get(produs = product_id)
+        return HttpResponse(image_record.imagine_catalog, content_type="image/png")  # Adjust content_type if needed
+    except ProduseImagini.DoesNotExist:
+        return HttpResponse(status=404)
+
 def addProduct(request):
     formProduct = ProductCreationForm()
     formProperties = PropertiesProductForm()
@@ -215,17 +222,17 @@ def addProduct(request):
     if request.method == "POST":
         formProduct = ProductCreationForm(request.POST)
         formProperties = PropertiesProductForm(request.POST)
-        print('Helloooo')
-        print(formProduct.is_valid())
-        print(formProperties.is_valid())
-        print(formProperties.errors)
+
         if all([formProduct.is_valid(), formProperties.is_valid()]):
             product = formProduct.save()
-            print('Helloooo')
+
+            category = product.categorie.nume_categorie
+
             properties = formProperties.save(commit = False)
             properties.produs = product
+            properties.Category = category
             properties.save()
-            print('Helloooo')
+
             image_file = request.FILES.get('catalog-image-input')
             if image_file:
                 image_data = image_file.read()
@@ -233,20 +240,21 @@ def addProduct(request):
                                                imagine_catalog = image_data)
                 product_image.save()
 
-            print('Helloooo')
+                image_url = request.build_absolute_uri(reverse('product_image', args=[product.produs_id]))
+
             stripe_product = stripe.Product.create(
-                name=product.nume,  # Assuming `name` is a field in `ProductCreationForm`
-                description=product.categorie_id,  # Adjust this to match your form field names
-                images=None,  # Pass image URL if available
+                name = product.nume,  # Assuming `name` is a field in `ProductCreationForm`
+                description = category,  # Adjust this to match your form field names
+                images = [image_url],  # Pass image URL if available
             )
-            print('Helloooo')
+
             # Create price for the Stripe product
             stripe_price = stripe.Price.create(
-                product=stripe_product.id,
-                unit_amount=int(product.pret_unitar * 100),  # Convert price to cents if using USD
-                currency="ron",  # Update to your currency
+                product = stripe_product.id,
+                unit_amount = int(product.pret_unitar * 100),  # Convert price to cents if using USD
+                currency = "ron",  # Update to your currency
             )
-            print('Helloooo')
+
             # Save Stripe IDs to your database model if needed
             product.stripe_product_id = stripe_product.id
             product.stripe_price_id = stripe_price.id
