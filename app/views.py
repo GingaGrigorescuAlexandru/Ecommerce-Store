@@ -353,7 +353,16 @@ def productPage(request, pk):
     product_properties = ProprietatiProduse.objects.get(produs = pk)
 
     product_colors = product_properties.Culori
-    product_colors_list = ast.literal_eval(product_colors)
+    print(type(product_colors))
+    print(len(product_colors))
+    print(len(product_colors))
+    print(len(product_colors))
+    print(len(product_colors))
+    if product_colors.startswith("[") and product_colors.endswith("]"):
+        product_colors_list = ast.literal_eval(product_colors)
+    else:
+        product_colors_list = [product_colors]
+    print("HEEEEEEEEEEEEEEEEEELLLLLLLLLLLLLLLLLOOOOOOOOOOOOOOOO")
     cleaned_colors = [color.strip().strip("'") for color in product_colors_list]
 
     product_images = ProduseImagini.objects.get(produs = pk)
