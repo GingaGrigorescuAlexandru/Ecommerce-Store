@@ -1,36 +1,22 @@
 <!DOCTYPE html>
-{% load static %}
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
-
   <title>Thanks for your order!</title>
-  <script>initialize();
-  async function initialize() {
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const sessionId = urlParams.get('session_id');
-  const response = await fetch(`/session-status?session_id=${sessionId}`);
-  const session = await response.json();
 
-  if (session.status == 'open') {
-    window.replace('http://localhost:4242/checkout.html')
-  } else if (session.status == 'complete') {
-    document.getElementById('success').classList.remove('hidden');
-    document.getElementById('customer-email').textContent = session.customer_email
-  }
-}</script>
 </head>
 <body>
-  <section id="success" class="hidden">
-    <p>
-      We appreciate your business! A confirmation email will be sent to <span id="customer-email"></span>.
 
-      If you have any questions, please email <a href="mailto:orders@example.com">orders@example.com</a>.
-    </p>
-  </section>
+  {% extends 'main.html' %}
+
+  {% block content %}
+
+    {% include 'app/components/return_message_component.html' %}
+
+  {% endblock content %}
+
+
 </body>
 </html>

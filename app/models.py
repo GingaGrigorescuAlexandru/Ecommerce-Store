@@ -116,8 +116,6 @@ class DjangoSession(models.Model):
 
 
 
-
-
 class Adrese(models.Model):
     address_id = models.AutoField(primary_key=True)
     client = models.ForeignKey('Clienti', models.CASCADE)

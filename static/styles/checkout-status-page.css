@@ -1,0 +1,30 @@
+
+
+/* Styling for the success message section */
+#success {
+    background-color: #ffffff; /* White background for the message */
+    border: 1px solid #4caf50; /* Green border */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 20px; /* Spacing inside the box */
+    text-align: center; /* Center text inside the box */
+    max-width: 400px; /* Max width of the message box */
+    margin: 20px; /* Margin for responsive design */
+}
+
+/* Styling for the paragraph text */
+#success p {
+    color: #333; /* Dark text color */
+    font-size: 16px; /* Font size for the message */
+}
+
+/* Styling for the email link */
+#success a {
+    color: #4caf50; /* Green color for the email link */
+    text-decoration: none; /* Remove underline */
+}
+
+#success a:hover {
+    text-decoration: underline; /* Underline on hover for better UX */
+}
+

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% load static %}
+{% load custom_filters %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'styles/checkout-status-page.css' %}" />
+    <script src="{% static 'scripts/return.js' %}"></script>
+</head>
+<body>
+    <section id="success" class="hidden">
+      <p>
+        We appreciate your business! A confirmation email will be sent to <span id="customer-email"></span>.
+
+        If you have any questions, please email <a href="mailto:orders@example.com">orders@example.com</a>.
+      </p>
+    </section>
+</body>
+</html>
