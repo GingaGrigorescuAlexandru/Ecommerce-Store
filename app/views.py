@@ -57,8 +57,6 @@ def register(request):
             user.password = make_password(user.password)
             user.save()
 
-            customer = stripe.Customer.create(email=form.cleaned_data['email'])
-
             new_client = Clienti(
                 username=form.cleaned_data['username'],
                 nume=form.cleaned_data['first_name'],
@@ -67,9 +65,12 @@ def register(request):
             )
             new_client.save()
 
-            customer = stripe.Customer.create(email=new_client.email)
-            # Set the stripe_customer_id to be the same as the client_id
-            new_client.stripe_customer_id = new_client.client_id  # Set to client_id
+            customer = stripe.Customer.create(
+                name = new_client.nume + ' ' + new_client.prenume,
+                email = new_client.email
+            )
+
+            new_client.stripe_customer_id = customer.id  # Set to client_id
             new_client.save()  # Save the client with the updated stripe_customer_id
 
 
