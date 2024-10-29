@@ -582,15 +582,21 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 @csrf_exempt
 def create_checkout_session(request):
     try:
+        cart_items = Cosuri.objects.filter(client=request.user.id).select_related('produs')
+
+        stripe_items = []
+
+        for item in cart_items:
+            stripe_items.append({
+                'price': item.produs.stripe_price_id,
+                'quantity': item.cantitate,
+            })
+
+
         print('Beginning Creation:')
         session = stripe.checkout.Session.create(
             ui_mode='embedded',
-            line_items=[
-                {
-                    'price': "price_1QEu6WCHn57WARm8nNuGKZmj",  # Replace with your actual price ID
-                    'quantity': 1,
-                },
-            ],
+            line_items=stripe_items,
             mode='payment',
             return_url=settings.YOUR_DOMAIN + '/return.html?session_id={CHECKOUT_SESSION_ID}',  # Return URL after checkout
         )
