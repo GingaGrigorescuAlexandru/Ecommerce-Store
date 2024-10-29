@@ -211,7 +211,7 @@ def favoriteList(request, pk):
 def product_image_view(request, product_id):
     try:
         image_record = ProduseImagini.objects.get(produs = product_id)
-        return HttpResponse(image_record.imagine_catalog, content_type="image/jpg")  # Adjust content_type if needed
+        return HttpResponse(image_record.imagine_catalog, content_type="image/png")
     except ProduseImagini.DoesNotExist:
         return HttpResponse(status=404)
 
@@ -222,9 +222,7 @@ def addProduct(request):
     if request.method == "POST":
         formProduct = ProductCreationForm(request.POST)
         formProperties = PropertiesProductForm(request.POST)
-        print(formProduct.is_valid())
-        print(formProperties.is_valid())
-        print(formProperties.errors)
+
         if all([formProduct.is_valid(), formProperties.is_valid()]):
             product = formProduct.save()
 
@@ -236,6 +234,7 @@ def addProduct(request):
             properties.save()
 
             image_file = request.FILES.get('catalog-image-input')
+
             if image_file:
                 image_data = image_file.read()
                 product_image = ProduseImagini(produs = product,
@@ -243,19 +242,19 @@ def addProduct(request):
                 product_image.save()
 
                 image_url = request.build_absolute_uri(reverse('product_image', args=[product.produs_id]))
-                print(image_url)
+
 
             stripe_product = stripe.Product.create(
-                name = product.nume,  # Assuming `name` is a field in `ProductCreationForm`
-                description = category,  # Adjust this to match your form field names
-                images = [image_url],  # Pass image URL if available
+                name = product.nume,
+                description = category,
+                images = [image_url],
             )
 
-            # Create price for the Stripe product
+
             stripe_price = stripe.Price.create(
                 product = stripe_product.id,
-                unit_amount = int(product.pret_unitar * 100),  # Convert price to cents if using USD
-                currency = "ron",  # Update to your currency
+                unit_amount = int(product.pret_unitar * 100),
+                currency = "ron",
             )
 
             # Save Stripe IDs to your database model if needed
@@ -582,8 +581,9 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 @csrf_exempt
 def create_checkout_session(request):
     try:
-        cart_items = Cosuri.objects.filter(client=request.user.id).select_related('produs')
-
+        cart_items = Cosuri.objects.filter(client = request.user.id).select_related('produs')
+        client = Clienti.objects.filter(client_id = request.user.id)
+        print(client.first().email)
         stripe_items = []
 
         for item in cart_items:
@@ -597,6 +597,7 @@ def create_checkout_session(request):
         session = stripe.checkout.Session.create(
             ui_mode='embedded',
             line_items=stripe_items,
+            customer_email=client.first().email,
             mode='payment',
             return_url=settings.YOUR_DOMAIN + '/return.html?session_id={CHECKOUT_SESSION_ID}',  # Return URL after checkout
         )
@@ -636,6 +637,16 @@ def success(request):
         except Exception as e:
             return HttpResponse(f"Error retrieving session details: {str(e)}", status=500)
     return HttpResponse("Session ID not provided", status=400)
+
+def return_view(request):
+    session_id = request.GET.get('session_id')  # Get the session ID from the URL
+    session = stripe.checkout.Session.retrieve(session_id)  # Retrieve the session details from Stripe
+
+    if session.payment_status == 'paid':
+        return render(request, 'app/return.html', {'session': session})
+    else:
+        # Handle payment failure or other statuses
+        return render(request, 'app/return.html', {'error': 'Payment not successful.'})
 
 def cancel(request):
     return render(request, 'checkout/cancel.html', {'message': 'Your payment has been cancelled.'})

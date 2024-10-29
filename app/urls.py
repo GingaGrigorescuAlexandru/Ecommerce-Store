@@ -45,4 +45,5 @@ urlpatterns = [
     path('session-status/', views.session_status, name='session-status'),
     path('success/', views.success, name='success'),
     path('cancel/', views.cancel, name='cancel'),
+    path('return.html', views.return_view, name='return_html'),
 ]
