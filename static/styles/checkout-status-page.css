@@ -1,21 +1,31 @@
+.message-container {
+    width: 100vw;
+    height: 100vh;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-/* Styling for the success message section */
+#checkout {
+    margin: 50px;
+}
+
 #success {
-    background-color: #ffffff; /* White background for the message */
-    border: 1px solid #4caf50; /* Green border */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    padding: 20px; /* Spacing inside the box */
-    text-align: center; /* Center text inside the box */
-    max-width: 400px; /* Max width of the message box */
-    margin: 20px; /* Margin for responsive design */
+    background-color: #ffffff;
+    border: 1px solid #4caf50;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    max-width: 600px;
+    margin: 20px;
 }
 
 /* Styling for the paragraph text */
 #success p {
     color: #333; /* Dark text color */
-    font-size: 16px; /* Font size for the message */
+    font-size: 24px; /* Font size for the message */
 }
 
 /* Styling for the email link */
