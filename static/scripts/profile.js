@@ -53,7 +53,9 @@ button.addEventListener('click', function(event) {
 
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                return response.json().then(data => {
+                    throw new Error(data.message);
+                });
             }
             return response.json();
         })
@@ -74,7 +76,7 @@ button.addEventListener('click', function(event) {
 
         .catch(error => {
             updateStatusMessage.style.display = 'block';
-            updateStatusMessage.innerText = 'Update Failed';
+            updateStatusMessage.innerText = 'Update Failed! ' + error.message;
             updateStatusMessage.style.color = 'red';
         });
     }

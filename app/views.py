@@ -206,11 +206,11 @@ def update_user(request):
                     password_validation.validate_password(password, user=user)
                     user.password = make_password(password)
                     user.save()
+                    messages.info(request, 'Password updated successfully. Please log in again.')
                     logout(request)
-                    print("HELLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLOOOOOOOOOOOOOO")
                     return JsonResponse({'status': 'redirect', 'url': '/login/'})
                 except ValidationError as e:
-                    return JsonResponse({'status': 'error', 'errors': e.messages}, status=400)
+                    return JsonResponse({'status': 'error', 'message': 'The password did not meet the requirements!'}, status=400)
 
             user.save()
 
