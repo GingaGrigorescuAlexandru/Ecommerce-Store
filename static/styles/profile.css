@@ -158,6 +158,7 @@ h4:hover {
 .update-user-info button {
     margin: 10px;
     margin-left: 0px;
+    margin-right: 0px;
     padding: 10px;
 
     border-radius: 10px;
@@ -172,6 +173,11 @@ h4:hover {
 
 .update-user-info button:hover{
     background-color: #D484E2;
+}
+
+.update-message-status {
+    font-size: 20px;
+    margin-top: 0px;
 }
 
 .newsletter-form {

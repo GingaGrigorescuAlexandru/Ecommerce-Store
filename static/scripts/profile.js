@@ -9,6 +9,8 @@ button.addEventListener('click', function(event) {
     const csrfToken = form.querySelector('[name=csrfmiddlewaretoken]').value;
     const formData = new FormData(form);
 
+    const updateStatusMessage = document.querySelector('.update-message-status')
+
     const phoneInput = form.querySelector('#phone_number');
     const phoneValue = phoneInput.value.trim();
 
@@ -58,20 +60,22 @@ button.addEventListener('click', function(event) {
 
         .then(data => {
             console.log('Success:', data);
-            console.log(data.status);
-            console.log(data.url);
             if (data.status === 'redirect') {
                 window.location.href = data.url; // Redirect using the URL from the server response
             } else {
-                // Handle success without redirect
                 form.querySelectorAll('input').forEach(function(input) {
                     input.disabled = true;
+                    updateStatusMessage.style.display = 'block';
+                    updateStatusMessage.innerText = 'Info updated successfully';
+                    updateStatusMessage.style.color = 'green';
                 });
             }
         })
 
         .catch(error => {
-            console.error('Error:', error);
+            updateStatusMessage.style.display = 'block';
+            updateStatusMessage.innerText = 'Update Failed';
+            updateStatusMessage.style.color = 'red';
         });
     }
     console.log("Hello");
