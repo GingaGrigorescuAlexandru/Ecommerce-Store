@@ -22,19 +22,17 @@
     margin: 20px;
 }
 
-/* Styling for the paragraph text */
 #success p {
-    color: #333; /* Dark text color */
-    font-size: 24px; /* Font size for the message */
+    color: #333;
+    font-size: 24px;
 }
 
-/* Styling for the email link */
 #success a {
-    color: #4caf50; /* Green color for the email link */
-    text-decoration: none; /* Remove underline */
+    color: #4caf50;
+    text-decoration: none;
 }
 
 #success a:hover {
-    text-decoration: underline; /* Underline on hover for better UX */
+    text-decoration: underline;
 }
 

@@ -188,7 +188,8 @@ h4:hover {
     box-sizing: border-box;
 }
 
-.newsletter-form button {
+
+.update-button {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -204,11 +205,19 @@ h4:hover {
     color: white;
     background-color: black;
 
-    border: none;
+
+    border: 2px solid black;
 }
 
-.newsletter-form button:hover{
+.update-button:hover{
     background-color: #D484E2;
+    border-color: #D484E2;
+}
+
+.save-state {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
 }
 
 .row-center-elements-container {

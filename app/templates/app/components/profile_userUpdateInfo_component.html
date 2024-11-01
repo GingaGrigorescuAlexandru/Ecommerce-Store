@@ -26,15 +26,34 @@
 
         <hr>
 
-        <form class="update-user-info" method="POST">
+        <h2>Update account info:</h2>
+        <form class="update-user-info" action="" method="POST">
             {% csrf_token %}
-            <input type="text" name="last_name" value="{{ user.last_name }}"/>
-            <input type="text" name="first_name" value="{{ user.first_name }}"/>
-            <input type="text" name="username" value="{{ user.username }}"/>
-            <input type="email" name="email" value="{{ user.email }}"/>
-            <input type="password" name="password" value="{{ user.password }}"/>
-            <input type="text" name="phone_number" value="{{ user.phone_number }}"/>
-            <button type="submit" name="updated_info_submit_button">Submit</button>
+            <div>
+                <label for="last_name">Last Name: </label>
+                <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}" disabled/>
+            </div>
+            <div>
+                <label for="first_name">First Name: </label>
+                <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}" disabled/>
+            </div>
+            <div>
+                <label for="username">Username: </label>
+                <input type="text" name="username" id="username" value="{{ user.username }}" disabled/>
+            </div>
+            <div>
+                <label for="email">Email: </label>
+                <input type="email" name="email" id="email" value="{{ user.email }}" disabled/>
+            </div>
+            <div>
+                <label for="password">Password: </label>
+                <input type="password" name="password" id="password" placeholder="Enter a new password..." disabled/>
+            </div>
+            <div>
+                <label for="phone_number">Phone: </label>
+                <input type="text" name="phone_number" id="phone_number" value="{{ user.phone_number }}" placeholder="Enter a phone number..." disabled/>
+            </div>
+            <button type="submit" class='update-button' id="updated_info_submit_button">Update</button>
         </form>
 
         <hr>

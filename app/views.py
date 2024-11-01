@@ -174,6 +174,41 @@ def editAddress(request, pk):
     context = {}
     return HttpResponse("Some content")
 
+def update_user(request):
+    if request.method == 'POST':
+        last_name = request.POST.get('last_name')
+        first_name = request.POST.get('first_name')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        phone_number = request.POST.get('phone_number')
+
+        try:
+            client = Clienti.objects.get(client_id = request.user.id)
+            client.prenume = last_name
+            client.nume = first_name
+            client.username = username
+            client.email = email
+            client.numar_telefon = phone_number
+            client.save()
+
+            user = AuthUser.objects.get(id = request.user.id)
+            user.username = username
+            user.first_name = first_name
+            user.last_name = last_name
+            user.email = email
+            user.phone_number = phone_number
+            user.password = make_password(password)
+            user.save()
+
+            return JsonResponse({'status': 'success', 'message': 'Clienti updated successfully!'})
+        except Clienti.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Clienti not found!'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method!'}, status=400)
+
 def favoriteList(request, pk):
     favorite_items = Favorites.objects.filter(client = pk).select_related('product')
     favorite_products_ids = set(favorite_items.values_list('product', flat = True))
@@ -600,6 +635,11 @@ def create_checkout_session(request):
             line_items=stripe_items,
             customer_email=client.first().email,
             mode='payment',
+            phone_number_collection={"enabled": True},
+            billing_address_collection='auto',
+            shipping_address_collection={
+                'allowed_countries': ['RO'],
+            },
             return_url=settings.YOUR_DOMAIN + '/return.html?session_id={CHECKOUT_SESSION_ID}',  # Return URL after checkout
         )
         print('Created')
