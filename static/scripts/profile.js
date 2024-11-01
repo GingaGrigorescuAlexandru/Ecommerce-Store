@@ -9,7 +9,19 @@ button.addEventListener('click', function(event) {
     const csrfToken = form.querySelector('[name=csrfmiddlewaretoken]').value;
     const formData = new FormData(form);
 
-    if(this.innerText === 'Update'){
+    const phoneInput = form.querySelector('#phone_number');
+    const phoneValue = phoneInput.value.trim();
+
+    let validationPassed = true;
+
+    if (phoneValue && (!/^\d{10}$/.test(phoneValue))) {
+        alert('Phone number must be exactly 10 digits.');
+        validationPassed = false;
+    }
+
+    if (!validationPassed) return;
+
+    if (this.innerText === 'Update') {
         this.style.backgroundColor = 'white';
         this.style.color = 'black';
         this.style.border = '2px solid black';
@@ -28,13 +40,15 @@ button.addEventListener('click', function(event) {
         form.querySelectorAll('input').forEach(function(input) {
             input.disabled = true;
         });
+
         fetch('/update-user/', {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': csrfToken,
-        },
-        body: formData,
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+            },
+            body: formData,
         })
+
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -44,16 +58,22 @@ button.addEventListener('click', function(event) {
 
         .then(data => {
             console.log('Success:', data);
-            form.querySelectorAll('input').forEach(function(input) {
-                input.disabled = true;
-            });
+            console.log(data.status);
+            console.log(data.url);
+            if (data.status === 'redirect') {
+                window.location.href = data.url; // Redirect using the URL from the server response
+            } else {
+                // Handle success without redirect
+                form.querySelectorAll('input').forEach(function(input) {
+                    input.disabled = true;
+                });
+            }
         })
 
         .catch(error => {
             console.error('Error:', error);
         });
-
-        }
+    }
     console.log("Hello");
 });
 
@@ -74,7 +94,6 @@ button.addEventListener('mouseleave', function() {
 
 document.querySelector('.newsletter-form').addEventListener('submit', async function(event) {
     event.preventDefault();
-
 
     const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
     const emailInput = document.querySelector('input[name="newsletter-email-input"]').value;

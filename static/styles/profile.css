@@ -28,6 +28,13 @@ h4:hover {
     color: #D484E2;
 }
 
+.column-form-input {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
 .row-information {
     display: flex;
     flex-direction: row;

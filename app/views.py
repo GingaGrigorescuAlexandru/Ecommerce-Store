@@ -17,6 +17,8 @@ from django.contrib.auth.hashers import make_password
 from django.template.loader import render_to_string
 from django.db.models import Q
 from django.conf import settings
+from django.contrib.auth import password_validation, update_session_auth_hash
+from django.core.exceptions import ValidationError
 import logging
 import json
 import stripe
@@ -198,7 +200,18 @@ def update_user(request):
             user.last_name = last_name
             user.email = email
             user.phone_number = phone_number
-            user.password = make_password(password)
+
+            if password:
+                try:
+                    password_validation.validate_password(password, user=user)
+                    user.password = make_password(password)
+                    user.save()
+                    logout(request)
+                    print("HELLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLOOOOOOOOOOOOOO")
+                    return JsonResponse({'status': 'redirect', 'url': '/login/'})
+                except ValidationError as e:
+                    return JsonResponse({'status': 'error', 'errors': e.messages}, status=400)
+
             user.save()
 
             return JsonResponse({'status': 'success', 'message': 'Clienti updated successfully!'})
@@ -590,15 +603,14 @@ def add_item_to_favorites(request):
     return JsonResponse({'message': "Invalid request method"}, status=400)\
 
 def add_newsletter_email(request, pk):
+    print("HEEEEEEEEEEEEEELLLLLLLLLLLLLOOOOOOOOOOOOOOOOOOOOO")
     if request.method == "POST":
         data = json.loads(request.body)
         new_email = data.get("newsletter-email-input")
-
         client = NewsletterEmails.objects.filter(client = pk).first()
         client_instance = get_object_or_404(Clienti, client_id = pk)
 
         if client:
-            # Update the existing record's email
             client.email = new_email
             client.save()
             return JsonResponse({'message': 'Email successfully updated!'}, status=200)

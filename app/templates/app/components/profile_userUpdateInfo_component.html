@@ -27,32 +27,38 @@
         <hr>
 
         <h2>Update account info:</h2>
-        <form class="update-user-info" action="" method="POST">
+        <form class="update-user-info" action="update-user" method="POST">
             {% csrf_token %}
-            <div>
+            <div class="column-form-input">
                 <label for="last_name">Last Name: </label>
-                <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}" disabled/>
+                <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}" required disabled/>
             </div>
-            <div>
+
+            <div class="column-form-input">
                 <label for="first_name">First Name: </label>
-                <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}" disabled/>
+                <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}" required disabled/>
             </div>
-            <div>
+
+            <div class="column-form-input">
                 <label for="username">Username: </label>
-                <input type="text" name="username" id="username" value="{{ user.username }}" disabled/>
+                <input type="text" name="username" id="username" value="{{ user.username }}" required disabled/>
             </div>
-            <div>
+
+            <div class="column-form-input">
                 <label for="email">Email: </label>
-                <input type="email" name="email" id="email" value="{{ user.email }}" disabled/>
+                <input type="email" name="email" id="email" value="{{ user.email }}" required disabled/>
             </div>
-            <div>
+
+            <div class="column-form-input">
                 <label for="password">Password: </label>
                 <input type="password" name="password" id="password" placeholder="Enter a new password..." disabled/>
             </div>
-            <div>
+
+            <div class="column-form-input">
                 <label for="phone_number">Phone: </label>
                 <input type="text" name="phone_number" id="phone_number" value="{{ user.phone_number }}" placeholder="Enter a phone number..." disabled/>
             </div>
+
             <button type="submit" class='update-button' id="updated_info_submit_button">Update</button>
         </form>
 
@@ -63,7 +69,7 @@
             {% csrf_token %}
             <h2>Aboneaza-te la Newsletter</h2>
             <input type="email" name="newsletter-email-input" placeholder="Email Address" required/>
-            <button type="submit" name="newsletter-submit-button">Submit</button>
+            <button type="submit" name="newsletter-submit-button" class="update-button">Submit</button>
         </form>
 
         <div class="row-center-elements-container">
