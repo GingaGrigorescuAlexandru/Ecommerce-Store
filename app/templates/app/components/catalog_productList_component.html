@@ -47,18 +47,20 @@
                                          alt="Add item to cart" class="add-to-cart-icon"/>
                             </a>
 
-                            <a href="" class="add-to-favorites" onclick="doSomething()"
-                                data-client-id="{{ request.user.id }}"
-                                data-product-id="{{ product.produs_id }}">
-                                <img src="{% if product.produs_id in favorite_products_ids %}
-                                    {% static 'images/icons/added-favorites-heart.png' %}
-                                    {% else %}
-                                    {% static 'images/icons/heart.png' %}
-                                    {% endif %}"
-                                     id="add-to-favorites-image-{{ product.produs_id }}"
-                                     alt="Add item to favorites list"
-                                     class="social-icon"/>
-                            </a>
+                            {% if user.is_authenticated %}
+                                <a href="" class="add-to-favorites" onclick="doSomething()"
+                                    data-client-id="{{ request.user.id }}"
+                                    data-product-id="{{ product.produs_id }}">
+                                    <img src="{% if product.produs_id in favorite_products_ids %}
+                                        {% static 'images/icons/added-favorites-heart.png' %}
+                                        {% else %}
+                                        {% static 'images/icons/heart.png' %}
+                                        {% endif %}"
+                                         id="add-to-favorites-image-{{ product.produs_id }}"
+                                         alt="Add item to favorites list"
+                                         class="social-icon"/>
+                                </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

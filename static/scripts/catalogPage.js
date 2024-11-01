@@ -4,17 +4,20 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault(); // This should prevent the form submission or link action
 
             let productId = this.dataset.productId;
-            let clientId = this.dataset.clientId;
-            let quantity = 1; // You can update this to be dynamic if needed
+            let clientId = this.dataset.clientId || null;
+            let quantity = 1;
             let addProductDate = new Date().toISOString().slice(0, 10);
 
             let data = new FormData();
             let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             data.append('csrfmiddlewaretoken', csrfToken);
-            data.append('client_id', clientId);
             data.append('product_id', productId);
             data.append('quantity', quantity);
             data.append('addProductDate', addProductDate);
+
+            if (clientId) {
+                data.append('client_id', clientId);
+            }
 
             const cartImage = document.getElementById(`add-to-cart-image-${productId}`)
 
@@ -26,7 +29,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
             this.style.pointerEvents = 'none';
 
-            fetch(`/cart/${clientId}`, {
+            const url = clientId !== 'None' ? `/cart/${clientId}` : '/guest_cart/';
+
+            console.log(clientId)
+            console.log(url)
+
+            fetch(url, {
                 method: 'POST',
                 body: data,
             })

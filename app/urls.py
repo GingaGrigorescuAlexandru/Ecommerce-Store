@@ -25,6 +25,7 @@ urlpatterns = [
 
     path('product/<str:pk>', views.productPage, name = 'product'),
 
+    path('guest_cart/', views.guestCartPage, name='guest_cart'),
     path('cart/<str:pk>', views.cartPage, name = 'cart'),
     path('delete-from-cart/', views.delete_item_from_cart, name = 'delete-from-cart'),
     path('add-item-to-favorites/', views.add_item_to_favorites, name = 'add-item-to-favorites'),

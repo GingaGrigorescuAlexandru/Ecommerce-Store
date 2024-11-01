@@ -17,7 +17,7 @@
                 <a href="{% url 'product' item.item.produs.produs_id %}">
                     <img class="cart-image"
                          src="data:image/jpeg;base64,{{ item.item.produs.images.imagine_catalog|b64encode }}"
-                         alt="{{ product.nume }}" />
+                         alt="{{ item.item.produs.nume }}" />
                 </a>
 
                 <div class="cart-item-description">

@@ -19,6 +19,7 @@ from django.db.models import Q
 from django.conf import settings
 from django.contrib.auth import password_validation, update_session_auth_hash
 from django.core.exceptions import ValidationError
+from django.contrib.auth.decorators import login_required
 import logging
 import json
 import stripe
@@ -485,6 +486,7 @@ def productPage(request, pk):
 logger = logging.getLogger(__name__)
 
 
+
 def cartPage(request, pk):
     cart_items = Cosuri.objects.filter(client=pk).select_related('produs')
     cart_items = cart_items.prefetch_related(
@@ -513,7 +515,6 @@ def cartPage(request, pk):
         })
 
     if request.method == 'POST':
-        print('Trying to add to cart')
         client_id = request.POST.get('client_id')
         product_id = request.POST.get('product_id')
         quantity = int(request.POST.get('quantity'))
@@ -531,12 +532,10 @@ def cartPage(request, pk):
         )
 
         if not created:
-            # If the item already exists, update the quantity (or handle as needed)
             cart_item.cantitate = quantity
             cart_item.save()
             message = 'Product quantity updated in the cart!'
         else:
-            # If a new item was created
             cart_item.cantitate = quantity
             message = 'Product added to the cart!'
 
@@ -548,6 +547,64 @@ def cartPage(request, pk):
         'total_price': round(total_price, 2)
     }
     return render(request, 'app/cart.html', context)
+
+
+def guestCartPage(request):
+    cart_items_with_totals = []
+    total_price = 0.0
+
+    cart = request.session.get('guest_cart', {})
+
+    for product_id, details in cart.items():
+        try:
+            product_instance = Produse.objects.get(produs_id=product_id)
+            product_price = product_instance.pret_unitar
+            quantity = details['quantity']
+            item_total_price = product_price * quantity
+            total_price += item_total_price
+
+            cart_items_with_totals.append({
+                'item': {
+                    'produs': product_instance,
+                    'cantitate': quantity,
+                },
+                'item_total_price': item_total_price,
+                'product_price': product_price,
+                'quantity': quantity,
+            })
+        except Produse.DoesNotExist:
+            continue
+
+    # Handle adding/updating items in the session-based cart
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        quantity = int(request.POST.get('quantity'))
+        add_product_date = request.POST.get('addProductDate')
+
+        # Update session cart data
+        if product_id in cart:
+            cart[product_id]['quantity'] += quantity
+            message = 'Product quantity updated in the cart!'
+        else:
+            cart[product_id] = {
+                'quantity': quantity,
+                'addProductDate': add_product_date
+            }
+            message = 'Product added to the cart!'
+
+        request.session['guest_cart'] = cart
+
+        return JsonResponse({'message': message}, status=200)
+
+    context = {
+        'cart_items_with_totals': cart_items_with_totals,
+        'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
+        'total_price': round(total_price, 2)
+    }
+    return render(request, 'app/cart.html', context)
+
+
+
 
 
 def about(request):

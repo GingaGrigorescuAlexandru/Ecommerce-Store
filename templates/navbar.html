@@ -14,7 +14,12 @@
         </a>
         <div class = "navbar-redirections">
             <a href = "{% url 'catalog' %}" >Catalog</a>
-            <a href = "{% url 'cart' request.user.id %}">Cos</a>
+
+            {% if user.is_authenticated %}
+                <a href = "{% url 'cart' request.user.id %}">Cos</a>
+            {% else %}
+                <a href="{% url 'guest_cart' %}">Cos</a>
+            {% endif %}
 
             {% if request.user.is_authenticated %}
                 <a href ="{% url 'profile' request.user.id %}">Profil</a>
