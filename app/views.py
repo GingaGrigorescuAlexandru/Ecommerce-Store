@@ -691,6 +691,7 @@ def create_checkout_session(request):
         client = Clienti.objects.filter(client_id = request.user.id)
 
         stripe_items = []
+        item_names = []  # List to hold names/descriptions of the items
 
         for item in cart_items:
             stripe_items.append({
@@ -698,6 +699,9 @@ def create_checkout_session(request):
                 'quantity': item.cantitate,
             })
 
+            # Fetch the product details from Stripe to get the name/description
+            product = stripe.Product.retrieve(item.produs.stripe_product_id)
+            item_names.append(product['name'])  # Add product name to the list
 
         session = stripe.checkout.Session.create(
             ui_mode='embedded',
@@ -710,6 +714,9 @@ def create_checkout_session(request):
                 'allowed_countries': ['RO'],
             },
             return_url=settings.YOUR_DOMAIN + '/return.html?session_id={CHECKOUT_SESSION_ID}',  # Return URL after checkout
+            metadata={
+                'item_names': ', '.join(item_names)  # Store item names as a comma-separated string
+            }
         )
 
         return JsonResponse({'clientSecret': session.client_secret})  # Return the session ID for client redirection
@@ -763,33 +770,69 @@ def cancel(request):
 
 @csrf_exempt
 def stripe_webhook(request):
+    # Retrieve the raw body of the request, which contains the payload from Stripe
     payload = request.body
-    sig_header = request.META.get('HTTP_STRIPE_SIGNATURE', '')
-    endpoint_secret = settings.STRIPE_WEBHOOK_SECRET  # Your endpoint secret
 
+    # Retrieve the Stripe signature header from the request metadata
+    sig_header = request.META.get('HTTP_STRIPE_SIGNATURE', '')
+
+    # Retrieve the webhook secret from the settings for verifying the Stripe signature
+    endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
+
+    # Log the webhook payload and the Stripe signature header for debugging purposes
     logger.info(f'Webhook payload: {payload}')
     logger.info(f'Stripe signature header: {sig_header}')
 
+    # Verify the webhook signature and construct the event object
     try:
+        # Construct the event using the payload, signature header, and endpoint secret
         event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
     except ValueError as e:
+        # Return a 400 Bad Request response if the payload is invalid
         return JsonResponse({'error': str(e)}, status=400)
     except stripe.error.SignatureVerificationError as e:
+        # Return a 400 Bad Request response if the signature verification fails
         return JsonResponse({'error': str(e)}, status=400)
 
-    # Function to send the confirmation email
-    def send_confirmation_email(customer_email):  # Adjust based on your session data
+    # Function to send a confirmation email to the customer
+    def send_confirmation_email(customer_email):
+        # Define the subject and message for the email
         subject = 'Payment Confirmation'
-        message = 'Thank you for your payment! Your transaction was successful.'
+        message = (
+            f'Thank you for your payment! Your transaction was successful.\n\n'
+            f'Order Summary:\n'
+            f'Total Amount: ${total_amount / 100:.2f}\n'  # Stripe amounts are in cents
+            f'Items Purchased: {item_names}\n'
+            f'Date of Transaction: {transaction_date}\n'
+        )
+
+        # Use Django's send_mail function to send the email
         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [customer_email])
 
-    # Handle the event
+    # Handle the event based on its type
     if event['type'] == 'checkout.session.completed':
+        # Extract the session object from the event data
         session = event['data']['object']
         logger.info(f'Checkout session completed: {session}')
-        customer_email = session.get('customer_email')
-        print(customer_email)
-        if customer_email:
-            send_confirmation_email(customer_email)  # Call the function directly
 
+        # Get the customer's email from the session
+        customer_email = session.get('customer_email')
+
+        total_amount = session.get('amount_total')  # Amount in cents
+        item_names = session.get('metadata', {}).get('item_names', '')
+        print(item_names)
+
+        # Assuming the created date is available in session (check Stripe documentation for available fields)
+        transaction_date = session.get('created')  # Timestamp of when the session was created
+
+        # Format the date (optional, if you want a more readable format)
+        from datetime import datetime
+        if transaction_date:
+            transaction_date = datetime.fromtimestamp(transaction_date).strftime('%Y-%m-%d %H:%M:%S')
+
+        # If the customer email exists, send a confirmation email
+        if customer_email:
+            send_confirmation_email(customer_email)
+
+            # Return a successful response to Stripe to acknowledge receipt of the webhook
     return JsonResponse({'status': 'success'}, status=200)
