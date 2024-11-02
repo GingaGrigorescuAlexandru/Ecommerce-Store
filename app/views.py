@@ -682,8 +682,8 @@ def add_newsletter_email(request, pk):
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
-stripe.api_key = settings.STRIPE_SECRET_KEY
 
+stripe.api_key = settings.STRIPE_SECRET_KEY
 @csrf_exempt
 def create_checkout_session(request):
     try:
@@ -728,6 +728,7 @@ def checkout(request):
     context = {'STRIPE_SECRET_KEY': settings.STRIPE_SECRET_KEY}
     return render(request, 'app/checkout.html', context)
 
+
 @csrf_exempt
 def session_status(request):
     session_id = request.GET.get('session_id')
@@ -743,16 +744,6 @@ def session_status(request):
     except Exception as e:
         return HttpResponse(str(e), status=500)
 
-def success(request):
-    session_id = request.GET.get('session_id')  # Get session ID from the URL
-    if session_id:
-        try:
-            # Retrieve the session details from Stripe (optional)
-            session = stripe.checkout.Session.retrieve(session_id)
-            return render(request, 'checkout/success.html', {'session': session})
-        except Exception as e:
-            return HttpResponse(f"Error retrieving session details: {str(e)}", status=500)
-    return HttpResponse("Session ID not provided", status=400)
 
 def return_view(request):
     session_id = request.GET.get('session_id')  # Get the session ID from the URL
@@ -764,12 +755,11 @@ def return_view(request):
         # Handle payment failure or other statuses
         return render(request, 'app/return.html', {'error': 'Payment not successful.'})
 
-def cancel(request):
-    return render(request, 'checkout/cancel.html', {'message': 'Your payment has been cancelled.'})
 
 
 @csrf_exempt
 def stripe_webhook(request):
+
     # Retrieve the raw body of the request, which contains the payload from Stripe
     payload = request.body
 
@@ -818,9 +808,11 @@ def stripe_webhook(request):
         # Get the customer's email from the session
         customer_email = session.get('customer_email')
 
+        client_instance = get_object_or_404(Clienti, email=customer_email)
+        Cosuri.objects.filter(client=client_instance).delete()
+
         total_amount = session.get('amount_total')  # Amount in cents
         item_names = session.get('metadata', {}).get('item_names', '')
-        print(item_names)
 
         # Assuming the created date is available in session (check Stripe documentation for available fields)
         transaction_date = session.get('created')  # Timestamp of when the session was created
