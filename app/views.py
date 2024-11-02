@@ -689,7 +689,7 @@ def create_checkout_session(request):
     try:
         cart_items = Cosuri.objects.filter(client = request.user.id).select_related('produs')
         client = Clienti.objects.filter(client_id = request.user.id)
-        print(client.first().email)
+
         stripe_items = []
 
         for item in cart_items:
@@ -699,7 +699,6 @@ def create_checkout_session(request):
             })
 
 
-        print('Beginning Creation:')
         session = stripe.checkout.Session.create(
             ui_mode='embedded',
             line_items=stripe_items,
@@ -712,8 +711,7 @@ def create_checkout_session(request):
             },
             return_url=settings.YOUR_DOMAIN + '/return.html?session_id={CHECKOUT_SESSION_ID}',  # Return URL after checkout
         )
-        print('Created')
-        print(session.id)
+
         return JsonResponse({'clientSecret': session.client_secret})  # Return the session ID for client redirection
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
@@ -766,8 +764,11 @@ def cancel(request):
 @csrf_exempt
 def stripe_webhook(request):
     payload = request.body
-    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
-    endpoint_secret = settings.STRIPE_ENDPOINT_SECRET  # Your endpoint secret
+    sig_header = request.META.get('HTTP_STRIPE_SIGNATURE', '')
+    endpoint_secret = settings.STRIPE_WEBHOOK_SECRET  # Your endpoint secret
+
+    logger.info(f'Webhook payload: {payload}')
+    logger.info(f'Stripe signature header: {sig_header}')
 
     try:
         event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
@@ -777,8 +778,7 @@ def stripe_webhook(request):
         return JsonResponse({'error': str(e)}, status=400)
 
     # Function to send the confirmation email
-    def send_confirmation_email(session):
-        customer_email = session.get('customer_email')  # Adjust based on your session data
+    def send_confirmation_email(customer_email):  # Adjust based on your session data
         subject = 'Payment Confirmation'
         message = 'Thank you for your payment! Your transaction was successful.'
         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [customer_email])
@@ -786,7 +786,10 @@ def stripe_webhook(request):
     # Handle the event
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
-        # Send confirmation email here
-        send_confirmation_email(session)  # Call the function directly
+        logger.info(f'Checkout session completed: {session}')
+        customer_email = session.get('customer_email')
+        print(customer_email)
+        if customer_email:
+            send_confirmation_email(customer_email)  # Call the function directly
 
     return JsonResponse({'status': 'success'}, status=200)

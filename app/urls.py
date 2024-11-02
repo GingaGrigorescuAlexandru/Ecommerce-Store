@@ -48,4 +48,5 @@ urlpatterns = [
     path('success/', views.success, name='success'),
     path('cancel/', views.cancel, name='cancel'),
     path('return.html', views.return_view, name='return_html'),
+    path('webhook/', views.stripe_webhook, name='stripe-webhook'),
 ]
