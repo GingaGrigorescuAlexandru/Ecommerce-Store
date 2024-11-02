@@ -19,7 +19,8 @@ from django.db.models import Q
 from django.conf import settings
 from django.contrib.auth import password_validation, update_session_auth_hash
 from django.core.exceptions import ValidationError
-from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
 import logging
 import json
 import stripe
@@ -760,3 +761,32 @@ def return_view(request):
 
 def cancel(request):
     return render(request, 'checkout/cancel.html', {'message': 'Your payment has been cancelled.'})
+
+
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    endpoint_secret = settings.STRIPE_ENDPOINT_SECRET  # Your endpoint secret
+
+    try:
+        event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
+    except ValueError as e:
+        return JsonResponse({'error': str(e)}, status=400)
+    except stripe.error.SignatureVerificationError as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+    # Function to send the confirmation email
+    def send_confirmation_email(session):
+        customer_email = session.get('customer_email')  # Adjust based on your session data
+        subject = 'Payment Confirmation'
+        message = 'Thank you for your payment! Your transaction was successful.'
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [customer_email])
+
+    # Handle the event
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        # Send confirmation email here
+        send_confirmation_email(session)  # Call the function directly
+
+    return JsonResponse({'status': 'success'}, status=200)

@@ -9,14 +9,16 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # Copy the requirements file
-COPY requirements.txt /app/
+COPY requirements.txt .
 
 # Install dependencies
-RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Copy the Django project code into the container
-COPY . /app/
+COPY . .
+
+# Run Django migrations
+RUN python manage.py migrate
 
 # Expose port 8000 to communicate with the host machine
 EXPOSE 8000

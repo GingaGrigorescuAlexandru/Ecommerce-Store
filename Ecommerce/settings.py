@@ -24,6 +24,14 @@ STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIC_KEY")
 YOUR_DOMAIN = 'http://localhost:8000'
 # Application definition
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'alexandrugg2014@gmail.com'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = 'alexandrugg2014@gmail.com'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -76,7 +84,7 @@ DATABASES = {
         'NAME': os.getenv("MYSQL_DB"),
         'USER': os.getenv("MYSQL_USER"),
         'PASSWORD': os.getenv("MYSQL_PASSWORD"),
-        'HOST':os.getenv("MYSQL_HOST"),
+        'HOST': 'localhost',
         'PORT':os.getenv("MYSQL_PORT"),
     }
 }
