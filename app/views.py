@@ -68,8 +68,8 @@ def register(request):
 
             new_client = Clienti(
                 username=form.cleaned_data['username'],
-                nume=form.cleaned_data['first_name'],
-                prenume=form.cleaned_data['last_name'],
+                nume=form.cleaned_data['last_name'],
+                prenume=form.cleaned_data['first_name'],
                 email=form.cleaned_data['email'],
             )
             new_client.save()
@@ -79,8 +79,8 @@ def register(request):
                 email = new_client.email
             )
 
-            new_client.stripe_customer_id = customer.id  # Set to client_id
-            new_client.save()  # Save the client with the updated stripe_customer_id
+            new_client.stripe_customer_id = customer.id
+            new_client.save()
 
 
             login(request, user)
@@ -696,7 +696,7 @@ def create_checkout_session(request):
         client = Clienti.objects.filter(client_id = request.user.id)
 
         stripe_items = []
-        item_names = []  # List to hold names/descriptions of the items
+        item_names = []
 
         for item in cart_items:
             stripe_items.append({
@@ -767,10 +767,8 @@ def stripe_webhook(request):
 
     # Retrieve the raw body of the request, which contains the payload from Stripe
     payload = request.body
-
     # Retrieve the Stripe signature header from the request metadata
     sig_header = request.META.get('HTTP_STRIPE_SIGNATURE', '')
-
     # Retrieve the webhook secret from the settings for verifying the Stripe signature
     endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
 
@@ -790,7 +788,58 @@ def stripe_webhook(request):
     def send_confirmation_email(customer_email):
         subject = 'Payment Confirmation'
 
-        html_message = render_to_string('app/email_order_confirmation.html')
+        client_instance = get_object_or_404(Clienti, email = customer_email)
+
+        cart_items = Cosuri.objects.filter(client = client_instance).select_related('produs')
+        cart_items = cart_items.prefetch_related(
+            Prefetch('produs__proprietatiproduse', queryset=ProprietatiProduse.objects.all(), to_attr='properties'),
+            Prefetch('produs__produseimagini', queryset=ProduseImagini.objects.all(), to_attr='images'),
+            Prefetch('produs__categorie', queryset=Categorie.objects.all(), to_attr='category')
+        )
+
+        total_price = 0.0
+
+        cart_items_with_totals = []
+
+        for item in cart_items:
+            product_price = item.produs.pret_unitar
+            quantity = item.cantitate
+
+            item_total_price = product_price * quantity
+
+            total_price += item_total_price
+
+            cart_items_with_totals.append({
+                'item': item,
+                'item_total_price': item_total_price,
+                'product_price': product_price,
+                'quantity': quantity,
+            })
+
+        billing_address = session.get('customer_details', {}).get('address')
+        shipping_address = session.get('shipping_details', {}).get('address')
+
+        billing_address_info = billing_address.values()
+        shipping_address_info = shipping_address.values()
+
+        print(billing_address_info)
+        print(shipping_address_info)
+        print(billing_address_info)
+        print(shipping_address_info)
+
+        print(billing_address_info)
+        print(shipping_address_info)
+
+
+        context = {
+            'cart_items_with_totals': cart_items_with_totals,
+            'total_price': total_price,
+            'client': client_instance,
+            'billing_address_info': billing_address_info,
+            'shipping_address_info': shipping_address_info,
+        }
+
+        html_message = render_to_string('app/email_order_confirmation.html', context = context)
         message = strip_tags(html_message)
 
         email = EmailMultiAlternatives(
@@ -800,6 +849,8 @@ def stripe_webhook(request):
             to=[customer_email],
         )
 
+        Cosuri.objects.filter(client=client_instance).delete()
+
         email.attach_alternative(html_message, "text/html")
 
         email.send()
@@ -808,32 +859,11 @@ def stripe_webhook(request):
     if event['type'] == 'checkout.session.completed':
         # Extract the session object from the event data
         session = event['data']['object']
-        logger.info(f'Checkout session completed: {session}')
 
         # Get the customer's email from the session
         customer_email = session.get('customer_email')
 
-        client_instance = get_object_or_404(Clienti, email=customer_email)
-        Cosuri.objects.filter(client=client_instance).delete()
-
-        total_amount = session.get('amount_total')  # Amount in cents
-        item_names = session.get('metadata', {}).get('item_names', '')
-        item_names_list = item_names.split(',')
-
-
-
-
-        # Assuming the created date is available in session (check Stripe documentation for available fields)
-        transaction_date = session.get('created')  # Timestamp of when the session was created
-
-        # Format the date (optional, if you want a more readable format)
-        from datetime import datetime
-        if transaction_date:
-            transaction_date = datetime.fromtimestamp(transaction_date).strftime('%Y-%m-%d %H:%M:%S')
-
-        # If the customer email exists, send a confirmation email
         if customer_email:
             send_confirmation_email(customer_email)
 
-            # Return a successful response to Stripe to acknowledge receipt of the webhook
     return JsonResponse({'status': 'success'}, status=200)

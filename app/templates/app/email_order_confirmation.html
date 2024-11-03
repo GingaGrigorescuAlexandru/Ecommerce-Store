@@ -136,7 +136,7 @@
 														<tr>
 															<td class="pad" style="padding-bottom:25px;padding-left:20px;padding-right:20px;">
 																<div style="color:#FFFFFF;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;line-height:180%;text-align:center;mso-line-height-alt:25.2px;">
-																	<p style="margin: 0; word-break: break-word;"><strong>Hi &lt;name&gt;,Thank you for shopping with us. Your order &lt;order_id&gt;&nbsp;has been confirmed. We'll let you know when your order ships.</strong></p>
+																	<p style="margin: 0; word-break: break-word;"><strong>Hi {{ client.prenume }}! Thank you for shopping with us. Your order &lt;order_id&gt;&nbsp;has been confirmed. We'll let you know when your order ships.</strong></p>
 																</div>
 															</td>
 														</tr>
@@ -186,7 +186,7 @@
 													<table class="heading_block block-2" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
 														<tr>
 															<td class="pad">
-																<h1 style="margin: 0; color: black; direction: ltr; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 19.2px;"><strong><span class="tinyMce-placeholder" style="word-break: break-word;">&nbsp; Total Amount: &lt;total&gt;</span></strong></h1>
+																<h1 style="margin: 0; color: black; direction: ltr; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 19.2px;"><strong><span class="tinyMce-placeholder" style="word-break: break-word;">&nbsp; Total Amount: {{ total_price }}</span></strong></h1>
 															</td>
 														</tr>
 													</table>
@@ -198,6 +198,7 @@
 							</tr>
 						</tbody>
 					</table>
+					{% for item in cart_items_with_totals %}
 					<table class="row row-4" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #d484e2;">
 						<tbody>
 							<tr>
@@ -221,7 +222,7 @@
 														<tr>
 															<td class="pad" style="padding-left:20px;padding-right:20px;padding-top:20px;">
 																<div style="color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;line-height:180%;text-align:left;mso-line-height-alt:28.8px;">
-																	<p style="margin: 0; word-break: break-word;"><strong><span style="word-break: break-word;">Onix bracelets and leather bag</span></strong></p>
+																	<p style="margin: 0; word-break: break-word;"><strong><span style="word-break: break-word;">{{ item.item.produs.nume }}</span></strong></p>
 																</div>
 															</td>
 														</tr>
@@ -230,10 +231,11 @@
 														<tr>
 															<td class="pad" style="padding-bottom:20px;padding-left:40px;padding-right:20px;padding-top:14px;">
 																<div style="margin-left:-20px">
+																	<p style="Margin: 0 0 0 0;"><span style="word-break: break-word;">{{ item.item.produs.category.nume_categorie }} {{ item.item.produs.properties.domeniu }}</span></p>
 																	<ul style="margin-top: 0; margin-bottom: 0; list-style-type: revert;">
-																		<li style="Margin: 0 0 0 0;"><span style="word-break: break-word;">Item price: &lt;unit_price&gt;</span></li>
-																		<li style="Margin: 0 0 0 0;"><span style="word-break: break-word;">Quantity: &lt;product_quantity&gt;</span></li>
-																		<li style="Margin: 0 0 0 0;"><span style="word-break: break-word;">Subtotal: &lt;product_subtotal</span></li>
+																		<li style="Margin: 0 0 0 0;"><span style="word-break: break-word;">Item price: {{ item.item.produs.pret_unitar }} RON</span></li>
+																		<li style="Margin: 0 0 0 0;"><span style="word-break: break-word;">Quantity: {{ item.item.cantitate }}</span></li>
+																		<li style="Margin: 0 0 0 0;"><span style="word-break: break-word;">Subtotal: {{ item.item_total_price }} RON</span></li>
 																	</ul>
 																</div>
 															</td>
@@ -247,6 +249,7 @@
 							</tr>
 						</tbody>
 					</table>
+					{% endfor %}
 					<table class="row row-5" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #d484e2; background-size: auto;">
 						<tbody>
 							<tr>
@@ -268,7 +271,13 @@
 														<tr>
 															<td class="pad" style="padding-bottom:20px;padding-left:20px;padding-right:20px;">
 																<div style="color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:12px;line-height:150%;text-align:left;mso-line-height-alt:18px;">
-																	<p style="margin: 0; word-break: break-word;">&lt;billing_address&gt;</p>
+																	<p style="margin: 0; word-break: break-word;">
+																		{% for value in billing_address_info %}
+																			{% if value is not None %}
+																				{{ value }}{% if not forloop.last %}, {% endif %}
+																			{% endif %}
+																		{% endfor %}
+																	</p>
 																</div>
 															</td>
 														</tr>
@@ -288,7 +297,13 @@
 														<tr>
 															<td class="pad" style="padding-bottom:20px;padding-left:20px;padding-right:20px;">
 																<div style="color:#FFFFFF;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:12px;line-height:150%;text-align:left;mso-line-height-alt:18px;">
-																	<p style="margin: 0; word-break: break-word;">&lt;shipping_address&gt;</p>
+																	<p style="margin: 0; word-break: break-word;">
+																		{% for value in shipping_address_info %}
+																			{% if value is not None %}
+																				{{ value }}{% if not forloop.last %}, {% endif %}
+																			{% endif %}
+																		{% endfor %}
+																	</p>
 																</div>
 															</td>
 														</tr>
@@ -338,7 +353,7 @@
 														<tr>
 															<td class="pad">
 																<div style="color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;line-height:150%;text-align:left;mso-line-height-alt:21px;">
-																	<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word;">Your items will be shipped within 24 hours to your shipping address by your chosen delivery method.</span></p>
+																	<p style="margin: 0; word-break: break-word;"><span style="word-break: break-word;">Your items will be shipped within 1 week to your shipping address.</span></p>
 																</div>
 															</td>
 														</tr>
