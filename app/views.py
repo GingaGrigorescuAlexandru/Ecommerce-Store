@@ -20,7 +20,12 @@ from django.conf import settings
 from django.contrib.auth import password_validation, update_session_auth_hash
 from django.core.exceptions import ValidationError
 from django.views.decorators.csrf import csrf_exempt
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.core.files.base import ContentFile
+import io
+import base64
 import logging
 import json
 import stripe
@@ -715,7 +720,7 @@ def create_checkout_session(request):
             },
             return_url=settings.YOUR_DOMAIN + '/return.html?session_id={CHECKOUT_SESSION_ID}',  # Return URL after checkout
             metadata={
-                'item_names': ', '.join(item_names)  # Store item names as a comma-separated string
+                'item_names': ','.join(item_names)  # Store item names as a comma-separated string
             }
         )
 
@@ -773,33 +778,33 @@ def stripe_webhook(request):
     logger.info(f'Webhook payload: {payload}')
     logger.info(f'Stripe signature header: {sig_header}')
 
-    # Verify the webhook signature and construct the event object
+
     try:
-        # Construct the event using the payload, signature header, and endpoint secret
         event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
     except ValueError as e:
-        # Return a 400 Bad Request response if the payload is invalid
         return JsonResponse({'error': str(e)}, status=400)
     except stripe.error.SignatureVerificationError as e:
-        # Return a 400 Bad Request response if the signature verification fails
         return JsonResponse({'error': str(e)}, status=400)
 
-    # Function to send a confirmation email to the customer
+
     def send_confirmation_email(customer_email):
-        # Define the subject and message for the email
         subject = 'Payment Confirmation'
-        message = (
-            f'Thank you for your payment! Your transaction was successful.\n\n'
-            f'Order Summary:\n'
-            f'Total Amount: ${total_amount / 100:.2f}\n'  # Stripe amounts are in cents
-            f'Items Purchased: {item_names}\n'
-            f'Date of Transaction: {transaction_date}\n'
+
+        html_message = render_to_string('app/email_order_confirmation.html')
+        message = strip_tags(html_message)
+
+        email = EmailMultiAlternatives(
+            subject=subject,
+            body=message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[customer_email],
         )
 
-        # Use Django's send_mail function to send the email
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [customer_email])
+        email.attach_alternative(html_message, "text/html")
 
-    # Handle the event based on its type
+        email.send()
+
+
     if event['type'] == 'checkout.session.completed':
         # Extract the session object from the event data
         session = event['data']['object']
@@ -813,6 +818,10 @@ def stripe_webhook(request):
 
         total_amount = session.get('amount_total')  # Amount in cents
         item_names = session.get('metadata', {}).get('item_names', '')
+        item_names_list = item_names.split(',')
+
+
+
 
         # Assuming the created date is available in session (check Stripe documentation for available fields)
         transaction_date = session.get('created')  # Timestamp of when the session was created

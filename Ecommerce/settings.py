@@ -23,8 +23,7 @@ STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIC_KEY")
 YOUR_DOMAIN = 'http://localhost:8000'
 
-STRIPE_WEBHOOK_SECRET = 'whsec_669815f2de8e7af4a1c0fbc720f1bb4a7d54f526ef4018d6e4c586f6f8ea183e'
-# Application definition
+STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
