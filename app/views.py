@@ -31,6 +31,7 @@ import logging
 import json
 import stripe
 import ast
+from .modules import send_confirmation_email
 from .models import (AuthUser,
                      Adrese,
                      Comenzi,
@@ -774,88 +775,12 @@ def stripe_webhook(request):
     # Retrieve the webhook secret from the settings for verifying the Stripe signature
     endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
 
-    # Log the webhook payload and the Stripe signature header for debugging purposes
-    logger.info(f'Webhook payload: {payload}')
-    logger.info(f'Stripe signature header: {sig_header}')
-
-
     try:
         event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
     except ValueError as e:
         return JsonResponse({'error': str(e)}, status=400)
     except stripe.error.SignatureVerificationError as e:
         return JsonResponse({'error': str(e)}, status=400)
-
-
-    def send_confirmation_email(customer_email):
-        subject = 'Payment Confirmation'
-
-        client_instance = get_object_or_404(Clienti, email = customer_email)
-
-        cart_items = Cosuri.objects.filter(client = client_instance).select_related('produs')
-        cart_items = cart_items.prefetch_related(
-            Prefetch('produs__proprietatiproduse', queryset=ProprietatiProduse.objects.all(), to_attr='properties'),
-            Prefetch('produs__produseimagini', queryset=ProduseImagini.objects.all(), to_attr='images'),
-            Prefetch('produs__categorie', queryset=Categorie.objects.all(), to_attr='category')
-        )
-
-        total_price = 0.0
-
-        cart_items_with_totals = []
-
-        for item in cart_items:
-            product_price = item.produs.pret_unitar
-            quantity = item.cantitate
-
-            item_total_price = product_price * quantity
-
-            total_price += item_total_price
-
-            cart_items_with_totals.append({
-                'item': item,
-                'item_total_price': item_total_price,
-                'product_price': product_price,
-                'quantity': quantity,
-            })
-
-        billing_address = session.get('customer_details', {}).get('address')
-        shipping_address = session.get('shipping_details', {}).get('address')
-
-        billing_address_info = billing_address.values()
-        shipping_address_info = shipping_address.values()
-
-        print(billing_address_info)
-        print(shipping_address_info)
-        print(billing_address_info)
-        print(shipping_address_info)
-
-        print(billing_address_info)
-        print(shipping_address_info)
-
-
-        context = {
-            'cart_items_with_totals': cart_items_with_totals,
-            'total_price': total_price,
-            'client': client_instance,
-            'billing_address_info': billing_address_info,
-            'shipping_address_info': shipping_address_info,
-        }
-
-        html_message = render_to_string('app/email_order_confirmation.html', context = context)
-        message = strip_tags(html_message)
-
-        email = EmailMultiAlternatives(
-            subject=subject,
-            body=message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[customer_email],
-        )
-
-        Cosuri.objects.filter(client=client_instance).delete()
-
-        email.attach_alternative(html_message, "text/html")
-
-        email.send()
 
 
     if event['type'] == 'checkout.session.completed':
@@ -867,6 +792,7 @@ def stripe_webhook(request):
 
         client_instance = get_object_or_404(Clienti, email=customer_email)
 
+        # Create an order entry in the Database
         order = Comenzi(
             client = client_instance,
             data_plasare = datetime.now(),
@@ -874,6 +800,7 @@ def stripe_webhook(request):
         )
         order.save()
 
+        # Query the Cart, Products, ProductImages, ProductProperties and ProductCategories together
         cart_items = Cosuri.objects.filter(client=client_instance).select_related('produs')
         cart_items = cart_items.prefetch_related(
             Prefetch('produs__proprietatiproduse', queryset=ProprietatiProduse.objects.all(), to_attr='properties'),
@@ -882,15 +809,16 @@ def stripe_webhook(request):
         )
 
         total_price = 0.0
-
         cart_items_with_totals = []
 
+        # Create a list with relevant order info for easy access
         for item in cart_items:
             product_price = item.produs.pret_unitar
             quantity = item.cantitate
 
             item_total_price = product_price * quantity
 
+            # Calculate the total amount for the order
             total_price += item_total_price
 
             cart_items_with_totals.append({
@@ -900,6 +828,7 @@ def stripe_webhook(request):
                 'quantity': quantity,
             })
 
+        # Create entries in the OrderProducts table
         for item in cart_items_with_totals:
             product = get_object_or_404(Produse, produs_id = item['item'].produs.produs_id)
             order_product = ProduseComenzi(
@@ -909,8 +838,24 @@ def stripe_webhook(request):
             )
             order_product.save()
 
+        # Retrieve the necessary addresses for storage and informing the user via email
+        billing_address = session.get('customer_details', {}).get('address')
+        shipping_address = session.get('shipping_details', {}).get('address')
 
+        # Get values from the address dictionaries
+        billing_address_info = billing_address.values()
+        shipping_address_info = shipping_address.values()
+
+        # Send the confirmation email to the provided address, if it exists
         if customer_email:
-            send_confirmation_email(customer_email)
+            send_confirmation_email(customer_email,
+                                    cart_items_with_totals,
+                                    total_price,
+                                    client_instance,
+                                    billing_address_info,
+                                    shipping_address_info)
+
+        # Delete the Cart entries that the customer paid for
+        Cosuri.objects.filter(client=client_instance).delete()
 
     return JsonResponse({'status': 'success'}, status=200)
