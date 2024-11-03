@@ -217,7 +217,7 @@ class Colors(models.Model):
 class Comenzi(models.Model):
     comanda_id = models.AutoField(primary_key=True)
     client = models.ForeignKey(Clienti, models.CASCADE)
-    livrare_agentie = models.ForeignKey(AgentiiLivrare, models.CASCADE)
+    livrare_agentie = models.ForeignKey(AgentiiLivrare, models.CASCADE, default=1)
     data_plasare = models.DateField()
     status = models.CharField(max_length=50)
 
@@ -313,7 +313,8 @@ class Produse(models.Model):
 
 
 class ProduseComenzi(models.Model):
-    comanda = models.OneToOneField(Comenzi, models.CASCADE, primary_key=True)
+    product_order_id = models.AutoField(primary_key = True)
+    comanda = models.ForeignKey(Comenzi, models.CASCADE)
     produs = models.ForeignKey(Produse, models.CASCADE)
     cantitate_comanda = models.PositiveIntegerField()
 

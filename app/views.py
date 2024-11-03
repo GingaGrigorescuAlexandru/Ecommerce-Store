@@ -23,6 +23,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from datetime import datetime
 from django.core.files.base import ContentFile
 import io
 import base64
@@ -32,9 +33,10 @@ import stripe
 import ast
 from .models import (AuthUser,
                      Adrese,
-                     CarduriClienti,
+                     Comenzi,
                      Clienti,
                      Produse,
+                     ProduseComenzi,
                      ProduseImagini,
                      ProprietatiProduse,
                      Categorie,
@@ -862,6 +864,51 @@ def stripe_webhook(request):
 
         # Get the customer's email from the session
         customer_email = session.get('customer_email')
+
+        client_instance = get_object_or_404(Clienti, email=customer_email)
+
+        order = Comenzi(
+            client = client_instance,
+            data_plasare = datetime.now(),
+            status = 'Processing'
+        )
+        order.save()
+
+        cart_items = Cosuri.objects.filter(client=client_instance).select_related('produs')
+        cart_items = cart_items.prefetch_related(
+            Prefetch('produs__proprietatiproduse', queryset=ProprietatiProduse.objects.all(), to_attr='properties'),
+            Prefetch('produs__produseimagini', queryset=ProduseImagini.objects.all(), to_attr='images'),
+            Prefetch('produs__categorie', queryset=Categorie.objects.all(), to_attr='category')
+        )
+
+        total_price = 0.0
+
+        cart_items_with_totals = []
+
+        for item in cart_items:
+            product_price = item.produs.pret_unitar
+            quantity = item.cantitate
+
+            item_total_price = product_price * quantity
+
+            total_price += item_total_price
+
+            cart_items_with_totals.append({
+                'item': item,
+                'item_total_price': item_total_price,
+                'product_price': product_price,
+                'quantity': quantity,
+            })
+
+        for item in cart_items_with_totals:
+            product = get_object_or_404(Produse, produs_id = item['item'].produs.produs_id)
+            order_product = ProduseComenzi(
+                comanda = order,
+                produs = product,
+                cantitate_comanda = item['quantity']
+            )
+            order_product.save()
+
 
         if customer_email:
             send_confirmation_email(customer_email)
