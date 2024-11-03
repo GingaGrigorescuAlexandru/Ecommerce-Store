@@ -695,12 +695,13 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 @csrf_exempt
 def create_checkout_session(request):
     try:
+        # Query the items from the cart and the owner of the cart info
         cart_items = Cosuri.objects.filter(client = request.user.id).select_related('produs')
         client = Clienti.objects.filter(client_id = request.user.id)
 
+        # Fetch the price, quantity and name of the products for checkout and email template
         stripe_items = []
         item_names = []
-
         for item in cart_items:
             stripe_items.append({
                 'price': item.produs.stripe_price_id,
@@ -711,6 +712,7 @@ def create_checkout_session(request):
             product = stripe.Product.retrieve(item.produs.stripe_product_id)
             item_names.append(product['name'])  # Add product name to the list
 
+        # Create a Stripe Checkout Session
         session = stripe.checkout.Session.create(
             ui_mode='embedded',
             line_items=stripe_items,
