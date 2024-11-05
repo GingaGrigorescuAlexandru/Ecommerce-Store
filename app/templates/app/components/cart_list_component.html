@@ -16,7 +16,7 @@
 
                 <a href="{% url 'product' item.item.produs.produs_id %}">
                     <img class="cart-image"
-                         src="data:image/jpeg;base64,{{ item.item.produs.images.imagine_catalog|b64encode }}"
+                         src="https://stomagia.s3.amazonaws.com/{{ item.item.produs.images.imagine_catalog }}"
                          alt="{{ item.item.produs.nume }}" />
                 </a>
 

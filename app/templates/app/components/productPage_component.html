@@ -19,7 +19,7 @@
     <div class="row-info-container" id="product-page-container">
 
         <div>
-            <img class="product-page-image" src="data:image/jpeg;base64,{{ product_images.imagine_catalog|b64encode }}"
+            <img class="product-page-image" src="https://stomagia.s3.amazonaws.com/{{ product_images.imagine_catalog }}"
                  alt="{{ product.nume }}" />
         </div>
 

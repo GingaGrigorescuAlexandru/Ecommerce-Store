@@ -24,6 +24,7 @@ from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from datetime import datetime
+import boto3
 from django.core.files.base import ContentFile
 import io
 import base64
@@ -293,15 +294,22 @@ def addProduct(request):
             properties.save()
 
             image_file = request.FILES.get('catalog-image-input')
+            image = ProduseImagini(
+                produs = product,
+                imagine_catalog = image_file.name,
+            )
+            image.save()
 
             if image_file:
-                image_data = image_file.read()
-                product_image = ProduseImagini(produs = product,
-                                               imagine_catalog = image_data)
-                product_image.save()
+                s3 = boto3.client('s3')
+                s3.upload_fileobj(image_file, 'stomagia', image_file.name)
 
-                image_url = request.build_absolute_uri(reverse('product_image', args=[product.produs_id]))
+                sanitized_filename = image_file.name.replace(" ", "%20")
+                image_url = f'https://stomagia.s3.amazonaws.com/{sanitized_filename}'
 
+            print(image_url)
+            print(image_url)
+            print(image_url)
 
             stripe_product = stripe.Product.create(
                 name = product.nume,
@@ -351,6 +359,7 @@ def productCatalog(request):
         try:
             image = images.get(produs = product)
             products_with_images.append((product, image.imagine_catalog))
+            print(image.imagine_catalog)
         except ProduseImagini.DoesNotExist:
             products_with_images.append((product, None))
 
@@ -454,6 +463,7 @@ def productPage(request, pk):
     cleaned_colors = [color.strip().strip("'") for color in product_colors_list]
 
     product_images = ProduseImagini.objects.get(produs = pk)
+
     product_type = Categorie.objects.get(categorie_id = product.categorie_id)
 
     favorite_items = Favorites.objects.filter(client = request.user.id)

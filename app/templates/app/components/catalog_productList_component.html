@@ -17,11 +17,12 @@
 </head>
 <body>
         <div class="catalog-container">
-            {% for product, image_data in products_with_images %}
+            {% for product, image_name in products_with_images %}
                 <div class="catalog-item">
                 <a href="{% url 'product' product.produs_id %}" class="to-product-page-link">
-                {% if image_data %}
-                    <img class="catalog-image" src="data:image/jpeg;base64,{{ image_data|b64encode }}" alt="{{ product.nume }}" />
+                {% if image_name %}
+                    <img class="catalog-image" src="https://stomagia.s3.amazonaws.com/{{ image_name }}"
+                         alt="{{ product.nume }}" />
                 {% else %}
                     <p>No image available</p>
                 {% endif %}

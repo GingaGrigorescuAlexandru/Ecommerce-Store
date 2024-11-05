@@ -338,7 +338,7 @@ class ProprietatiProduse(models.Model):
 
 class ProduseImagini(models.Model):
     produs = models.OneToOneField(Produse, models.CASCADE, primary_key=True)
-    imagine_catalog = models.BinaryField()
+    imagine_catalog = models.CharField(max_length=50)
 
     class Meta:
         managed = False
