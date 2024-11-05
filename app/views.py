@@ -35,6 +35,7 @@ import ast
 from .modules import send_confirmation_email
 from .models import (AuthUser,
                      Adrese,
+                     AdreseComenzi,
                      Comenzi,
                      Clienti,
                      Produse,
@@ -267,13 +268,6 @@ def favoriteList(request, pk):
                }
 
     return render(request, 'app/favorite.html', context)
-
-def product_image_view(request, product_id):
-    try:
-        image_record = ProduseImagini.objects.get(produs = product_id)
-        return HttpResponse(image_record.imagine_catalog, content_type="image/png")
-    except ProduseImagini.DoesNotExist:
-        return HttpResponse(status=404)
 
 def addProduct(request):
     formProduct = ProductCreationForm()
@@ -857,6 +851,13 @@ def stripe_webhook(request):
         # Get values from the address dictionaries
         billing_address_info = billing_address.values()
         shipping_address_info = shipping_address.values()
+
+        order_address = AdreseComenzi(
+            comanda = order,
+            shipping_address = shipping_address,
+            billing_address = billing_address
+        )
+        order_address.save()
 
         # Send the confirmation email to the provided address, if it exists
         if customer_email:

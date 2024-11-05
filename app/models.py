@@ -139,15 +139,9 @@ class Adrese(models.Model):
 
 
 class AdreseComenzi(models.Model):
-    comanda_id = models.OneToOneField('Comenzi', models.CASCADE, primary_key=True)
-    tara = models.CharField(max_length=50)
-    judet = models.CharField(max_length=50)
-    localitate = models.CharField(max_length=50)
-    strada = models.CharField(max_length=50)
-    bloc = models.CharField(max_length=50)
-    scara = models.CharField(max_length=50)
-    etaj = models.PositiveIntegerField()
-    apartament = models.PositiveSmallIntegerField()
+    comanda = models.OneToOneField('Comenzi', models.CASCADE, primary_key=True)
+    shipping_address = models.CharField(max_length=255)
+    billing_address = models.CharField(max_length=255)
 
     class Meta:
         managed = False
@@ -254,17 +248,6 @@ class Favorites(models.Model):
         managed = False
         db_table = 'favorites'
 
-class Furnizori(models.Model):
-    furnizor_id = models.AutoField(primary_key=True)
-    nume_furnizor = models.CharField(max_length=50)
-
-    class Meta:
-        managed = False
-        db_table = 'furnizori'
-
-    def __str__(self):
-        return self.nume_furnizor
-
 
 class NewsletterEmails(models.Model):
     email_id = models.AutoField(primary_key = True)
@@ -300,7 +283,6 @@ class Plati(models.Model):
 class Produse(models.Model):
     produs_id = models.AutoField(primary_key=True)
     categorie = models.ForeignKey(Categorie, models.CASCADE, default=1)
-    furnizor = models.ForeignKey(Furnizori, models.CASCADE, default=1)
     nume = models.CharField(max_length=255)
     stoc = models.SmallIntegerField()
     pret_unitar = models.FloatField()

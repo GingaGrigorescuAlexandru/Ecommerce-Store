@@ -6,7 +6,6 @@ from .models import (Adrese,
                      Produse,
                      CarduriClienti,
                      Categorie,
-                     Furnizori,
                      ProprietatiProduse
                      )
 
@@ -18,11 +17,6 @@ class CustomUserCreationForm(ModelForm):
 
 class ProductCreationForm(forms.ModelForm):
     # Use ModelChoiceField for ForeignKey fields
-    furnizor = forms.ModelChoiceField(
-        queryset=Furnizori.objects.all(),
-        empty_label="Select Furnizor"
-    )
-
     categorie = forms.ModelChoiceField(
         queryset=Categorie.objects.all(),
         empty_label="Select Categorie"

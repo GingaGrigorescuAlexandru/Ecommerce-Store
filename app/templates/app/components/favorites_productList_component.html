@@ -22,7 +22,7 @@
                 <div class="catalog-item">
                 <a href="{% url 'product' product.product.produs_id %}" class="to-product-page-link">
                 {% if image_data %}
-                    <img class="catalog-image" src="data:image/jpeg;base64,{{ image_data|b64encode }}" alt="{{ product.nume }}" />
+                    <img class="catalog-image" src="https://stomagia.s3.amazonaws.com/{{ image_data }}" alt="{{ product.nume }}" />
                 {% else %}
                     <p>No image available</p>
                 {% endif %}

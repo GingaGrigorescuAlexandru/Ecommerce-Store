@@ -18,7 +18,6 @@ urlpatterns = [
     path('favorite-list/<str:pk>', views.favoriteList, name = 'favorite-list'),
 
     path('add_product/', views.addProduct, name = "add_product"),
-    path('product-image/<int:product_id>/', views.product_image_view, name='product_image'),
 
     path('catalog/', views.productCatalog, name = 'catalog'),
     path('filter-catalog-products/', views.filter_products, name = 'filter-catalog-products'),
