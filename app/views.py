@@ -829,8 +829,13 @@ def stripe_webhook(request):
             quantity = item.cantitate
 
             item_total_price = product_price * quantity
+            print(item.produs.images.imagine_catalog)
+            print(item.produs.images.imagine_catalog)
+            print(item.produs.images.imagine_catalog)
+            print(item.produs.images.imagine_catalog)
+            print(item.produs.images.imagine_catalog)
+            print(item.produs.images.imagine_catalog)
 
-            # Calculate the total amount for the order
             total_price += item_total_price
 
             cart_items_with_totals.append({
@@ -838,10 +843,13 @@ def stripe_webhook(request):
                 'item_total_price': item_total_price,
                 'product_price': product_price,
                 'quantity': quantity,
+                'item_image': item.produs.images.imagine_catalog,
             })
 
         # Create entries in the OrderProducts table
         for item in cart_items_with_totals:
+            print("HELLLLO")
+            print(item['item_image'])
             product = get_object_or_404(Produse, produs_id = item['item'].produs.produs_id)
             order_product = ProduseComenzi(
                 comanda = order,
