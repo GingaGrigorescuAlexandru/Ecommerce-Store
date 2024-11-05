@@ -829,12 +829,6 @@ def stripe_webhook(request):
             quantity = item.cantitate
 
             item_total_price = product_price * quantity
-            print(item.produs.images.imagine_catalog)
-            print(item.produs.images.imagine_catalog)
-            print(item.produs.images.imagine_catalog)
-            print(item.produs.images.imagine_catalog)
-            print(item.produs.images.imagine_catalog)
-            print(item.produs.images.imagine_catalog)
 
             total_price += item_total_price
 
@@ -848,8 +842,6 @@ def stripe_webhook(request):
 
         # Create entries in the OrderProducts table
         for item in cart_items_with_totals:
-            print("HELLLLO")
-            print(item['item_image'])
             product = get_object_or_404(Produse, produs_id = item['item'].produs.produs_id)
             order_product = ProduseComenzi(
                 comanda = order,
@@ -873,7 +865,8 @@ def stripe_webhook(request):
                                     total_price,
                                     client_instance,
                                     billing_address_info,
-                                    shipping_address_info)
+                                    shipping_address_info,
+                                    order)
 
         # Delete the Cart entries that the customer paid for
         Cosuri.objects.filter(client=client_instance).delete()

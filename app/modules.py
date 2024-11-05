@@ -8,7 +8,8 @@ def send_confirmation_email(customer_email,
                             total_price,
                             client_instance,
                             billing_address_info,
-                            shipping_address_info):
+                            shipping_address_info,
+                            order):
 
     subject = 'Payment Confirmation'
 
@@ -18,6 +19,7 @@ def send_confirmation_email(customer_email,
         'client': client_instance,
         'billing_address_info': billing_address_info,
         'shipping_address_info': shipping_address_info,
+        'order': order,
     }
 
     html_message = render_to_string('app/email_order_confirmation.html', context=context)
