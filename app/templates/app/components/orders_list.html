@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'styles/orders.css' %}" />
+    <title>Active Orders</title>
+</head>
+<body>
+    <div class="orders-table-container">
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Client ID</th>
+                    <th>Client Name</th>
+                    <th>Products</th>
+                    <th>Order Date</th>
+                    <th>Shipping Address</th>
+                    <th>Billing Address</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.comanda_id }}</td>
+                    <td>{{ order.client.client_id }}</td>
+                    <td>{{ order.client.nume }} {{ order.client.prenume }}</td>
+                    <td>
+                        <button
+                            class="view-products-btn"
+                            data-order-id="{{ order.comanda_id }}"
+                            data-products-names='[
+                                {% for product in order.products %}
+                                    "{{ product.product_details.nume }}"{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            ]'
+                            data-products-quantities='[
+                                {% for product in order.products %}
+                                    "{{ product.cantitate_comanda }}"{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            ]'
+                            data-products-images='[
+                                {% for product in order.products %}
+                                    {% if product.produs.images %}
+                                        "{{ product.produs.images.imagine_catalog }}"{% if not forloop.last %}, {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            ]'
+                        >View Products
+                        </button>
+                    </td>
+                    <td>{{ order.data_plasare }}</td>
+                    <td>{{ order.address.shipping_address }}</td>
+                    <td>{{ order.address.billing_address }}</td>
+                    <td>{{ order.total_amount }} RON</td>
+                    <td>{{ order.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div id="overlay"></div>
+
+        <div id="product-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" id="close-btn">&times;</span>
+                <h2>Order Summary</h2>
+                <p id="order-id"></p>
+                <div id="product-list"></div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'scripts/orders.js' %}"></script>
+</body>
+</html>

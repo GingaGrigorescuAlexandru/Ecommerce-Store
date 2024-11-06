@@ -213,6 +213,7 @@ class Comenzi(models.Model):
     client = models.ForeignKey(Clienti, models.CASCADE)
     livrare_agentie = models.ForeignKey(AgentiiLivrare, models.CASCADE, default=1)
     data_plasare = models.DateField()
+    total_amount = models.FloatField()
     status = models.CharField(max_length=50)
 
     class Meta:

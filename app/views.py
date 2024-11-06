@@ -38,15 +38,15 @@ from .models import (AuthUser,
                      AdreseComenzi,
                      Comenzi,
                      Clienti,
-                     Produse,
-                     ProduseComenzi,
-                     ProduseImagini,
-                     ProprietatiProduse,
                      Categorie,
                      Colors,
                      Cosuri,
                      Domains,
                      Favorites,
+                     Produse,
+                     ProduseComenzi,
+                     ProduseImagini,
+                     ProprietatiProduse,
                      NewsletterEmails,
                      Reviews,
                      Sizes
@@ -127,6 +127,40 @@ def loginUser(request):
 def logoutUser(request):
     logout(request)
     return redirect('home')
+
+def ordersPage(request):
+    orders = (
+        Comenzi.objects
+        .all()
+        .select_related('client', 'livrare_agentie')
+        .prefetch_related(
+            Prefetch(
+                'produsecomenzi_set', queryset=ProduseComenzi.objects.prefetch_related(
+                    Prefetch('produs',
+                             queryset=Produse.objects.all(),
+                             to_attr='product_details'),
+                    Prefetch('produs__proprietatiproduse',
+                             queryset=ProprietatiProduse.objects.all(),
+                             to_attr='properties'),
+                    Prefetch('produs__produseimagini',
+                             queryset=ProduseImagini.objects.all(),
+                             to_attr='images'),  # 'images' will contain the image URLs
+                    Prefetch('produs__categorie',
+                             queryset=Categorie.objects.all(),
+                             to_attr='category')
+                ),
+                to_attr='products'
+            ),
+            Prefetch('adresecomenzi', to_attr='address')
+        )
+    )
+    for order in orders:
+        for product in order.products:
+            print(
+                f"Product: {product.product_details.nume}, "
+                f"Image: {product.produs.images.imagine_catalog if product.produs.images else 'No image available'}")
+    context = {'orders': orders}
+    return render(request, 'app/orders.html', context)
 
 
 def profilePage(request, pk):
@@ -798,14 +832,6 @@ def stripe_webhook(request):
 
         client_instance = get_object_or_404(Clienti, email=customer_email)
 
-        # Create an order entry in the Database
-        order = Comenzi(
-            client = client_instance,
-            data_plasare = datetime.now(),
-            status = 'Processing'
-        )
-        order.save()
-
         # Query the Cart, Products, ProductImages, ProductProperties and ProductCategories together
         cart_items = Cosuri.objects.filter(client=client_instance).select_related('produs')
         cart_items = cart_items.prefetch_related(
@@ -834,6 +860,15 @@ def stripe_webhook(request):
                 'item_image': item.produs.images.imagine_catalog,
             })
 
+        # Create an order entry in the Database
+        order = Comenzi(
+            client = client_instance,
+            data_plasare = datetime.now(),
+            total_amount = total_price,
+            status = 'Processing'
+        )
+        order.save()
+
         # Create entries in the OrderProducts table
         for item in cart_items_with_totals:
             product = get_object_or_404(Produse, produs_id = item['item'].produs.produs_id)
@@ -852,10 +887,14 @@ def stripe_webhook(request):
         billing_address_info = billing_address.values()
         shipping_address_info = shipping_address.values()
 
+        cleaned_billing_address = ' '.join([str(value) for value in billing_address.values() if value])
+        cleaned_shipping_address = ' '.join([str(value) for value in shipping_address.values() if value])
+
+
         order_address = AdreseComenzi(
             comanda = order,
-            shipping_address = shipping_address,
-            billing_address = billing_address
+            shipping_address = cleaned_shipping_address,
+            billing_address = cleaned_billing_address
         )
         order_address.save()
 
