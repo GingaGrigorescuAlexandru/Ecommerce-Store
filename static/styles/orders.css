@@ -16,6 +16,7 @@
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 0; /* Adds 20px space between rows */
+    border: 1px solid black;
 }
 
 .orders-table th,
@@ -23,15 +24,42 @@
     padding: 12px;
     text-align: left;
     background-color: #f9f9f9;
-    border: 2px solid #ddd;
-    font-size: 14px;
+    border: 1px solid #ddd;
+    border-bottom: 3px solid black;
+    font-size: 16px;
+    font-weight: bold;
     color: #333;
 }
 
 .orders-table th {
     font-weight: bold;
     background-color: #eee;
+    font-size: 20px;
 }
+
+.orders-table tr.status-processing td {
+    background-color: #f8b0b0; /* Soft pinkish red */
+    color: black;
+}
+
+.orders-table tr.status-shipped td {
+    background-color: #a0d468; /* Light green */
+    color: black;
+}
+
+.orders-table tr.status-archived td {
+    background-color: #ffd966; /* Light yellow */
+    color: black;
+}
+
+.view-products-btn,
+.change-order-state-button {
+    width: 75px;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 5px;
+}
+
 
 #overlay {
     display: none; /* Hidden by default */
@@ -76,8 +104,13 @@
 
 #close-btn {
     display: inline-block;
-    margin-top: 10px;
+    font-size: 20px;
+    margin-bottom: 10px;
     cursor: pointer;
+}
+
+#close-btn:hover {
+    color: red;
 }
 
 .product-item {

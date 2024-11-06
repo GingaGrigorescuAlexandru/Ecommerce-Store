@@ -153,15 +153,25 @@ def ordersPage(request):
             ),
             Prefetch('adresecomenzi', to_attr='address')
         )
+        .order_by('-comanda_id')
     )
-    for order in orders:
-        for product in order.products:
-            print(
-                f"Product: {product.product_details.nume}, "
-                f"Image: {product.produs.images.imagine_catalog if product.produs.images else 'No image available'}")
+
     context = {'orders': orders}
     return render(request, 'app/orders.html', context)
 
+def updateOrderStatus(request):
+    if request.method == 'POST':
+        try:
+            order_id = request.POST.get('order_id')
+            order_status = request.POST.get('order_status')
+            order = Comenzi.objects.get(comanda_id = order_id)
+            order.status = order_status
+            order.save()
+
+            return JsonResponse({'success': 'Success'}, status=200)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 def profilePage(request, pk):
     user = AuthUser.objects.get(id = pk)
